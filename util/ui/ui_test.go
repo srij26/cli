@@ -2,6 +2,7 @@ package ui_test
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"code.cloudfoundry.org/cli/util/configv3"
@@ -182,6 +183,20 @@ var _ = Describe("UI", func() {
 			Expect(ui.Out).To(Say(`some-prefixaaaaaaaaa   bb            ccccccc
 some-prefixdddd        eeeeeeeeeee   fff
 some-prefixgg          hh            ii`))
+		})
+	})
+
+	Describe("DisplayWrappableTable", func() {
+		FIt("displays a string matrix as a table with the provided prefix and padding to ui.Out", func() {
+			ui.DisplayWrappableTableWithWidth("",
+				[][]string{
+					{"wut:", "wt, wt, wt, " + strings.Repeat("a", 11)},
+					{"wut:", strings.Repeat("a", 30)},
+				},
+				3,
+				28)
+			Expect(ui.Out).To(Say("wut:   wt, wt, wt,\n" + strings.Repeat(" ", 7) + strings.Repeat("a", 11)))
+			Expect(ui.Out).To(Say("wut:   " + strings.Repeat("a", 30)))
 		})
 	})
 
