@@ -22,12 +22,26 @@ func NewClients(config command.Config, ui command.UI) (*ccv2.Client, *uaa.Client
 		AppVersion:         config.BinaryVersion(),
 		JobPollingTimeout:  config.OverallPollingTimeout(),
 		JobPollingInterval: config.PollingInterval(),
+		DialTimeout:        config.DialTimeout(),
+		SkipSSLValidation:  config.SkipSSLValidation(),
 	})
-	_, err := ccClient.TargetCF(ccv2.TargetSettings{
-		URL:               config.Target(),
-		SkipSSLValidation: config.SkipSSLValidation(),
-		DialTimeout:       config.DialTimeout(),
-	})
+
+	ccClient.WrapConnection(ccv2.NewErrorWrapper()) //Pretty Sneaky, Sis..
+
+	verbose, location := config.Verbose()
+	if verbose {
+		ccClient.WrapConnection(ccWrapper.NewRequestLogger(ui.RequestLoggerTerminalDisplay()))
+	}
+	if location != nil {
+		ccClient.WrapConnection(ccWrapper.NewRequestLogger(ui.RequestLoggerFileWriter(location)))
+	}
+
+	ccUAAWrapper := ccWrapper.NewUAAAuthentication(nil, config)
+
+	ccClient.WrapConnection(ccUAAWrapper)
+	ccClient.WrapConnection(ccWrapper.NewRetryRequest(2))
+
+	_, err := ccClient.TargetCF(config.Target())
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,21 +56,22 @@ func NewClients(config command.Config, ui command.UI) (*ccv2.Client, *uaa.Client
 		URL:               ccClient.TokenEndpoint(),
 	})
 
-	verbose, location := config.Verbose()
+	uaaClient.WrapConnection(uaa.NewErrorWrapper())
+
 	if verbose {
-		ccClient.WrapConnection(ccWrapper.NewRequestLogger(ui.RequestLoggerTerminalDisplay()))
 		uaaClient.WrapConnection(uaaWrapper.NewRequestLogger(ui.RequestLoggerTerminalDisplay()))
 	}
+
 	if location != nil {
-		ccClient.WrapConnection(ccWrapper.NewRequestLogger(ui.RequestLoggerFileWriter(location)))
 		uaaClient.WrapConnection(uaaWrapper.NewRequestLogger(ui.RequestLoggerFileWriter(location)))
 	}
 
-	ccClient.WrapConnection(ccWrapper.NewUAAAuthentication(uaaClient, config))
-	ccClient.WrapConnection(ccWrapper.NewRetryRequest(2))
+	uaaUAAWrapper := uaaWrapper.NewUAAAuthentication(uaaClient, config)
 
-	uaaClient.WrapConnection(uaaWrapper.NewUAAAuthentication(uaaClient, config))
+	uaaClient.WrapConnection(uaaUAAWrapper)
 	uaaClient.WrapConnection(uaaWrapper.NewRetryRequest(2))
+
+	ccUAAWrapper.SetClient(uaaClient)
 
 	return ccClient, uaaClient, err
 }

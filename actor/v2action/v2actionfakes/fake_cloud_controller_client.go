@@ -456,10 +456,10 @@ type FakeCloudControllerClient struct {
 		result1 ccv2.Warnings
 		result2 error
 	}
-	TargetCFStub        func(settings ccv2.TargetSettings) (ccv2.Warnings, error)
+	TargetCFStub        func(url string) (ccv2.Warnings, error)
 	targetCFMutex       sync.RWMutex
 	targetCFArgsForCall []struct {
-		settings ccv2.TargetSettings
+		url string
 	}
 	targetCFReturns struct {
 		result1 ccv2.Warnings
@@ -2213,16 +2213,16 @@ func (fake *FakeCloudControllerClient) PollJobReturnsOnCall(i int, result1 ccv2.
 	}{result1, result2}
 }
 
-func (fake *FakeCloudControllerClient) TargetCF(settings ccv2.TargetSettings) (ccv2.Warnings, error) {
+func (fake *FakeCloudControllerClient) TargetCF(url string) (ccv2.Warnings, error) {
 	fake.targetCFMutex.Lock()
 	ret, specificReturn := fake.targetCFReturnsOnCall[len(fake.targetCFArgsForCall)]
 	fake.targetCFArgsForCall = append(fake.targetCFArgsForCall, struct {
-		settings ccv2.TargetSettings
-	}{settings})
-	fake.recordInvocation("TargetCF", []interface{}{settings})
+		url string
+	}{url})
+	fake.recordInvocation("TargetCF", []interface{}{url})
 	fake.targetCFMutex.Unlock()
 	if fake.TargetCFStub != nil {
-		return fake.TargetCFStub(settings)
+		return fake.TargetCFStub(url)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -2236,10 +2236,10 @@ func (fake *FakeCloudControllerClient) TargetCFCallCount() int {
 	return len(fake.targetCFArgsForCall)
 }
 
-func (fake *FakeCloudControllerClient) TargetCFArgsForCall(i int) ccv2.TargetSettings {
+func (fake *FakeCloudControllerClient) TargetCFArgsForCall(i int) string {
 	fake.targetCFMutex.RLock()
 	defer fake.targetCFMutex.RUnlock()
-	return fake.targetCFArgsForCall[i].settings
+	return fake.targetCFArgsForCall[i].url
 }
 
 func (fake *FakeCloudControllerClient) TargetCFReturns(result1 ccv2.Warnings, result2 error) {

@@ -34,6 +34,10 @@ type UAAAuthentication struct {
 	cache      TokenCache
 }
 
+func (t *UAAAuthentication) SetClient(client UAAClient) {
+	t.client = client
+}
+
 // NewUAAAuthentication returns a pointer to a UAAAuthentication wrapper with
 // the client and a token cache.
 func NewUAAAuthentication(client UAAClient, cache TokenCache) *UAAAuthentication {

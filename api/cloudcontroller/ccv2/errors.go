@@ -68,7 +68,7 @@ type errorWrapper struct {
 	connection cloudcontroller.Connection
 }
 
-func newErrorWrapper() *errorWrapper {
+func NewErrorWrapper() *errorWrapper {
 	return new(errorWrapper)
 }
 

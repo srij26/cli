@@ -112,14 +112,34 @@ type Config struct {
 
 	// JobPollingInterval is the wait time between job polls.
 	JobPollingInterval time.Duration
+
+	// DialTimeout is the DNS timeout used to make all requests to the Cloud
+	// Controller.
+	DialTimeout time.Duration
+
+	// SkipSSLValidation controls whether a client verifies the server's
+	// certificate chain and host name. If SkipSSLValidation is true, TLS accepts
+	// any certificate presented by the server and any host name in that
+	// certificate for *all* client requests going forward.
+	//
+	// In this mode, TLS is susceptible to man-in-the-middle attacks. This should
+	// be used only for testing.
+	SkipSSLValidation bool
 }
 
 // NewClient returns a new Cloud Controller Client.
 func NewClient(config Config) *Client {
 	userAgent := fmt.Sprintf("%s/%s (%s; %s %s)", config.AppName, config.AppVersion, runtime.Version(), runtime.GOARCH, runtime.GOOS)
+
+	connection := cloudcontroller.NewConnection(cloudcontroller.Config{
+		DialTimeout:       config.DialTimeout,
+		SkipSSLValidation: config.SkipSSLValidation,
+	})
+
 	return &Client{
 		userAgent:          userAgent,
 		jobPollingInterval: config.JobPollingInterval,
 		jobPollingTimeout:  config.JobPollingTimeout,
+		connection:         connection,
 	}
 }

@@ -75,7 +75,6 @@ func NewClient(config Config) *Client {
 		connection: NewConnection(config.SkipSSLValidation, config.DialTimeout),
 		userAgent:  userAgent,
 	}
-	client.WrapConnection(NewErrorWrapper())
 
 	return &client
 }

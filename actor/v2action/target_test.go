@@ -56,9 +56,8 @@ var _ = Describe("Targgeting", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			Expect(fakeCloudControllerClient.TargetCFCallCount()).To(Equal(1))
-			connectionSettings := fakeCloudControllerClient.TargetCFArgsForCall(0)
-			Expect(connectionSettings.URL).To(Equal(expectedAPI))
-			Expect(connectionSettings.SkipSSLValidation).To(BeFalse())
+			apiURL := fakeCloudControllerClient.TargetCFArgsForCall(0)
+			Expect(apiURL).To(Equal(expectedAPI))
 		})
 
 		It("sets all the target information", func() {

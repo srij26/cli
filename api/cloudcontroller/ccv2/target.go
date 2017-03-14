@@ -3,7 +3,6 @@ package ccv2
 import (
 	"time"
 
-	"code.cloudfoundry.org/cli/api/cloudcontroller"
 	"code.cloudfoundry.org/cli/api/cloudcontroller/ccv2/internal"
 	"github.com/tedsuo/rata"
 )
@@ -30,15 +29,9 @@ type TargetSettings struct {
 
 // TargetCF sets the client to use the Cloud Controller specified in the
 // configuration. Any other configuration is also applied to the client.
-func (client *Client) TargetCF(settings TargetSettings) (Warnings, error) {
-	client.cloudControllerURL = settings.URL
-	client.router = rata.NewRequestGenerator(settings.URL, internal.APIRoutes)
-
-	client.connection = cloudcontroller.NewConnection(cloudcontroller.Config{
-		DialTimeout:       settings.DialTimeout,
-		SkipSSLValidation: settings.SkipSSLValidation,
-	})
-	client.WrapConnection(newErrorWrapper()) //Pretty Sneaky, Sis..
+func (client *Client) TargetCF(url string) (Warnings, error) {
+	client.cloudControllerURL = url
+	client.router = rata.NewRequestGenerator(url, internal.APIRoutes)
 
 	info, warnings, err := client.Info()
 	if err != nil {

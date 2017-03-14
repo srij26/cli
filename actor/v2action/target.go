@@ -11,7 +11,7 @@ func (actor Actor) SetTarget(config Config, settings TargetSettings) (Warnings, 
 		return nil, nil
 	}
 
-	warnings, err := actor.CloudControllerClient.TargetCF(ccv2.TargetSettings(settings))
+	warnings, err := actor.CloudControllerClient.TargetCF(settings.URL)
 	if err != nil {
 		return Warnings(warnings), err
 	}

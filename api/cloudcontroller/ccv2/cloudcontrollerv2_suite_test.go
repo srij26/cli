@@ -50,12 +50,12 @@ func NewTestClient(passed ...Config) *Client {
 	}
 	config.AppName = "CF CLI API V2 Test"
 	config.AppVersion = "Unknown"
+	config.SkipSSLValidation = true
 
 	client := NewClient(config)
-	warnings, err := client.TargetCF(TargetSettings{
-		SkipSSLValidation: true,
-		URL:               server.URL(),
-	})
+	client.WrapConnection(NewErrorWrapper()) //Pretty Sneaky, Sis..
+
+	warnings, err := client.TargetCF(server.URL())
 	Expect(err).ToNot(HaveOccurred())
 	Expect(warnings).To(BeEmpty())
 	return client
