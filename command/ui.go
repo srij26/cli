@@ -22,7 +22,6 @@ type UI interface {
 	DisplayTextWithFlavor(text string, keys ...map[string]interface{})
 	DisplayWarning(formattedString string, keys ...map[string]interface{})
 	DisplayWarnings(warnings []string)
-	DisplayWrappableTable(prefix string, table [][]string, padding int)
 	TranslateText(template string, data ...map[string]interface{}) string
 	UserFriendlyDate(input time.Time) string
 }
