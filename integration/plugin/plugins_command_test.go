@@ -9,12 +9,13 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gbytes"
 	. "github.com/onsi/gomega/gexec"
+	. "github.com/onsi/gomega/ghttp"
 )
 
 var _ = Describe("plugins command", func() {
 	BeforeEach(func() {
 		helpers.RunIfExperimental("Running experimental plugins command tests")
-		// This removes plugin artefacts from other plugin tests
+		// This removes plugin artifacts from other plugin tests
 		uninstallTestPlugin()
 	})
 
@@ -25,9 +26,10 @@ var _ = Describe("plugins command", func() {
 				Eventually(session).Should(Say("NAME:"))
 				Eventually(session).Should(Say("plugins - List all available plugin commands"))
 				Eventually(session).Should(Say("USAGE:"))
-				Eventually(session).Should(Say("cf plugins [--checksum]"))
+				Eventually(session).Should(Say("cf plugins [--checksum | --outdated]"))
 				Eventually(session).Should(Say("OPTIONS:"))
 				Eventually(session).Should(Say("--checksum\\s+Compute and show the sha1 value of the plugin binary file"))
+				Eventually(session).Should(Say("--outdated\\s+Search the plugin repositories for new versions of installed plugins"))
 				Eventually(session).Should(Say("SEE ALSO:"))
 				Eventually(session).Should(Say("install-plugin, repo-plugins, uninstall-plugin"))
 				Eventually(session).Should(Exit(0))
@@ -52,6 +54,17 @@ var _ = Describe("plugins command", func() {
 				Eventually(session).Should(Say(""))
 				Eventually(session).Should(Say("plugin name\\s+version\\s+sha1"))
 				Consistently(session).ShouldNot(Say("[a-za-z0-9]+"))
+				Eventually(session).Should(Exit(0))
+			})
+		})
+
+		Context("when the --outdated flag is provided", func() {
+			It("displays an empty table", func() {
+				session := helpers.CF("plugins", "--outdated")
+				Eventually(session).Should(Say("Searching for newer versions of installed plugins..."))
+				Eventually(session).Should(Say(""))
+				Eventually(session).Should(Say("plugin name\\s+version\\s+latest version"))
+				Consistently(session).ShouldNot(Say("[A-Za-z0-9]+"))
 				Eventually(session).Should(Exit(0))
 			})
 		})
@@ -145,5 +158,178 @@ var _ = Describe("plugins command", func() {
 			})
 		})
 
+		Context("when the --outdated flag is provided", func() {
+			Context("when there are no repos", func() {
+				It("aborts with error 'No plugin repositories added' and exit code 1", func() {
+					session := helpers.CF("plugins", "--outdated")
+					Eventually(session).Should(Say("No plugin repositories added"))
+					Eventually(session).Should(Exit(1))
+				})
+			})
+
+			Context("when there is 1 repository", func() {
+				var server1 *Server
+				var server1URL string
+
+				BeforeEach(func() {
+					server1, server1URL = helpers.NewPluginRepositoryServer(helpers.PluginRepository{
+						Plugins: []helpers.Plugin{
+							{Name: "plugin-1", Version: "1.0.0"},
+							{Name: "plugin-2", Version: "2.0.0"},
+						},
+					})
+
+					Eventually(helpers.CF("add-plugin-repo", "repo1", server1URL)).Should(Exit(0))
+					session := helpers.CF("repo-plugins")
+					Eventually(session).Should(Say("plugin-1\\s+1\\.0\\.0"))
+					Eventually(session).Should(Say("plugin-2\\s+2\\.0\\.0"))
+					Eventually(session).Should(Exit(0))
+				})
+
+				AfterEach(func() {
+					server1.Close()
+				})
+
+				Context("when nothing is outdated", func() {
+					BeforeEach(func() {
+						helpers.CreateBasicPlugin("plugin-1", "1.0.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+						helpers.CreateBasicPlugin("plugin-2", "2.0.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+					})
+
+					AfterEach(func() {
+						helpers.CF("uninstall-plugin", "plugin-1")
+						helpers.CF("uninstall-plugin", "plugin-2")
+					})
+
+					It("displays an empty table", func() {
+						session := helpers.CF("plugins", "--outdated")
+						Eventually(session).Should(Say("Searching for newer versions of installed plugins..."))
+						Eventually(session).Should(Say(""))
+						Eventually(session).Should(Say("plugin name\\s+version\\s+latest version"))
+						Consistently(session).ShouldNot(Say("[A-Za-z0-9]+"))
+						Eventually(session).Should(Exit(0))
+					})
+				})
+
+				Context("when the plugins are outdated", func() {
+					BeforeEach(func() {
+						helpers.CreateBasicPlugin("plugin-1", "0.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+						helpers.CreateBasicPlugin("plugin-2", "1.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+					})
+
+					AfterEach(func() {
+						helpers.CF("uninstall-plugin", "plugin-1")
+						helpers.CF("uninstall-plugin", "plugin-2")
+					})
+
+					It("displays the table with outdated plugin and new version", func() {
+						session := helpers.CF("plugins", "--outdated")
+						Eventually(session).Should(Say("Searching for newer versions of installed plugins..."))
+						Eventually(session).Should(Say(""))
+						Eventually(session).Should(Say("plugin name\\s+version\\s+latest version"))
+						Eventually(session).Should(Say("plugin-1\\s+0\\.9\\.0\\s+1\\.0\\.0"))
+						Eventually(session).Should(Say("plugin-2\\s+1\\.9\\.0\\s+2\\.0\\.0"))
+						Eventually(session).Should(Exit(0))
+					})
+				})
+			})
+
+			Context("when multiple repositories are registered", func() {
+				var (
+					server1    *Server
+					server1URL string
+					server2    *Server
+					server2URL string
+				)
+
+				BeforeEach(func() {
+					server1, server1URL = helpers.NewPluginRepositoryServer(helpers.PluginRepository{
+						Plugins: []helpers.Plugin{
+							{Name: "plugin-1", Version: "1.0.0"},
+							{Name: "plugin-3", Version: "3.5.0"},
+						},
+					})
+
+					server2, server2URL = helpers.NewPluginRepositoryServer(helpers.PluginRepository{
+						Plugins: []helpers.Plugin{
+							{Name: "plugin-2", Version: "2.0.0"},
+							{Name: "plugin-3", Version: "3.0.0"},
+						},
+					})
+
+					Eventually(helpers.CF("add-plugin-repo", "repo1", server1URL)).Should(Exit(0))
+					Eventually(helpers.CF("add-plugin-repo", "repo2", server2URL)).Should(Exit(0))
+					session := helpers.CF("repo-plugins")
+					Eventually(session).Should(Say("Repository: repo1"))
+					Eventually(session).Should(Say("plugin-1\\s+1\\.0\\.0"))
+					Eventually(session).Should(Say("plugin-3\\s+3\\.5\\.0"))
+					Eventually(session).Should(Say("Repository: repo2"))
+					Eventually(session).Should(Say("plugin-2\\s+2\\.0\\.0"))
+					Eventually(session).Should(Say("plugin-3\\s+3\\.0\\.0"))
+					Eventually(session).Should(Exit(0))
+				})
+
+				AfterEach(func() {
+					server1.Close()
+					server2.Close()
+				})
+				FContext("nothing", func() {
+					It("nothing", func() {})
+				})
+
+				Context("when plugins are outdated", func() {
+					BeforeEach(func() {
+						helpers.CreateBasicPlugin("plugin-1", "0.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+						helpers.CreateBasicPlugin("plugin-2", "1.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+					})
+
+					It("displays the table with outdated plugin and new version", func() {
+						session := helpers.CF("plugins", "--outdated")
+						Eventually(session).Should(Say("Searching for newer versions of installed plugins..."))
+						Eventually(session).Should(Say("plugin name\\s+version\\s+latest version"))
+						Eventually(session).Should(Say("plugin-1\\s+0\\.9\\.0\\s+1\\.0\\.0"))
+						Eventually(session).Should(Say("plugin-2\\s+1\\.9\\.0\\s+2\\.0\\.0"))
+						Eventually(session).Should(Exit(0))
+					})
+				})
+
+				Context("when the same plugin is outdated from multiple repositories", func() {
+					BeforeEach(func() {
+						helpers.CreateBasicPlugin("plugin-1", "0.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+						helpers.CreateBasicPlugin("plugin-2", "1.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+						helpers.CreateBasicPlugin("plugin-3", "2.9.0", []helpers.PluginCommand{
+							{Name: "banana-command", Help: "banana-command"},
+						})
+					})
+
+					It("only displays the newest version of the plugin found in the repositories", func() {
+						session := helpers.CF("plugins", "--outdated")
+						Eventually(session).Should(Say("Searching for newer versions of installed plugins..."))
+						Eventually(session).Should(Say(""))
+						Eventually(session).Should(Say("plugin name\\s+version\\s+latest version"))
+						Eventually(session).Should(Say("plugin-1\\s+0\\.9\\.0\\s+1\\.0\\.0"))
+						Eventually(session).Should(Say("plugin-2\\s+1\\.9\\.0\\s+2\\.0\\.0"))
+						Eventually(session).Should(Say("plugin-2\\s+2\\.9\\.0\\s+3\\.5\\.0"))
+						Eventually(session).Should(Exit(0))
+					})
+				})
+			})
+		})
 	})
 })

@@ -17,8 +17,8 @@ const (
 	DefaultPluginRepoURL = "https://plugins.cloudfoundry.org"
 )
 
-// PluginRepos is a saved plugin repository
-type PluginRepos struct {
+// PluginRepository is a saved plugin repository
+type PluginRepository struct {
 	Name string `json:"Name"`
 	URL  string `json:"URL"`
 }
@@ -78,7 +78,7 @@ type PluginCommand struct {
 	UsageDetails PluginUsageDetails `json:"UsageDetails"`
 }
 
-// CommandName returns the name of the plugin. The name is concatenated with
+// CommandName returns the name of the command. The name is concatenated with
 // alias if alias is specified.
 func (c PluginCommand) CommandName() string {
 	if c.Name != "" && c.Alias != "" {
@@ -111,6 +111,6 @@ func (config *Config) Plugins() map[string]Plugin {
 
 // PluginRepos returns the currently configured plugin repositories from the
 // .cf/config.json
-func (config *Config) PluginRepos() []PluginRepos {
-	return config.ConfigFile.PluginRepos
+func (config *Config) PluginRepositories() []PluginRepository {
+	return config.ConfigFile.PluginRepositories
 }

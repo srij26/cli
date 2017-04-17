@@ -68,7 +68,7 @@ var _ = Describe("Config", func() {
 			Expect(config.UAAOAuthClientSecret()).To(Equal(DefaultUAAOAuthClientSecret))
 			Expect(config.OverallPollingTimeout()).To(Equal(DefaultOverallPollingTimeout))
 
-			Expect(config.PluginRepos()).To(Equal([]PluginRepos{{
+			Expect(config.PluginRepositories()).To(Equal([]PluginRepository{{
 				Name: "CF-Community",
 				URL:  "https://plugins.cloudfoundry.org",
 			}}))

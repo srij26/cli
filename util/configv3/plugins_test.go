@@ -177,7 +177,7 @@ var _ = Describe("Config", func() {
 		})
 	})
 
-	Describe("PluginCommand", func() {
+	XDescribe("PluginCommand", func() {
 		var cmd PluginCommand
 
 		Describe("CommandName", func() {
