@@ -28,6 +28,10 @@ type PluginsConfig struct {
 	Plugins map[string]Plugin `json:"Plugins"`
 }
 
+func (pluginsConfig *PluginsConfig) removePlugin(pluginName string) {
+	delete(pluginsConfig.Plugins, pluginName)
+}
+
 // Plugin represents the plugin as a whole, not be confused with PluginCommand
 type Plugin struct {
 	Location string         `json:"Location"`
@@ -93,9 +97,9 @@ type PluginUsageDetails struct {
 	Options map[string]string `json:"Options"`
 }
 
-// PluginHome returns the plugin configuration directory based off:
-//   1. The $CF_PLUGIN_HOME environment variable if set
-//   2. Defaults to the home diretory (outlined in LoadConfig)/.cf/plugins
+// PluginHome returns the plugin configuration directory to:
+//   1. The $CF_PLUGIN_HOME/.cf/plugins environment variable if set
+//   2. Defaults to the home directory (outlined in LoadConfig)/.cf/plugins
 func (config *Config) PluginHome() string {
 	if config.ENV.CFPluginHome != "" {
 		return filepath.Join(config.ENV.CFPluginHome, ".cf", "plugins")
@@ -106,11 +110,16 @@ func (config *Config) PluginHome() string {
 
 // Plugins returns back the plugin configuration read from the plugin home
 func (config *Config) Plugins() map[string]Plugin {
-	return config.pluginConfig.Plugins
+	return config.pluginsConfig.Plugins
 }
 
 // PluginRepos returns the currently configured plugin repositories from the
 // .cf/config.json
 func (config *Config) PluginRepos() []PluginRepos {
 	return config.ConfigFile.PluginRepos
+}
+
+// RemovePlugin removes the specified plugin from PluginsConfig idempotently
+func (config *Config) RemovePlugin(pluginName string) {
+	config.pluginsConfig.removePlugin(pluginName)
 }

@@ -197,4 +197,81 @@ var _ = Describe("Config", func() {
 			})
 		})
 	})
+
+	Describe("RemovePlugin", func() {
+		var (
+			config *Config
+			err    error
+		)
+
+		BeforeEach(func() {
+			rawConfig := `
+{
+  "Plugins": {
+    "Diego-Enabler": {
+      "Location": "~/.cf/plugins/diego-enabler_darwin_amd64",
+      "Version": {
+        "Major": 1,
+        "Minor": 0,
+        "Build": 1
+      },
+      "Commands": [
+        {
+          "Name": "enable-diego",
+          "Alias": "",
+          "HelpText": "enable Diego support for an app",
+          "UsageDetails": {
+            "Usage": "cf enable-diego APP_NAME",
+            "Options": null
+          }
+        }
+      ]
+    },
+    "Dora-Non-Enabler": {
+      "Location": "~/.cf/plugins/diego-enabler_darwin_amd64",
+      "Version": {
+        "Major": 1,
+        "Minor": 0,
+        "Build": 1
+      },
+      "Commands": [
+        {
+          "Name": "disable-diego",
+          "Alias": "",
+          "HelpText": "disable Diego support for an app",
+          "UsageDetails": {
+            "Usage": "cf disable-diego APP_NAME",
+            "Options": null
+          }
+        }
+      ]
+    }
+  }
+}`
+			setPluginConfig(filepath.Join(homeDir, ".cf", "plugins"), rawConfig)
+
+			config, err = LoadConfig()
+			Expect(err).ToNot(HaveOccurred())
+		})
+
+		Context("when the plugin exists", func() {
+			It("removes the plugin from the config", func() {
+				plugins := config.Plugins()
+
+				_, found := plugins["Diego-Enabler"]
+				Expect(found).To(BeTrue())
+
+				config.RemovePlugin("Diego-Enabler")
+
+				_, found = plugins["Diego-Enabler"]
+				Expect(found).To(BeFalse())
+			})
+
+			Context("when the plugin does not exist", func() {
+				It("doesn't blow up", func() {
+					config.RemovePlugin("does-not-exist")
+				})
+			})
+		})
+	})
 })
