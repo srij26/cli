@@ -21,11 +21,9 @@ type DummyResponse struct {
 
 var _ = Describe("Plugin Connection", func() {
 	var connection *PluginConnection
-	var pluginRepoURL string
 
 	BeforeEach(func() {
 		connection = NewConnection(true, 0)
-		pluginRepoURL = testPluginRepoURL()
 	})
 
 	Describe("Make", func() {
@@ -46,7 +44,7 @@ var _ = Describe("Plugin Connection", func() {
 				)
 
 				var err error
-				request, err = http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", pluginRepoURL), nil)
+				request, err = http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", server.URL()), nil)
 				Expect(err).ToNot(HaveOccurred())
 			})
 
@@ -99,7 +97,7 @@ var _ = Describe("Plugin Connection", func() {
 				)
 
 				var err error
-				request, err = http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", pluginRepoURL), nil)
+				request, err = http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", server.URL()), nil)
 				Expect(err).ToNot(HaveOccurred())
 			})
 
@@ -146,12 +144,12 @@ var _ = Describe("Plugin Connection", func() {
 					})
 
 					It("returns a UnverifiedServerError", func() {
-						request, err := http.NewRequest(http.MethodGet, pluginRepoURL, nil)
+						request, err := http.NewRequest(http.MethodGet, server.URL(), nil)
 						Expect(err).ToNot(HaveOccurred())
 
 						var response Response
 						err = connection.Make(request, &response)
-						Expect(err).To(MatchError(pluginerror.UnverifiedServerError{URL: pluginRepoURL}))
+						Expect(err).To(MatchError(pluginerror.UnverifiedServerError{URL: server.URL()}))
 					})
 				})
 			})
@@ -173,7 +171,7 @@ var _ = Describe("Plugin Connection", func() {
 
 					// loopback.cli.ci.cf-app.com is a custom DNS record setup to point to 127.0.0.1
 					It("returns a SSLValidationHostnameError", func() {
-						altHostURL := strings.Replace(pluginRepoURL, "127.0.0.1", "loopback.cli.ci.cf-app.com", -1)
+						altHostURL := strings.Replace(server.URL(), "127.0.0.1", "loopback.cli.ci.cf-app.com", -1)
 						request, err := http.NewRequest(http.MethodGet, altHostURL, nil)
 						Expect(err).ToNot(HaveOccurred())
 
@@ -203,15 +201,12 @@ var _ = Describe("Plugin Connection", func() {
 				})
 
 				It("returns a RawHTTPStatusError", func() {
-					request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", pluginRepoURL), nil)
+					request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/list", server.URL()), nil)
 					Expect(err).ToNot(HaveOccurred())
 
 					var response Response
 					err = connection.Make(request, &response)
-					Expect(err).To(MatchError(pluginerror.RawHTTPStatusError{
-						StatusCode:  http.StatusNotFound,
-						RawResponse: []byte(pluginResponse),
-					}))
+					Expect(err).To(MatchError(pluginerror.NotFoundError{}))
 
 					Expect(server.ReceivedRequests()).To(HaveLen(1))
 				})

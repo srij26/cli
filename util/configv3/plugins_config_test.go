@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Config", func() {
+var _ = Describe("PluginsConfig", func() {
 	var homeDir string
 
 	BeforeEach(func() {
@@ -71,7 +71,8 @@ var _ = Describe("Config", func() {
 			plugins := config.Plugins()
 			Expect(plugins).ToNot(BeEmpty())
 
-			plugin := plugins["Diego-Enabler"]
+			plugin := plugins[0]
+			Expect(plugin.Name).To(Equal("Diego-Enabler"))
 			Expect(plugin.Location).To(Equal("~/.cf/plugins/diego-enabler_darwin_amd64"))
 			Expect(plugin.Version.Major).To(Equal(1))
 			Expect(plugin.Commands).To(HaveLen(2))
@@ -146,6 +147,24 @@ var _ = Describe("Config", func() {
 				})
 			})
 		})
+
+		Describe("PluginCommands", func() {
+			It("returns the plugin's commands sorted by command name", func() {
+				plugin := Plugin{
+					Commands: []PluginCommand{
+						{Name: "T-sort"},
+						{Name: "sort-2"},
+						{Name: "sort-1"},
+					},
+				}
+
+				Expect(plugin.PluginCommands()).To(Equal([]PluginCommand{
+					PluginCommand{Name: "sort-1"},
+					PluginCommand{Name: "sort-2"},
+					PluginCommand{Name: "T-sort"},
+				}))
+			})
+		})
 	})
 
 	Describe("PluginVersion", func() {
@@ -195,6 +214,32 @@ var _ = Describe("Config", func() {
 					Expect(cmd.CommandName()).To(Equal("some-command, sp"))
 				})
 			})
+		})
+	})
+
+	Describe("Plugins", func() {
+		BeforeEach(func() {
+			rawConfig := `
+				{
+					"Plugins": {
+						"Q-plugin": {},
+						"plugin-2": {},
+						"plugin-1": {}
+					}
+				}`
+
+			pluginsPath := filepath.Join(homeDir, ".cf", "plugins")
+			setPluginConfig(pluginsPath, rawConfig)
+		})
+
+		It("returns the pluging sorted by name", func() {
+			config, err := LoadConfig()
+			Expect(err).ToNot(HaveOccurred())
+			Expect(config.Plugins()).To(Equal([]Plugin{
+				{Name: "plugin-1"},
+				{Name: "plugin-2"},
+				{Name: "Q-plugin"},
+			}))
 		})
 	})
 })

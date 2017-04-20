@@ -123,6 +123,11 @@ func LoadConfig(flags ...FlagOverride) (*Config, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		for name, plugin := range config.pluginConfig.Plugins {
+			plugin.Name = name
+			config.pluginConfig.Plugins[name] = plugin
+		}
 	}
 
 	if len(flags) > 0 {

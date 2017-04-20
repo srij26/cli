@@ -31,6 +31,7 @@ func NewPluginRepositoryServer(pluginRepo PluginRepository) (*Server, string) {
 	server.AppendHandlers(
 		RespondWith(http.StatusOK, string(jsonBytes)),
 		RespondWith(http.StatusOK, string(jsonBytes)),
+		RespondWith(http.StatusOK, string(jsonBytes)),
 	)
 
 	// fmt.Println(string(jsonBytes))

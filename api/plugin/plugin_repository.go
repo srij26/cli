@@ -1,5 +1,7 @@
 package plugin
 
+import "net/url"
+
 // PluginRepository represents a plugin repository
 type PluginRepository struct {
 	Plugins []Plugin `json:"plugins"`
@@ -12,7 +14,13 @@ type Plugin struct {
 }
 
 func (client *Client) GetPluginRepository(repositoryURL string) (PluginRepository, error) {
-	request, err := client.newHTTPGetRequest(repositoryURL)
+	parsedURL, err := url.Parse(repositoryURL)
+	if err != nil {
+		return PluginRepository{}, err
+	}
+	parsedURL.Path = "/list"
+
+	request, err := client.newHTTPGetRequest(parsedURL.String())
 	if err != nil {
 		return PluginRepository{}, err
 	}

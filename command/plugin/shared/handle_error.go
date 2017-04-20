@@ -1,0 +1,15 @@
+package shared
+
+import "code.cloudfoundry.org/cli/actor/pluginaction"
+
+func HandleError(err error) error {
+	switch e := err.(type) {
+	case pluginaction.NoPluginRepositoriesError:
+		return NoPluginRepositoriesError{}
+	case pluginaction.PluginRepositoryNotFoundError:
+		return PluginRepositoryNotFoundError{Name: e.Name}
+	case pluginaction.GettingPluginRepositoryError:
+		return GettingPluginRepositoryError{Name: e.Name, Message: e.Message}
+	}
+	return err
+}

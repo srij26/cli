@@ -644,7 +644,7 @@
     "translation": "CF_NAME plugins"
   },
   {
-    "id": "CF_NAME plugins [--checksum]",
+    "id": "CF_NAME plugins [--checksum | --outdated]",
     "translation": ""
   },
   {
@@ -1180,6 +1180,10 @@
     "translation": "Could not find service"
   },
   {
+    "id": "Could not get plugin repository '{{.RepositoryName}}': {{.ErrorMessage}}",
+    "translation": ""
+  },
+  {
     "id": "Create an HTTP route:\\n      CF_NAME create-route SPACE DOMAIN [--hostname HOSTNAME] [--path PATH]\\n\\n   Create a TCP route:\\n      CF_NAME create-route SPACE DOMAIN (--port PORT | --random-port)\\n\\nEXAMPLES:\\n   CF_NAME create-route my-space example.com                             # example.com\\n   CF_NAME create-route my-space example.com --hostname myapp            # myapp.example.com\\n   CF_NAME create-route my-space example.com --hostname myapp --path foo # myapp.example.com/foo\\n   CF_NAME create-route my-space example.com --port 5000                 # example.com:5000",
     "translation": "Create an HTTP route:\\n      CF_NAME create-route SPACE DOMAIN [--hostname HOSTNAME] [--path PATH]\\n\\n   Create a TCP route:\\n      CF_NAME create-route SPACE DOMAIN (--port PORT | --random-port)\\n\\nEXAMPLES:\\n   CF_NAME create-route my-space example.com                             # example.com\\n   CF_NAME create-route my-space example.com --hostname myapp            # myapp.example.com\\n   CF_NAME create-route my-space example.com --hostname myapp --path foo # myapp.example.com/foo\\n   CF_NAME create-route my-space example.com --port 5000                 # example.com:5000"
   },
@@ -1408,6 +1412,10 @@
     "translation": ""
   },
   {
+    "id": "No plugin repositories registered to search for plugin updates.",
+    "translation": "No plugin repositories registered to search for plugin updates."
+  },
+  {
     "id": "No value provided for flag: ",
     "translation": "No value provided for flag: "
   },
@@ -1510,6 +1518,10 @@
   {
     "id": "Plan: {{.ServicePlanName}}",
     "translation": "Plan: {{.ServicePlanName}}"
+  },
+  {
+    "id": "Plugin repository '{{.RepositoryName}}' was not found.",
+    "translation": ""
   },
   {
     "id": "Prompt for a one-time passcode to login",
@@ -1625,6 +1637,14 @@
   },
   {
     "id": "SUCCEEDED",
+    "translation": ""
+  },
+  {
+    "id": "Search the plugin repositories for new versions of installed plugins",
+    "translation": ""
+  },
+  {
+    "id": "Searching {{.RepoNames}} for newer versions of installed plugins...",
     "translation": ""
   },
   {
@@ -2181,6 +2201,10 @@
   },
   {
     "id": "isolation-segments",
+    "translation": ""
+  },
+  {
+    "id": "latest version",
     "translation": ""
   },
   {

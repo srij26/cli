@@ -23,7 +23,8 @@ type Config interface {
 	Locale() string
 	MinCLIVersion() string
 	OverallPollingTimeout() time.Duration
-	Plugins() map[string]configv3.Plugin
+	Plugins() []configv3.Plugin
+	PluginRepositories() []configv3.PluginRepository
 	PollingInterval() time.Duration
 	RefreshToken() string
 	SetAccessToken(token string)

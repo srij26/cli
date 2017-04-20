@@ -54,6 +54,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	if GinkgoParallelNode() != 1 {
 		Fail("Test suite cannot run in parallel")
 	}
+
 })
 
 var _ = AfterSuite(func() {
@@ -65,6 +66,7 @@ var _ = BeforeEach(func() {
 	apiURL, skipSSLValidation = helpers.SetAPI()
 	helpers.LoginCF()
 	installTestPlugin()
+	Eventually(helpers.CF("remove-plugin-repo", "CF-Community")).Should(Exit(0))
 })
 
 var _ = AfterEach(func() {

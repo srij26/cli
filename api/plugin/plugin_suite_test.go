@@ -3,7 +3,6 @@ package plugin_test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -42,10 +41,6 @@ var _ = BeforeEach(func() {
 func NewTestClient() *Client {
 	client := NewClient(Config{SkipSSLValidation: true, AppName: "CF CLI API Pluting Test", AppVersion: "Unknown"})
 	return client
-}
-
-func testPluginRepoURL() string {
-	return fmt.Sprintf("%s/list", server.URL())
 }
 
 func testPluginRepositoryServer(pluginRepo PluginRepository) string {

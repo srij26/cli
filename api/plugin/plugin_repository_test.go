@@ -1,7 +1,9 @@
 package plugin_test
 
 import (
+	"fmt"
 	"net/http"
+	"net/url"
 
 	. "code.cloudfoundry.org/cli/api/plugin"
 	"code.cloudfoundry.org/cli/api/plugin/pluginerror"
@@ -43,7 +45,9 @@ var _ = Describe("PluginRepository", func() {
 			})
 
 			It("returns the plugin repository", func() {
-				pluginRepository, err := client.GetPluginRepository(testPluginRepoURL())
+				pluginRepository, err := client.GetPluginRepository(server.URL())
+				// server.URL() with trailing slash
+				// server.URL with list already
 				Expect(err).ToNot(HaveOccurred())
 				Expect(pluginRepository).To(Equal(PluginRepository{
 					Plugins: []Plugin{
@@ -60,9 +64,30 @@ var _ = Describe("PluginRepository", func() {
 					},
 				}))
 			})
+
+			Context("when the URL has a trailing slash", func() {
+				It("hits the /list endpoint on the URL", func() {
+					_, err := client.GetPluginRepository(fmt.Sprintf("%s/", server.URL()))
+					Expect(err).ToNot(HaveOccurred())
+				})
+			})
+
+			Context("when the URL has a trailing '/list'", func() {
+				It("hits the /list endpoint on the URL", func() {
+					_, err := client.GetPluginRepository(fmt.Sprintf("%s/list", server.URL()))
+					Expect(err).ToNot(HaveOccurred())
+				})
+			})
 		})
 
-		Context("when the http client returns an error", func() {
+		Context("when the repository URL in invalid", func() {
+			It("returns an error", func() {
+				_, err := client.GetPluginRepository("http://not a valid URL")
+				Expect(err).To(BeAssignableToTypeOf(&url.Error{}))
+			})
+		})
+
+		Context("when the server returns an error", func() {
 			BeforeEach(func() {
 				server.AppendHandlers(
 					CombineHandlers(
@@ -73,7 +98,7 @@ var _ = Describe("PluginRepository", func() {
 			})
 
 			It("returns the error", func() {
-				_, err := client.GetPluginRepository(testPluginRepoURL())
+				_, err := client.GetPluginRepository(server.URL())
 				Expect(err).To(MatchError(pluginerror.NotFoundError{}))
 			})
 		})
