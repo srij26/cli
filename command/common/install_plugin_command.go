@@ -49,10 +49,19 @@ func (cmd InstallPluginCommand) Execute(_ []string) error {
 		return nil
 	}
 
-	pluginNameOrLocation := cmd.OptionalArgs.PluginNameOrLocation.String()
+	var pluginNameOrLocation string
+	// if cmd.RegisteredRepository != "" {
+	// 	//get repo
+	// } else {
+	pluginNameOrLocation = cmd.OptionalArgs.PluginNameOrLocation.String()
+	// }
+
+	// go to pluginRepo
+	// lookup URL
+	// version check
+	//
 
 	tempPluginPath, err := cmd.getExecutableBinary(pluginNameOrLocation)
-
 	defer os.Remove(tempPluginPath)
 	if err != nil {
 		return err
@@ -70,11 +79,14 @@ func (cmd InstallPluginCommand) Execute(_ []string) error {
 
 	if cmd.Actor.IsPluginInstalled(plugin.Name) {
 		if !cmd.Force {
+			// if installing from repo -> prompt {
+			// } else {
 			return shared.PluginAlreadyInstalledError{
 				BinaryName: cmd.Config.BinaryName(),
 				Name:       plugin.Name,
 				Version:    plugin.Version.String(),
 			}
+			// }
 		}
 
 		err = cmd.uninstallPlugin(plugin, rpcService)
