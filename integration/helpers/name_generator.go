@@ -21,11 +21,11 @@ func NewSecGroupName() string {
 }
 
 func RandomUsername() string {
-	return PrefixedRandomName("integration-user")
+	return PrefixedRandomName("INTEGRATION-USER")
 }
 
 func RandomPassword() string {
-	return PrefixedRandomName("password")
+	return PrefixedRandomName("PASSWORD")
 }
 
 func PrefixedRandomName(namePrefix string) string {
