@@ -26,7 +26,7 @@ type DropletRelationship struct {
 }
 
 // GetApplications lists applications with optional filters.
-func (client *Client) GetApplications(query url.Values) ([]Application, Warnings, error) {
+func (client *Client) GetApplications(query url.Values) ([]Application, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppsRequest,
 		Query:       query,
@@ -52,7 +52,7 @@ func (client *Client) GetApplications(query url.Values) ([]Application, Warnings
 }
 
 // CreateApplication creates an application with the given settings
-func (client *Client) CreateApplication(app Application) (Application, Warnings, error) {
+func (client *Client) CreateApplication(app Application) (Application, []string, error) {
 	bodyBytes, err := json.Marshal(app)
 	if err != nil {
 		return Application{}, nil, err
@@ -72,7 +72,7 @@ func (client *Client) CreateApplication(app Application) (Application, Warnings,
 	return responseApp, response.Warnings, err
 }
 
-func (client *Client) SetApplicationDroplet(appGUID string, dropletGUID string) (Relationship, Warnings, error) {
+func (client *Client) SetApplicationDroplet(appGUID string, dropletGUID string) (Relationship, []string, error) {
 	relationship := Relationship{GUID: dropletGUID}
 	bodyBytes, err := json.Marshal(relationship)
 	if err != nil {
@@ -94,7 +94,7 @@ func (client *Client) SetApplicationDroplet(appGUID string, dropletGUID string) 
 	return responseRelationship, response.Warnings, err
 }
 
-func (client *Client) StartApplication(appGUID string) (Application, Warnings, error) {
+func (client *Client) StartApplication(appGUID string) (Application, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.PutApplicationStartRequest,
 		URIParams:   map[string]string{"guid": appGUID},

@@ -30,7 +30,7 @@ func (actor Actor) StagePackage(packageGUID string) (<-chan Build, <-chan Warnin
 		for build.State == ccv3.BuildStateStaging {
 			time.Sleep(actor.Config.PollingInterval())
 
-			var warnings ccv3.Warnings
+			var warnings []string
 			build, warnings, err = actor.CloudControllerClient.GetBuild(build.GUID)
 			warningsStream <- Warnings(warnings)
 			if err != nil {

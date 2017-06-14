@@ -30,7 +30,7 @@ var _ = Describe("Task Actions", func() {
 					ccv3.Task{
 						SequenceID: 3,
 					},
-					ccv3.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},
@@ -74,7 +74,7 @@ var _ = Describe("Task Actions", func() {
 					expectedErr = errors.New("I am a CloudControllerClient Error")
 					fakeCloudControllerClient.CreateApplicationTaskReturns(
 						ccv3.Task{},
-						ccv3.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr,
 					)
 				})
@@ -89,7 +89,7 @@ var _ = Describe("Task Actions", func() {
 				BeforeEach(func() {
 					fakeCloudControllerClient.CreateApplicationTaskReturns(
 						ccv3.Task{},
-						ccv3.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						ccerror.TaskWorkersUnavailableError{Message: "banana babans"},
 					)
 				})
@@ -138,7 +138,7 @@ var _ = Describe("Task Actions", func() {
 					}
 					fakeCloudControllerClient.GetApplicationTasksReturns(
 						[]ccv3.Task{task3, task1, task2},
-						ccv3.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil,
 					)
 				})
@@ -189,7 +189,7 @@ var _ = Describe("Task Actions", func() {
 				expectedErr = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.GetApplicationTasksReturns(
 					[]ccv3.Task{},
-					ccv3.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedErr,
 				)
 			})
@@ -214,7 +214,7 @@ var _ = Describe("Task Actions", func() {
 					}
 					fakeCloudControllerClient.GetApplicationTasksReturns(
 						[]ccv3.Task{task1},
-						ccv3.Warnings{"get-task-warning-1"},
+						[]string{"get-task-warning-1"},
 						nil,
 					)
 				})
@@ -231,7 +231,7 @@ var _ = Describe("Task Actions", func() {
 				BeforeEach(func() {
 					fakeCloudControllerClient.GetApplicationTasksReturns(
 						[]ccv3.Task{},
-						ccv3.Warnings{"get-task-warning-1"},
+						[]string{"get-task-warning-1"},
 						nil,
 					)
 				})
@@ -251,7 +251,7 @@ var _ = Describe("Task Actions", func() {
 				expectedErr = errors.New("generic-error")
 				fakeCloudControllerClient.GetApplicationTasksReturns(
 					[]ccv3.Task{},
-					ccv3.Warnings{"get-task-warning-1"},
+					[]string{"get-task-warning-1"},
 					expectedErr,
 				)
 			})
@@ -275,7 +275,7 @@ var _ = Describe("Task Actions", func() {
 				}
 				fakeCloudControllerClient.UpdateTaskReturns(
 					returnedTask,
-					ccv3.Warnings{"update-task-warning"},
+					[]string{"update-task-warning"},
 					nil)
 			})
 
@@ -294,7 +294,7 @@ var _ = Describe("Task Actions", func() {
 				expectedErr = errors.New("cc-error")
 				fakeCloudControllerClient.UpdateTaskReturns(
 					ccv3.Task{},
-					ccv3.Warnings{"update-task-warning"},
+					[]string{"update-task-warning"},
 					expectedErr)
 			})
 

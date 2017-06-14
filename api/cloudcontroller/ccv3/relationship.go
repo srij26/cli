@@ -45,7 +45,7 @@ func (r *Relationship) UnmarshalJSON(data []byte) error {
 
 // AssignSpaceToIsolationSegment assigns an isolation segment to a space and
 // returns the relationship.
-func (client *Client) AssignSpaceToIsolationSegment(spaceGUID string, isolationSegmentGUID string) (Relationship, Warnings, error) {
+func (client *Client) AssignSpaceToIsolationSegment(spaceGUID string, isolationSegmentGUID string) (Relationship, []string, error) {
 	body, err := json.Marshal(Relationship{GUID: isolationSegmentGUID})
 	if err != nil {
 		return Relationship{}, nil, err
@@ -68,7 +68,7 @@ func (client *Client) AssignSpaceToIsolationSegment(spaceGUID string, isolationS
 
 // GetSpaceIsolationSegment returns the relationship between a space and it's
 // isolation segment.
-func (client *Client) GetSpaceIsolationSegment(spaceGUID string) (Relationship, Warnings, error) {
+func (client *Client) GetSpaceIsolationSegment(spaceGUID string) (Relationship, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSpaceRelationshipIsolationSegmentRequest,
 		URIParams:   internal.Params{"guid": spaceGUID},
@@ -88,7 +88,7 @@ func (client *Client) GetSpaceIsolationSegment(spaceGUID string) (Relationship, 
 
 // RevokeIsolationSegmentFromOrganization will delete the relationship between
 // the isolation segment and the organization provided.
-func (client *Client) RevokeIsolationSegmentFromOrganization(isolationSegmentGUID string, organizationGUID string) (Warnings, error) {
+func (client *Client) RevokeIsolationSegmentFromOrganization(isolationSegmentGUID string, organizationGUID string) ([]string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.DeleteIsolationSegmentRelationshipOrganizationRequest,
 		URIParams:   internal.Params{"guid": isolationSegmentGUID, "org_guid": organizationGUID},
@@ -105,7 +105,7 @@ func (client *Client) RevokeIsolationSegmentFromOrganization(isolationSegmentGUI
 
 // GetOrganizationDefaultIsolationSegment returns the relationship between an
 // organization and it's default isolation segment.
-func (client *Client) GetOrganizationDefaultIsolationSegment(orgGUID string) (Relationship, Warnings, error) {
+func (client *Client) GetOrganizationDefaultIsolationSegment(orgGUID string) (Relationship, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrganizationDefaultIsolationSegmentRequest,
 		URIParams:   internal.Params{"guid": orgGUID},

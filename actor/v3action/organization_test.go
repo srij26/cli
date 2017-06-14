@@ -33,7 +33,7 @@ var _ = Describe("Organization Actions", func() {
 							GUID: "some-org-guid",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 			})
@@ -63,7 +63,7 @@ var _ = Describe("Organization Actions", func() {
 				expectedError = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv3.Organization{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					expectedError)
 			})
 
@@ -85,7 +85,7 @@ var _ = Describe("Organization Actions", func() {
 		BeforeEach(func() {
 			fakeCloudControllerClient.GetOrganizationsReturns(
 				[]ccv3.Organization{},
-				ccv3.Warnings{"some-warning"},
+				[]string{"some-warning"},
 				nil,
 			)
 		})

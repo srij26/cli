@@ -50,7 +50,7 @@ var _ = Describe("Package Actions", func() {
 							GUID: "some-app-guid",
 						},
 					},
-					ccv3.Warnings{"some-app-warning"},
+					[]string{"some-app-warning"},
 					nil,
 				)
 			})
@@ -104,27 +104,27 @@ var _ = Describe("Package Actions", func() {
 
 						fakeCloudControllerClient.CreatePackageReturns(
 							createdPackage,
-							ccv3.Warnings{"some-pkg-warning"},
+							[]string{"some-pkg-warning"},
 							nil,
 						)
 					})
 
 					Context("when the file uploading is successful", func() {
 						BeforeEach(func() {
-							fakeCloudControllerClient.UploadPackageReturns(ccv3.Package{}, ccv3.Warnings{"some-upload-pkg-warning"}, nil)
+							fakeCloudControllerClient.UploadPackageReturns(ccv3.Package{}, []string{"some-upload-pkg-warning"}, nil)
 						})
 
 						Context("when the polling is successful", func() {
 							BeforeEach(func() {
 								fakeCloudControllerClient.GetPackageReturns(
 									ccv3.Package{GUID: "some-pkg-guid", State: ccv3.PackageStateReady},
-									ccv3.Warnings{"some-get-pkg-warning"},
+									[]string{"some-get-pkg-warning"},
 									nil,
 								)
 							})
 
 							It("correctly constructs the zip", func() {
-								fakeCloudControllerClient.UploadPackageStub = func(pkg ccv3.Package, zipFilePart string) (ccv3.Package, ccv3.Warnings, error) {
+								fakeCloudControllerClient.UploadPackageStub = func(pkg ccv3.Package, zipFilePart string) (ccv3.Package, []string, error) {
 									filestats := map[string]int64{}
 									reader, err := zip.OpenReader(zipFilePart)
 									Expect(err).ToNot(HaveOccurred())
@@ -193,13 +193,13 @@ var _ = Describe("Package Actions", func() {
 								func(finalState ccv3.PackageState, expectedErr error) {
 									fakeCloudControllerClient.GetPackageReturns(
 										ccv3.Package{GUID: "some-pkg-guid", State: ccv3.PackageStateAwaitingUpload},
-										ccv3.Warnings{"some-get-pkg-warning"},
+										[]string{"some-get-pkg-warning"},
 										nil,
 									)
 									fakeCloudControllerClient.GetPackageReturnsOnCall(
 										2,
 										ccv3.Package{State: finalState},
-										ccv3.Warnings{"some-get-pkg-warning"},
+										[]string{"some-get-pkg-warning"},
 										nil,
 									)
 
@@ -229,7 +229,7 @@ var _ = Describe("Package Actions", func() {
 								expectedErr = errors.New("Fake error during polling")
 								fakeCloudControllerClient.GetPackageReturns(
 									ccv3.Package{},
-									ccv3.Warnings{"some-get-pkg-warning"},
+									[]string{"some-get-pkg-warning"},
 									expectedErr,
 								)
 							})
@@ -247,7 +247,7 @@ var _ = Describe("Package Actions", func() {
 
 						BeforeEach(func() {
 							expectedErr = errors.New("ZOMG Package Uploading")
-							fakeCloudControllerClient.UploadPackageReturns(ccv3.Package{}, ccv3.Warnings{"some-upload-pkg-warning"}, expectedErr)
+							fakeCloudControllerClient.UploadPackageReturns(ccv3.Package{}, []string{"some-upload-pkg-warning"}, expectedErr)
 						})
 
 						It("returns the warnings and the error", func() {
@@ -265,7 +265,7 @@ var _ = Describe("Package Actions", func() {
 						expectedErr = errors.New("ZOMG Package Creation")
 						fakeCloudControllerClient.CreatePackageReturns(
 							ccv3.Package{},
-							ccv3.Warnings{"some-pkg-warning"},
+							[]string{"some-pkg-warning"},
 							expectedErr,
 						)
 					})
@@ -295,7 +295,7 @@ var _ = Describe("Package Actions", func() {
 				expectedErr = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					expectedErr)
 			})
 

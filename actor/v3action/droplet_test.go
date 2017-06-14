@@ -30,13 +30,13 @@ var _ = Describe("Droplet Actions", func() {
 					[]ccv3.Application{
 						{GUID: "some-app-guid"},
 					},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					nil,
 				)
 
 				fakeCloudControllerClient.SetApplicationDropletReturns(
 					ccv3.Relationship{GUID: "some-droplet-guid"},
-					ccv3.Warnings{"set-application-droplet-warning"},
+					[]string{"set-application-droplet-warning"},
 					nil,
 				)
 			})
@@ -67,7 +67,7 @@ var _ = Describe("Droplet Actions", func() {
 
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					expectedErr,
 				)
 			})
@@ -88,13 +88,13 @@ var _ = Describe("Droplet Actions", func() {
 					[]ccv3.Application{
 						{GUID: "some-app-guid"},
 					},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					nil,
 				)
 
 				fakeCloudControllerClient.SetApplicationDropletReturns(
 					ccv3.Relationship{},
-					ccv3.Warnings{"set-application-droplet-warning"},
+					[]string{"set-application-droplet-warning"},
 					expectedErr,
 				)
 			})

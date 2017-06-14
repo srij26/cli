@@ -12,7 +12,7 @@ type Process struct {
 }
 
 // GetApplicationProcesses lists processes for a given app
-func (client *Client) GetApplicationProcesses(appGUID string) ([]Process, Warnings, error) {
+func (client *Client) GetApplicationProcesses(appGUID string) ([]Process, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppProcessesRequest,
 		URIParams:   map[string]string{"guid": appGUID},

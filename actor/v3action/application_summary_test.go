@@ -34,7 +34,7 @@ var _ = Describe("Application Summary Actions", func() {
 							State: "RUNNING",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 
@@ -47,7 +47,7 @@ var _ = Describe("Application Summary Actions", func() {
 							},
 						},
 					},
-					ccv3.Warnings{"some-droplet-warning"},
+					[]string{"some-droplet-warning"},
 					nil,
 				)
 
@@ -59,7 +59,7 @@ var _ = Describe("Application Summary Actions", func() {
 							MemoryInMB: 32,
 						},
 					},
-					ccv3.Warnings{"some-process-warning"},
+					[]string{"some-process-warning"},
 					nil,
 				)
 
@@ -75,7 +75,7 @@ var _ = Describe("Application Summary Actions", func() {
 							Index:       0,
 						},
 					},
-					ccv3.Warnings{"some-process-stats-warning"},
+					[]string{"some-process-stats-warning"},
 					nil,
 				)
 			})
@@ -139,7 +139,7 @@ var _ = Describe("Application Summary Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 			})
@@ -163,14 +163,14 @@ var _ = Describe("Application Summary Actions", func() {
 							State: "RUNNING",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 
 				expectedErr = errors.New("some error")
 				fakeCloudControllerClient.GetApplicationCurrentDropletReturns(
 					ccv3.Droplet{},
-					ccv3.Warnings{"some-droplet-warning"},
+					[]string{"some-droplet-warning"},
 					expectedErr,
 				)
 			})
@@ -194,7 +194,7 @@ var _ = Describe("Application Summary Actions", func() {
 							State: "RUNNING",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 
@@ -207,14 +207,14 @@ var _ = Describe("Application Summary Actions", func() {
 							},
 						},
 					},
-					ccv3.Warnings{"some-droplet-warning"},
+					[]string{"some-droplet-warning"},
 					nil,
 				)
 
 				expectedErr = errors.New("some error")
 				fakeCloudControllerClient.GetApplicationProcessesReturns(
 					[]ccv3.Process{},
-					ccv3.Warnings{"some-process-warning"},
+					[]string{"some-process-warning"},
 					expectedErr,
 				)
 			})
@@ -238,7 +238,7 @@ var _ = Describe("Application Summary Actions", func() {
 							State: "RUNNING",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 
@@ -251,7 +251,7 @@ var _ = Describe("Application Summary Actions", func() {
 							},
 						},
 					},
-					ccv3.Warnings{"some-droplet-warning"},
+					[]string{"some-droplet-warning"},
 					nil,
 				)
 
@@ -262,14 +262,14 @@ var _ = Describe("Application Summary Actions", func() {
 							Type: "some-type",
 						},
 					},
-					ccv3.Warnings{"some-process-warning"},
+					[]string{"some-process-warning"},
 					nil,
 				)
 
 				expectedErr = errors.New("some error")
 				fakeCloudControllerClient.GetProcessInstancesReturns(
 					[]ccv3.Instance{},
-					ccv3.Warnings{"some-process-stats-warning"},
+					[]string{"some-process-stats-warning"},
 					expectedErr,
 				)
 			})

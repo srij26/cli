@@ -39,7 +39,7 @@ var _ = Describe("Application Actions", func() {
 							GUID: "some-app-guid",
 						},
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 			})
@@ -70,7 +70,7 @@ var _ = Describe("Application Actions", func() {
 				expectedError = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					expectedError)
 			})
 
@@ -92,7 +92,7 @@ var _ = Describe("Application Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 			})
@@ -121,7 +121,7 @@ var _ = Describe("Application Actions", func() {
 						Name: "some-app-name",
 						GUID: "some-app-guid",
 					},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					nil,
 				)
 			})
@@ -154,7 +154,7 @@ var _ = Describe("Application Actions", func() {
 				expectedError = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.CreateApplicationReturns(
 					ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					expectedError,
 				)
 			})
@@ -171,7 +171,7 @@ var _ = Describe("Application Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.CreateApplicationReturns(
 					ccv3.Application{},
-					ccv3.Warnings{"some-warning"},
+					[]string{"some-warning"},
 					ccerror.UnprocessableEntityError{},
 				)
 			})
@@ -208,7 +208,7 @@ var _ = Describe("Application Actions", func() {
 
 		Context("when getting the application processes fails", func() {
 			BeforeEach(func() {
-				fakeCloudControllerClient.GetApplicationProcessesReturns(nil, ccv3.Warnings{"get-app-warning-1", "get-app-warning-2"}, errors.New("some-error"))
+				fakeCloudControllerClient.GetApplicationProcessesReturns(nil, []string{"get-app-warning-1", "get-app-warning-2"}, errors.New("some-error"))
 			})
 
 			It("returns the error and all warnings", func() {
@@ -230,7 +230,7 @@ var _ = Describe("Application Actions", func() {
 			JustBeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationProcessesReturns(
 					processes,
-					ccv3.Warnings{"get-app-warning-1"}, nil)
+					[]string{"get-app-warning-1"}, nil)
 			})
 
 			Context("when there is a single process", func() {
@@ -244,7 +244,7 @@ var _ = Describe("Application Actions", func() {
 						fakeConfig.PollingIntervalReturns(time.Millisecond * 2)
 						fakeCloudControllerClient.GetProcessInstancesReturns(
 							[]ccv3.Instance{{State: "STARTING"}},
-							ccv3.Warnings{"get-process-warning-1", "get-process-warning-2"},
+							[]string{"get-process-warning-1", "get-process-warning-2"},
 							nil,
 						)
 					})
@@ -270,7 +270,7 @@ var _ = Describe("Application Actions", func() {
 					BeforeEach(func() {
 						fakeCloudControllerClient.GetProcessInstancesReturns(
 							nil,
-							ccv3.Warnings{"get-process-warning-1", "get-process-warning-2"},
+							[]string{"get-process-warning-1", "get-process-warning-2"},
 							errors.New("some-error"),
 						)
 					})
@@ -297,15 +297,15 @@ var _ = Describe("Application Actions", func() {
 					})
 
 					JustBeforeEach(func() {
-						fakeCloudControllerClient.GetProcessInstancesStub = func(processGuid string) ([]ccv3.Instance, ccv3.Warnings, error) {
+						fakeCloudControllerClient.GetProcessInstancesStub = func(processGuid string) ([]ccv3.Instance, []string, error) {
 							defer func() { processInstanceCallCount++ }()
 							if processInstanceCallCount == 0 {
 								return initialInstanceStates,
-									ccv3.Warnings{"get-process-warning-1", "get-process-warning-2"},
+									[]string{"get-process-warning-1", "get-process-warning-2"},
 									nil
 							} else {
 								return eventualInstanceStates,
-									ccv3.Warnings{fmt.Sprintf("get-process-warning-%d", processInstanceCallCount+2)},
+									[]string{fmt.Sprintf("get-process-warning-%d", processInstanceCallCount+2)},
 									nil
 							}
 						}
@@ -387,7 +387,7 @@ var _ = Describe("Application Actions", func() {
 				})
 
 				JustBeforeEach(func() {
-					fakeCloudControllerClient.GetProcessInstancesStub = func(processGuid string) ([]ccv3.Instance, ccv3.Warnings, error) {
+					fakeCloudControllerClient.GetProcessInstancesStub = func(processGuid string) ([]ccv3.Instance, []string, error) {
 						defer func() { processInstanceCallCount++ }()
 						if strings.HasPrefix(processGuid, "good") {
 							return []ccv3.Instance{ccv3.Instance{State: "RUNNING"}}, nil, nil
@@ -441,13 +441,13 @@ var _ = Describe("Application Actions", func() {
 					[]ccv3.Application{
 						{GUID: "some-app-guid"},
 					},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					nil,
 				)
 
 				fakeCloudControllerClient.StartApplicationReturns(
 					ccv3.Application{GUID: "some-app-guid"},
-					ccv3.Warnings{"start-application-warning"},
+					[]string{"start-application-warning"},
 					nil,
 				)
 			})
@@ -478,7 +478,7 @@ var _ = Describe("Application Actions", func() {
 
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv3.Application{},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					expectedErr,
 				)
 			})
@@ -499,13 +499,13 @@ var _ = Describe("Application Actions", func() {
 					[]ccv3.Application{
 						{GUID: "some-app-guid"},
 					},
-					ccv3.Warnings{"get-applications-warning"},
+					[]string{"get-applications-warning"},
 					nil,
 				)
 
 				fakeCloudControllerClient.StartApplicationReturns(
 					ccv3.Application{},
-					ccv3.Warnings{"start-application-warning"},
+					[]string{"start-application-warning"},
 					expectedErr,
 				)
 			})

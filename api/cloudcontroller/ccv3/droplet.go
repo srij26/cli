@@ -17,7 +17,7 @@ type Buildpack struct {
 }
 
 // GetApplicationCurrentDroplet returns the Current Droplet for a given app
-func (client *Client) GetApplicationCurrentDroplet(appGUID string) (Droplet, Warnings, error) {
+func (client *Client) GetApplicationCurrentDroplet(appGUID string) (Droplet, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppDropletCurrent,
 		URIParams:   map[string]string{"guid": appGUID},

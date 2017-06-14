@@ -14,7 +14,7 @@ type Organization struct {
 }
 
 // GetOrganizations lists organizations with optional filters.
-func (client *Client) GetOrganizations(query url.Values) ([]Organization, Warnings, error) {
+func (client *Client) GetOrganizations(query url.Values) ([]Organization, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrgsRequest,
 		Query:       query,
@@ -41,7 +41,7 @@ func (client *Client) GetOrganizations(query url.Values) ([]Organization, Warnin
 
 // GetIsolationSegmentOrganizationsByIsolationSegment lists organizations
 // entitled to an isolation segment
-func (client *Client) GetIsolationSegmentOrganizationsByIsolationSegment(isolationSegmentGUID string) ([]Organization, Warnings, error) {
+func (client *Client) GetIsolationSegmentOrganizationsByIsolationSegment(isolationSegmentGUID string) ([]Organization, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetIsolationSegmentOrganizationsRequest,
 		URIParams:   map[string]string{"guid": isolationSegmentGUID},

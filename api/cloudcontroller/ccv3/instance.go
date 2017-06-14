@@ -50,7 +50,7 @@ func (instance *Instance) UnmarshalJSON(data []byte) error {
 }
 
 // GetProcessInstances lists instance stats for a given process.
-func (client *Client) GetProcessInstances(processGUID string) ([]Instance, Warnings, error) {
+func (client *Client) GetProcessInstances(processGUID string) ([]Instance, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetProcessInstancesRequest,
 		URIParams:   map[string]string{"guid": processGUID},

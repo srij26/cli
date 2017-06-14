@@ -73,10 +73,6 @@ import (
 	"code.cloudfoundry.org/cli/api/cloudcontroller/ccv3/internal"
 )
 
-// Warnings are a collection of warnings that the Cloud Controller can return
-// back from an API request.
-type Warnings []string
-
 // Client can be used to talk to a Cloud Controller's V3 Endpoints.
 type Client struct {
 	APIInfo

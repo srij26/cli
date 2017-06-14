@@ -51,13 +51,13 @@ var _ = Describe("Build Actions", func() {
 		Context("when the creation is successful", func() {
 			BeforeEach(func() {
 				buildGUID = "some-build-guid"
-				fakeCloudControllerClient.CreateBuildReturns(ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, ccv3.Warnings{"create-warnings-1", "create-warnings-2"}, nil)
+				fakeCloudControllerClient.CreateBuildReturns(ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, []string{"create-warnings-1", "create-warnings-2"}, nil)
 			})
 
 			Context("when the polling is successful", func() {
 				BeforeEach(func() {
-					fakeCloudControllerClient.GetBuildReturnsOnCall(0, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, ccv3.Warnings{"get-warnings-1", "get-warnings-2"}, nil)
-					fakeCloudControllerClient.GetBuildReturnsOnCall(1, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaged}, ccv3.Warnings{"get-warnings-3", "get-warnings-4"}, nil)
+					fakeCloudControllerClient.GetBuildReturnsOnCall(0, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, []string{"get-warnings-1", "get-warnings-2"}, nil)
+					fakeCloudControllerClient.GetBuildReturnsOnCall(1, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaged}, []string{"get-warnings-3", "get-warnings-4"}, nil)
 				})
 
 				It("creates the build", func() {
@@ -92,8 +92,8 @@ var _ = Describe("Build Actions", func() {
 				var expectedErr error
 				BeforeEach(func() {
 					expectedErr = errors.New("I am a banana")
-					fakeCloudControllerClient.GetBuildReturnsOnCall(0, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, ccv3.Warnings{"get-warnings-1", "get-warnings-2"}, nil)
-					fakeCloudControllerClient.GetBuildReturnsOnCall(1, ccv3.Build{}, ccv3.Warnings{"get-warnings-3", "get-warnings-4"}, expectedErr)
+					fakeCloudControllerClient.GetBuildReturnsOnCall(0, ccv3.Build{GUID: buildGUID, State: ccv3.BuildStateStaging}, []string{"get-warnings-1", "get-warnings-2"}, nil)
+					fakeCloudControllerClient.GetBuildReturnsOnCall(1, ccv3.Build{}, []string{"get-warnings-3", "get-warnings-4"}, expectedErr)
 				})
 
 				It("returns the error and warnings", func() {
@@ -109,7 +109,7 @@ var _ = Describe("Build Actions", func() {
 			var expectedErr error
 			BeforeEach(func() {
 				expectedErr = errors.New("I am a banana")
-				fakeCloudControllerClient.CreateBuildReturns(ccv3.Build{}, ccv3.Warnings{"create-warnings-1", "create-warnings-2"}, expectedErr)
+				fakeCloudControllerClient.CreateBuildReturns(ccv3.Build{}, []string{"create-warnings-1", "create-warnings-2"}, expectedErr)
 			})
 
 			It("returns the error and warnings", func() {

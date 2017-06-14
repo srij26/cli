@@ -19,7 +19,7 @@ type IsolationSegment struct {
 // CreateIsolationSegment will create an Isolation Segment on the Cloud
 // Controller. Note: This will not validate that the placement tag exists in
 // the diego cluster.
-func (client *Client) CreateIsolationSegment(isolationSegment IsolationSegment) (IsolationSegment, Warnings, error) {
+func (client *Client) CreateIsolationSegment(isolationSegment IsolationSegment) (IsolationSegment, []string, error) {
 	body, err := json.Marshal(isolationSegment)
 	if err != nil {
 		return IsolationSegment{}, nil, err
@@ -43,7 +43,7 @@ func (client *Client) CreateIsolationSegment(isolationSegment IsolationSegment) 
 }
 
 // GetIsolationSegments lists isolation segments with optional filters.
-func (client *Client) GetIsolationSegments(query url.Values) ([]IsolationSegment, Warnings, error) {
+func (client *Client) GetIsolationSegments(query url.Values) ([]IsolationSegment, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetIsolationSegmentsRequest,
 		Query:       query,
@@ -70,7 +70,7 @@ func (client *Client) GetIsolationSegments(query url.Values) ([]IsolationSegment
 
 // GetIsolationSegment returns back the requested isolation segment that
 // matches the GUID.
-func (client *Client) GetIsolationSegment(guid string) (IsolationSegment, Warnings, error) {
+func (client *Client) GetIsolationSegment(guid string) (IsolationSegment, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetIsolationSegmentRequest,
 		URIParams:   map[string]string{"guid": guid},
@@ -94,7 +94,7 @@ func (client *Client) GetIsolationSegment(guid string) (IsolationSegment, Warnin
 // DeleteIsolationSegment removes an isolation segment from the cloud
 // controller. Note: This will only remove it from the cloud controller
 // database. It will not remove it from diego.
-func (client *Client) DeleteIsolationSegment(guid string) (Warnings, error) {
+func (client *Client) DeleteIsolationSegment(guid string) ([]string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.DeleteIsolationSegmentRequest,
 		URIParams:   map[string]string{"guid": guid},

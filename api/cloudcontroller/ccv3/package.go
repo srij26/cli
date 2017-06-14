@@ -40,7 +40,7 @@ type Package struct {
 }
 
 // GetPackage returns the package with the given GUID.
-func (client *Client) GetPackage(guid string) (Package, Warnings, error) {
+func (client *Client) GetPackage(guid string) (Package, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetPackageRequest,
 		URIParams:   internal.Params{"guid": guid},
@@ -60,7 +60,7 @@ func (client *Client) GetPackage(guid string) (Package, Warnings, error) {
 
 // CreatePackage creates a package with the given settings, Type and the
 // ApplicationRelationship must be set.
-func (client *Client) CreatePackage(pkg Package) (Package, Warnings, error) {
+func (client *Client) CreatePackage(pkg Package) (Package, []string, error) {
 	bodyBytes, err := json.Marshal(pkg)
 	if err != nil {
 		return Package{}, nil, err
@@ -82,7 +82,7 @@ func (client *Client) CreatePackage(pkg Package) (Package, Warnings, error) {
 
 // UploadPackage uploads a file to a given package's Upload resource. Note:
 // fileToUpload is read entirely into memory prior to sending data to CC.
-func (client *Client) UploadPackage(pkg Package, fileToUpload string) (Package, Warnings, error) {
+func (client *Client) UploadPackage(pkg Package, fileToUpload string) (Package, []string, error) {
 	link, ok := pkg.Links["upload"]
 	if !ok {
 		return Package{}, nil, ccerror.UploadLinkNotFoundError{PackageGUID: pkg.GUID}

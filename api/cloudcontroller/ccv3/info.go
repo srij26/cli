@@ -55,7 +55,7 @@ func (resources ResourceLinks) UnmarshalJSON(data []byte) error {
 }
 
 // Info returns endpoint and API information from /v3.
-func (client *Client) Info() (APIInfo, ResourceLinks, Warnings, error) {
+func (client *Client) Info() (APIInfo, ResourceLinks, []string, error) {
 	rootResponse, warnings, err := client.rootResponse()
 	if err != nil {
 		return APIInfo{}, ResourceLinks{}, warnings, err
@@ -85,7 +85,7 @@ func (client *Client) Info() (APIInfo, ResourceLinks, Warnings, error) {
 }
 
 // rootResponse returns the CC API root document.
-func (client *Client) rootResponse() (APIInfo, Warnings, error) {
+func (client *Client) rootResponse() (APIInfo, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		Method: http.MethodGet,
 		URL:    client.cloudControllerURL,

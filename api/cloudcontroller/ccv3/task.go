@@ -24,7 +24,7 @@ type Task struct {
 
 // CreateApplicationTask runs a command in the Application environment
 // associated with the provided Application GUID.
-func (client *Client) CreateApplicationTask(appGUID string, task Task) (Task, Warnings, error) {
+func (client *Client) CreateApplicationTask(appGUID string, task Task) (Task, []string, error) {
 	bodyBytes, err := json.Marshal(task)
 	if err != nil {
 		return Task{}, nil, err
@@ -52,7 +52,7 @@ func (client *Client) CreateApplicationTask(appGUID string, task Task) (Task, Wa
 
 // GetApplicationTasks returns a list of tasks associated with the provided
 // application GUID. Results can be filtered by providing URL queries.
-func (client *Client) GetApplicationTasks(appGUID string, query url.Values) ([]Task, Warnings, error) {
+func (client *Client) GetApplicationTasks(appGUID string, query url.Values) ([]Task, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppTasksRequest,
 		URIParams: internal.Params{
@@ -81,7 +81,7 @@ func (client *Client) GetApplicationTasks(appGUID string, query url.Values) ([]T
 }
 
 // UpdateTask cancels a task.
-func (client *Client) UpdateTask(taskGUID string) (Task, Warnings, error) {
+func (client *Client) UpdateTask(taskGUID string) (Task, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.PutTaskCancelRequest,
 		URIParams: internal.Params{

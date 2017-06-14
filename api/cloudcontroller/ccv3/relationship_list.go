@@ -47,7 +47,7 @@ func (r *RelationshipList) UnmarshalJSON(data []byte) error {
 
 // EntitleIsolationSegmentToOrganizations will create a link between the
 // isolation segment and the list of organizations provided.
-func (client *Client) EntitleIsolationSegmentToOrganizations(isolationSegmentGUID string, organizationGUIDs []string) (RelationshipList, Warnings, error) {
+func (client *Client) EntitleIsolationSegmentToOrganizations(isolationSegmentGUID string, organizationGUIDs []string) (RelationshipList, []string, error) {
 	body, err := json.Marshal(RelationshipList{GUIDs: organizationGUIDs})
 	if err != nil {
 		return RelationshipList{}, nil, err

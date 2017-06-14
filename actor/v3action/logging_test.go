@@ -246,7 +246,7 @@ var _ = Describe("Logging Actions", func() {
 							GUID: expectedAppGUID,
 						},
 					},
-					ccv3.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					nil,
 				)
 
@@ -315,7 +315,7 @@ var _ = Describe("Logging Actions", func() {
 				expectedErr = errors.New("ZOMG")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					nil,
-					ccv3.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					expectedErr,
 				)
 			})

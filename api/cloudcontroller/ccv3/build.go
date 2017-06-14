@@ -37,7 +37,7 @@ func (b Build) MarshalJSON() ([]byte, error) {
 
 // CreateBuild creates the given build, requires Package GUID to be set on the
 // build.
-func (client *Client) CreateBuild(build Build) (Build, Warnings, error) {
+func (client *Client) CreateBuild(build Build) (Build, []string, error) {
 	bodyBytes, err := json.Marshal(build)
 	if err != nil {
 		return Build{}, nil, err
@@ -58,7 +58,7 @@ func (client *Client) CreateBuild(build Build) (Build, Warnings, error) {
 }
 
 // GetBuild gets the build with the given GUID.
-func (client *Client) GetBuild(guid string) (Build, Warnings, error) {
+func (client *Client) GetBuild(guid string) (Build, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetBuildRequest,
 		URIParams:   internal.Params{"guid": guid},
