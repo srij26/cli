@@ -191,7 +191,7 @@ var _ = Describe("org Command", func() {
 							{Name: "isolation-segment-1"},
 							{Name: "isolation-segment-2"},
 						},
-						v3action.Warnings{"warning-3", "warning-4"},
+						[]string{"warning-3", "warning-4"},
 						nil)
 					fakeActorV3.CloudControllerAPIVersionReturns("3.12.0")
 				})
@@ -317,7 +317,7 @@ var _ = Describe("org Command", func() {
 				expectedErr = errors.New("get org iso segs error")
 				fakeActorV3.GetIsolationSegmentsByOrganizationReturns(
 					nil,
-					v3action.Warnings{"get iso seg warning"},
+					[]string{"get iso seg warning"},
 					expectedErr)
 			})
 

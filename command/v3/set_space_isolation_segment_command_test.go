@@ -122,7 +122,7 @@ var _ = Describe("set-space-isolation-segment Command", func() {
 
 			Context("when the entitlement is successful", func() {
 				BeforeEach(func() {
-					fakeActor.AssignIsolationSegmentToSpaceByNameAndSpaceReturns(v3action.Warnings{"entitlement-warning", "banana"}, nil)
+					fakeActor.AssignIsolationSegmentToSpaceByNameAndSpaceReturns([]string{"entitlement-warning", "banana"}, nil)
 				})
 
 				It("Displays the header and okay", func() {
@@ -147,7 +147,7 @@ var _ = Describe("set-space-isolation-segment Command", func() {
 
 			Context("when the entitlement errors", func() {
 				BeforeEach(func() {
-					fakeActor.AssignIsolationSegmentToSpaceByNameAndSpaceReturns(v3action.Warnings{"entitlement-warning", "banana"}, v3action.IsolationSegmentNotFoundError{Name: "segment1"})
+					fakeActor.AssignIsolationSegmentToSpaceByNameAndSpaceReturns([]string{"entitlement-warning", "banana"}, v3action.IsolationSegmentNotFoundError{Name: "segment1"})
 				})
 
 				It("returns the warnings and error", func() {

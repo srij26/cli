@@ -194,7 +194,7 @@ var _ = Describe("space Command", func() {
 						v3action.IsolationSegment{
 							Name: "some-isolation-segment",
 						},
-						v3action.Warnings{"v3-warning-1", "v3-warning-2"},
+						[]string{"v3-warning-1", "v3-warning-2"},
 						nil,
 					)
 				})
@@ -329,7 +329,7 @@ var _ = Describe("space Command", func() {
 				expectedErr = errors.New("get isolation segment error")
 				fakeActorV3.GetEffectiveIsolationSegmentBySpaceReturns(
 					v3action.IsolationSegment{},
-					v3action.Warnings{"v3-warning-1", "v3-warning-2"},
+					[]string{"v3-warning-1", "v3-warning-2"},
 					expectedErr)
 			})
 
@@ -345,7 +345,7 @@ var _ = Describe("space Command", func() {
 			BeforeEach(func() {
 				fakeActorV3.GetEffectiveIsolationSegmentBySpaceReturns(
 					v3action.IsolationSegment{},
-					v3action.Warnings{"v3-warning-1", "v3-warning-2"},
+					[]string{"v3-warning-1", "v3-warning-2"},
 					v3action.NoRelationshipError{})
 			})
 

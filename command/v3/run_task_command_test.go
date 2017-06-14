@@ -122,7 +122,7 @@ var _ = Describe("run-task Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v3action.Application{GUID: "some-app-guid"},
-						v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+						[]string{"get-application-warning-1", "get-application-warning-2"},
 						nil)
 				})
 
@@ -133,7 +133,7 @@ var _ = Describe("run-task Command", func() {
 								Name:       "31337ddd",
 								SequenceID: 3,
 							},
-							v3action.Warnings{"get-application-warning-3"},
+							[]string{"get-application-warning-3"},
 							nil)
 					})
 
@@ -171,7 +171,7 @@ get-application-warning-3`))
 								Name:       "some-task-name",
 								SequenceID: 3,
 							},
-							v3action.Warnings{"get-application-warning-3"},
+							[]string{"get-application-warning-3"},
 							nil)
 					})
 
@@ -210,7 +210,7 @@ get-application-warning-3`))
 								Name:       "some-task-name",
 								SequenceID: 3,
 							},
-							v3action.Warnings{"get-application-warning-3"},
+							[]string{"get-application-warning-3"},
 							nil)
 					})
 
@@ -253,7 +253,7 @@ get-application-warning-3`))
 								Name:       "some-task-name",
 								SequenceID: 3,
 							},
-							v3action.Warnings{"get-application-warning-3"},
+							[]string{"get-application-warning-3"},
 							nil)
 					})
 
@@ -339,7 +339,7 @@ get-application-warning-3`))
 							expectedErr = errors.New("got bananapants??")
 							fakeActor.GetApplicationByNameAndSpaceReturns(
 								v3action.Application{GUID: "some-app-guid"},
-								v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+								[]string{"get-application-warning-1", "get-application-warning-2"},
 								expectedErr)
 						})
 
@@ -358,11 +358,11 @@ get-application-warning-3`))
 							expectedErr = errors.New("got bananapants??")
 							fakeActor.GetApplicationByNameAndSpaceReturns(
 								v3action.Application{GUID: "some-app-guid"},
-								v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+								[]string{"get-application-warning-1", "get-application-warning-2"},
 								nil)
 							fakeActor.RunTaskReturns(
 								v3action.Task{},
-								v3action.Warnings{"run-task-warning-1", "run-task-warning-2"},
+								[]string{"run-task-warning-1", "run-task-warning-2"},
 								expectedErr)
 						})
 

@@ -286,7 +286,7 @@ var _ = Describe("Logging Actions", func() {
 
 			It("converts them to log messages and passes them through the messages channel", func() {
 				var err error
-				var warnings Warnings
+				var warnings []string
 				messages, logErrs, warnings, err = actor.GetStreamingLogsForApplicationByNameAndSpace("some-app", "some-space-guid", fakeNOAAClient)
 
 				Expect(err).ToNot(HaveOccurred())

@@ -10,7 +10,7 @@ import (
 //go:generate counterfeiter . V3SetDropletActor
 
 type V3SetDropletActor interface {
-	SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) (v3action.Warnings, error)
+	SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) ([]string, error)
 }
 
 type V3SetDropletCommand struct {

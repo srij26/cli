@@ -4,7 +4,6 @@ package v3fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command/v3"
 )
 
@@ -18,17 +17,17 @@ type FakeDeleteIsolationSegmentActor struct {
 	cloudControllerAPIVersionReturnsOnCall map[int]struct {
 		result1 string
 	}
-	DeleteIsolationSegmentByNameStub        func(name string) (v3action.Warnings, error)
+	DeleteIsolationSegmentByNameStub        func(name string) ([]string, error)
 	deleteIsolationSegmentByNameMutex       sync.RWMutex
 	deleteIsolationSegmentByNameArgsForCall []struct {
 		name string
 	}
 	deleteIsolationSegmentByNameReturns struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	deleteIsolationSegmentByNameReturnsOnCall map[int]struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
@@ -75,7 +74,7 @@ func (fake *FakeDeleteIsolationSegmentActor) CloudControllerAPIVersionReturnsOnC
 	}{result1}
 }
 
-func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByName(name string) (v3action.Warnings, error) {
+func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByName(name string) ([]string, error) {
 	fake.deleteIsolationSegmentByNameMutex.Lock()
 	ret, specificReturn := fake.deleteIsolationSegmentByNameReturnsOnCall[len(fake.deleteIsolationSegmentByNameArgsForCall)]
 	fake.deleteIsolationSegmentByNameArgsForCall = append(fake.deleteIsolationSegmentByNameArgsForCall, struct {
@@ -104,24 +103,24 @@ func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByNameArgsFor
 	return fake.deleteIsolationSegmentByNameArgsForCall[i].name
 }
 
-func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByNameReturns(result1 v3action.Warnings, result2 error) {
+func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByNameReturns(result1 []string, result2 error) {
 	fake.DeleteIsolationSegmentByNameStub = nil
 	fake.deleteIsolationSegmentByNameReturns = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByNameReturnsOnCall(i int, result1 v3action.Warnings, result2 error) {
+func (fake *FakeDeleteIsolationSegmentActor) DeleteIsolationSegmentByNameReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.DeleteIsolationSegmentByNameStub = nil
 	if fake.deleteIsolationSegmentByNameReturnsOnCall == nil {
 		fake.deleteIsolationSegmentByNameReturnsOnCall = make(map[int]struct {
-			result1 v3action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.deleteIsolationSegmentByNameReturnsOnCall[i] = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

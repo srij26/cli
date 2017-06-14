@@ -84,9 +84,9 @@ var _ = Describe("v3-push Command", func() {
 			cmd.AppName = app
 
 			// we stub out StagePackage out here so the happy paths below don't hang
-			fakeActor.StagePackageStub = func(_ string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+			fakeActor.StagePackageStub = func(_ string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 				buildStream := make(chan v3action.Build)
-				warningsStream := make(chan v3action.Warnings)
+				warningsStream := make(chan []string)
 				errorStream := make(chan error)
 
 				go func() {
@@ -105,7 +105,7 @@ var _ = Describe("v3-push Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("I am an error")
-					fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, v3action.Warnings{"I am a warning", "I am also a warning"}, expectedErr)
+					fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, []string{"I am a warning", "I am also a warning"}, expectedErr)
 				})
 
 				It("displays the warnings and error", func() {
@@ -119,14 +119,14 @@ var _ = Describe("v3-push Command", func() {
 
 			Context("due to an ApplicationAlreadyExistsError", func() {
 				BeforeEach(func() {
-					fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, v3action.Warnings{"I am a warning", "I am also a warning"}, v3action.ApplicationAlreadyExistsError{})
+					fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, []string{"I am a warning", "I am also a warning"}, v3action.ApplicationAlreadyExistsError{})
 				})
 
 				Context("when getting the existing application returns an error", func() {
 					BeforeEach(func() {
 						fakeActor.GetApplicationByNameAndSpaceReturns(
 							v3action.Application{},
-							v3action.Warnings{"this is a warning", "this is a second warning"},
+							[]string{"this is a warning", "this is a second warning"},
 							errors.New("something went wrong"))
 					})
 
@@ -167,7 +167,7 @@ var _ = Describe("v3-push Command", func() {
 
 		Context("when the application doesn't already exist", func() {
 			BeforeEach(func() {
-				fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, v3action.Warnings{"I am a warning", "I am also a warning"}, nil)
+				fakeActor.CreateApplicationByNameAndSpaceReturns(v3action.Application{}, []string{"I am a warning", "I am also a warning"}, nil)
 			})
 
 			Context("when creating the package fails", func() {
@@ -175,7 +175,7 @@ var _ = Describe("v3-push Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("I am an error")
-					fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{}, v3action.Warnings{"I am a package warning", "I am also a package warning"}, expectedErr)
+					fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{}, []string{"I am a package warning", "I am also a package warning"}, expectedErr)
 				})
 
 				It("displays the header and error", func() {
@@ -192,7 +192,7 @@ var _ = Describe("v3-push Command", func() {
 
 			Context("when creating the package succeeds", func() {
 				BeforeEach(func() {
-					fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{GUID: "some-guid"}, v3action.Warnings{"I am a package warning", "I am also a package warning"}, nil)
+					fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{GUID: "some-guid"}, []string{"I am a package warning", "I am also a package warning"}, nil)
 				})
 
 				It("displays the header and OK", func() {
@@ -208,7 +208,7 @@ var _ = Describe("v3-push Command", func() {
 					var expectedErr error
 					BeforeEach(func() {
 						expectedErr = errors.New("something is wrong!")
-						fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(nil, nil, v3action.Warnings{"some-logging-warning", "some-other-logging-warning"}, expectedErr)
+						fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(nil, nil, []string{"some-logging-warning", "some-other-logging-warning"}, expectedErr)
 					})
 
 					It("returns the error and displays warnings", func() {
@@ -227,7 +227,7 @@ var _ = Describe("v3-push Command", func() {
 
 					BeforeEach(func() {
 						allLogsWritten = make(chan bool)
-						fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error) {
+						fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error) {
 							logStream := make(chan *v3action.LogMessage)
 							errorStream := make(chan error)
 
@@ -237,7 +237,7 @@ var _ = Describe("v3-push Command", func() {
 								allLogsWritten <- true
 							}()
 
-							return logStream, errorStream, v3action.Warnings{"steve for all I care"}, nil
+							return logStream, errorStream, []string{"steve for all I care"}, nil
 						}
 					})
 
@@ -246,9 +246,9 @@ var _ = Describe("v3-push Command", func() {
 
 						BeforeEach(func() {
 							expectedErr = errors.New("any gibberish")
-							fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+							fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 								buildStream := make(chan v3action.Build)
-								warningsStream := make(chan v3action.Warnings)
+								warningsStream := make(chan []string)
 								errorStream := make(chan error)
 
 								go func() {
@@ -256,7 +256,7 @@ var _ = Describe("v3-push Command", func() {
 									defer close(buildStream)
 									defer close(warningsStream)
 									defer close(errorStream)
-									warningsStream <- v3action.Warnings{"some-staging-warning", "some-other-staging-warning"}
+									warningsStream <- []string{"some-staging-warning", "some-other-staging-warning"}
 									errorStream <- expectedErr
 								}()
 
@@ -278,9 +278,9 @@ var _ = Describe("v3-push Command", func() {
 
 					Context("when the staging is successful", func() {
 						BeforeEach(func() {
-							fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+							fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 								buildStream := make(chan v3action.Build)
-								warningsStream := make(chan v3action.Warnings)
+								warningsStream := make(chan []string)
 								errorStream := make(chan error)
 
 								go func() {
@@ -288,7 +288,7 @@ var _ = Describe("v3-push Command", func() {
 									defer close(buildStream)
 									defer close(warningsStream)
 									defer close(errorStream)
-									warningsStream <- v3action.Warnings{"some-staging-warning", "some-other-staging-warning"}
+									warningsStream <- []string{"some-staging-warning", "some-other-staging-warning"}
 									buildStream <- v3action.Build{Droplet: ccv3.Droplet{GUID: "some-droplet-guid"}}
 								}()
 
@@ -331,7 +331,7 @@ var _ = Describe("v3-push Command", func() {
 
 						Context("when setting the droplet fails", func() {
 							BeforeEach(func() {
-								fakeActor.SetApplicationDropletReturns(v3action.Warnings{"droplet-warning-1", "droplet-warning-2"}, errors.New("some-error"))
+								fakeActor.SetApplicationDropletReturns([]string{"droplet-warning-1", "droplet-warning-2"}, errors.New("some-error"))
 							})
 
 							It("returns the error", func() {
@@ -348,7 +348,7 @@ var _ = Describe("v3-push Command", func() {
 
 						Context("when setting the application droplet is successful", func() {
 							BeforeEach(func() {
-								fakeActor.SetApplicationDropletReturns(v3action.Warnings{"droplet-warning-1", "droplet-warning-2"}, nil)
+								fakeActor.SetApplicationDropletReturns([]string{"droplet-warning-1", "droplet-warning-2"}, nil)
 							})
 
 							It("displays that the droplet was assigned", func() {
@@ -371,7 +371,7 @@ var _ = Describe("v3-push Command", func() {
 
 							Context("when starting the application fails", func() {
 								BeforeEach(func() {
-									fakeActor.StartApplicationReturns(v3action.Application{}, v3action.Warnings{"start-warning-1", "start-warning-2"}, errors.New("some-error"))
+									fakeActor.StartApplicationReturns(v3action.Application{}, []string{"start-warning-1", "start-warning-2"}, errors.New("some-error"))
 								})
 
 								It("says that the app failed to start", func() {
@@ -387,7 +387,7 @@ var _ = Describe("v3-push Command", func() {
 
 							Context("when starting the application succeeds", func() {
 								BeforeEach(func() {
-									fakeActor.StartApplicationReturns(v3action.Application{}, v3action.Warnings{"start-warning-1", "start-warning-2"}, nil)
+									fakeActor.StartApplicationReturns(v3action.Application{}, []string{"start-warning-1", "start-warning-2"}, nil)
 								})
 
 								It("says that the app was started and outputs warnings", func() {
@@ -406,8 +406,8 @@ var _ = Describe("v3-push Command", func() {
 
 							Context("when polling the start fails", func() {
 								BeforeEach(func() {
-									fakeActor.PollStartStub = func(appGUID string, warnings chan<- v3action.Warnings) error {
-										warnings <- v3action.Warnings{"some-poll-warning-1", "some-poll-warning-2"}
+									fakeActor.PollStartStub = func(appGUID string, warnings chan<- []string) error {
+										warnings <- []string{"some-poll-warning-1", "some-poll-warning-2"}
 										return errors.New("some-error")
 									}
 								})
@@ -434,8 +434,8 @@ var _ = Describe("v3-push Command", func() {
 
 							Context("when polling the start succeeds", func() {
 								BeforeEach(func() {
-									fakeActor.PollStartStub = func(appGUID string, warnings chan<- v3action.Warnings) error {
-										warnings <- v3action.Warnings{"some-poll-warning-1", "some-poll-warning-2"}
+									fakeActor.PollStartStub = func(appGUID string, warnings chan<- []string) error {
+										warnings <- []string{"some-poll-warning-1", "some-poll-warning-2"}
 										return nil
 									}
 								})
@@ -453,7 +453,7 @@ var _ = Describe("v3-push Command", func() {
 									BeforeEach(func() {
 										var expectedErr error
 										expectedErr = v3action.ApplicationNotFoundError{Name: app}
-										fakeActor.GetApplicationSummaryByNameAndSpaceReturns(v3action.ApplicationSummary{}, v3action.Warnings{"display-warning-1", "display-warning-2"}, expectedErr)
+										fakeActor.GetApplicationSummaryByNameAndSpaceReturns(v3action.ApplicationSummary{}, []string{"display-warning-1", "display-warning-2"}, expectedErr)
 									})
 
 									It("returns the error and prints warnings", func() {
@@ -503,7 +503,7 @@ var _ = Describe("v3-push Command", func() {
 											},
 										}
 
-										fakeActor.GetApplicationSummaryByNameAndSpaceReturns(summary, v3action.Warnings{"display-warning-1", "display-warning-2"}, nil)
+										fakeActor.GetApplicationSummaryByNameAndSpaceReturns(summary, []string{"display-warning-1", "display-warning-2"}, nil)
 									})
 
 									It("prints the application summary and outputs warnings", func() {

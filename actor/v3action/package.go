@@ -28,7 +28,7 @@ func (_ PackageProcessingExpiredError) Error() string {
 
 type Package ccv3.Package
 
-func (actor Actor) CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (Package, Warnings, error) {
+func (actor Actor) CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (Package, []string, error) {
 	app, allWarnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	if err != nil {
 		return Package{}, allWarnings, err

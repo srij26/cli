@@ -97,7 +97,7 @@ var _ = Describe("v3-stage Command", func() {
 
 			BeforeEach(func() {
 				allLogsWritten = make(chan bool)
-				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error) {
+				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error) {
 					logStream := make(chan *v3action.LogMessage)
 					errorStream := make(chan error)
 
@@ -107,15 +107,15 @@ var _ = Describe("v3-stage Command", func() {
 						allLogsWritten <- true
 					}()
 
-					return logStream, errorStream, v3action.Warnings{"steve for all I care"}, nil
+					return logStream, errorStream, []string{"steve for all I care"}, nil
 				}
 			})
 
 			Context("when the staging is successful", func() {
 				BeforeEach(func() {
-					fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+					fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 						buildStream := make(chan v3action.Build)
-						warningsStream := make(chan v3action.Warnings)
+						warningsStream := make(chan []string)
 						errorStream := make(chan error)
 
 						go func() {
@@ -123,7 +123,7 @@ var _ = Describe("v3-stage Command", func() {
 							defer close(buildStream)
 							defer close(warningsStream)
 							defer close(errorStream)
-							warningsStream <- v3action.Warnings{"some-warning", "some-other-warning"}
+							warningsStream <- []string{"some-warning", "some-other-warning"}
 							buildStream <- v3action.Build{Droplet: ccv3.Droplet{GUID: "some-droplet-guid"}}
 						}()
 
@@ -170,9 +170,9 @@ var _ = Describe("v3-stage Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("any gibberish")
-					fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+					fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 						buildStream := make(chan v3action.Build)
-						warningsStream := make(chan v3action.Warnings)
+						warningsStream := make(chan []string)
 						errorStream := make(chan error)
 
 						go func() {
@@ -180,7 +180,7 @@ var _ = Describe("v3-stage Command", func() {
 							defer close(buildStream)
 							defer close(warningsStream)
 							defer close(errorStream)
-							warningsStream <- v3action.Warnings{"some-warning", "some-other-warning"}
+							warningsStream <- []string{"some-warning", "some-other-warning"}
 							errorStream <- expectedErr
 						}()
 
@@ -207,7 +207,7 @@ var _ = Describe("v3-stage Command", func() {
 				allLogsWritten = make(chan bool)
 				expectedErr = errors.New("banana")
 
-				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error) {
+				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error) {
 					logStream := make(chan *v3action.LogMessage)
 					errorStream := make(chan error)
 
@@ -219,12 +219,12 @@ var _ = Describe("v3-stage Command", func() {
 						allLogsWritten <- true
 					}()
 
-					return logStream, errorStream, v3action.Warnings{"steve for all I care"}, nil
+					return logStream, errorStream, []string{"steve for all I care"}, nil
 				}
 
-				fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+				fakeActor.StagePackageStub = func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 					buildStream := make(chan v3action.Build)
-					warningsStream := make(chan v3action.Warnings)
+					warningsStream := make(chan []string)
 					errorStream := make(chan error)
 
 					go func() {
@@ -232,7 +232,7 @@ var _ = Describe("v3-stage Command", func() {
 						defer close(buildStream)
 						defer close(warningsStream)
 						defer close(errorStream)
-						warningsStream <- v3action.Warnings{"some-warning", "some-other-warning"}
+						warningsStream <- []string{"some-warning", "some-other-warning"}
 						buildStream <- v3action.Build{Droplet: ccv3.Droplet{GUID: "some-droplet-guid"}}
 					}()
 
@@ -256,7 +256,7 @@ var _ = Describe("v3-stage Command", func() {
 				expectedErr = errors.New("something is wrong!")
 				logStream := make(chan *v3action.LogMessage)
 				errorStream := make(chan error)
-				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(logStream, errorStream, v3action.Warnings{"some-warning", "some-other-warning"}, expectedErr)
+				fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(logStream, errorStream, []string{"some-warning", "some-other-warning"}, expectedErr)
 			})
 
 			It("returns the error and displays warnings", func() {

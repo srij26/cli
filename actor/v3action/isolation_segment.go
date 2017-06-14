@@ -46,9 +46,9 @@ func (e IsolationSegmentAlreadyExistsError) Error() string {
 //
 // If the space does not have one and the passed in organization default
 // isolation segment GUID is empty, a NoRelationshipError will be returned.
-func (actor Actor) GetEffectiveIsolationSegmentBySpace(spaceGUID string, orgDefaultIsolationSegmentGUID string) (IsolationSegment, Warnings, error) {
+func (actor Actor) GetEffectiveIsolationSegmentBySpace(spaceGUID string, orgDefaultIsolationSegmentGUID string) (IsolationSegment, []string, error) {
 	relationship, warnings, err := actor.CloudControllerClient.GetSpaceIsolationSegment(spaceGUID)
-	allWarnings := append(Warnings{}, warnings...)
+	allWarnings := append([]string{}, warnings...)
 	if err != nil {
 		return IsolationSegment{}, allWarnings, err
 	}
@@ -72,18 +72,18 @@ func (actor Actor) GetEffectiveIsolationSegmentBySpace(spaceGUID string, orgDefa
 }
 
 // CreateIsolationSegmentByName creates a given isolation segment.
-func (actor Actor) CreateIsolationSegmentByName(isolationSegment IsolationSegment) (Warnings, error) {
+func (actor Actor) CreateIsolationSegmentByName(isolationSegment IsolationSegment) ([]string, error) {
 	_, warnings, err := actor.CloudControllerClient.CreateIsolationSegment(ccv3.IsolationSegment(isolationSegment))
 	if _, ok := err.(ccerror.UnprocessableEntityError); ok {
-		return Warnings(warnings), IsolationSegmentAlreadyExistsError{Name: isolationSegment.Name}
+		return []string(warnings), IsolationSegmentAlreadyExistsError{Name: isolationSegment.Name}
 	}
-	return Warnings(warnings), err
+	return []string(warnings), err
 }
 
 // DeleteIsolationSegmentByName deletes the given isolation segment.
-func (actor Actor) DeleteIsolationSegmentByName(name string) (Warnings, error) {
+func (actor Actor) DeleteIsolationSegmentByName(name string) ([]string, error) {
 	isolationSegment, warnings, err := actor.GetIsolationSegmentByName(name)
-	allWarnings := append(Warnings{}, warnings...)
+	allWarnings := append([]string{}, warnings...)
 	if err != nil {
 		return allWarnings, err
 	}
@@ -94,9 +94,9 @@ func (actor Actor) DeleteIsolationSegmentByName(name string) (Warnings, error) {
 
 // EntitleIsolationSegmentToOrganizationByName entitles the given organization
 // to use the specified isolation segment
-func (actor Actor) EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) (Warnings, error) {
+func (actor Actor) EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) ([]string, error) {
 	isolationSegment, warnings, err := actor.GetIsolationSegmentByName(isolationSegmentName)
-	allWarnings := append(Warnings{}, warnings...)
+	allWarnings := append([]string{}, warnings...)
 	if err != nil {
 		return allWarnings, err
 	}
@@ -111,7 +111,7 @@ func (actor Actor) EntitleIsolationSegmentToOrganizationByName(isolationSegmentN
 	return append(allWarnings, apiWarnings...), err
 }
 
-func (actor Actor) AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) (Warnings, error) {
+func (actor Actor) AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) ([]string, error) {
 	seg, warnings, err := actor.GetIsolationSegmentByName(isolationSegmentName)
 	if err != nil {
 		return warnings, err
@@ -122,23 +122,23 @@ func (actor Actor) AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentN
 }
 
 // GetIsolationSegmentByName returns the requested isolation segment.
-func (actor Actor) GetIsolationSegmentByName(name string) (IsolationSegment, Warnings, error) {
+func (actor Actor) GetIsolationSegmentByName(name string) (IsolationSegment, []string, error) {
 	isolationSegments, warnings, err := actor.CloudControllerClient.GetIsolationSegments(url.Values{ccv3.NameFilter: []string{name}})
 	if err != nil {
-		return IsolationSegment{}, Warnings(warnings), err
+		return IsolationSegment{}, []string(warnings), err
 	}
 
 	if len(isolationSegments) == 0 {
-		return IsolationSegment{}, Warnings(warnings), IsolationSegmentNotFoundError{Name: name}
+		return IsolationSegment{}, []string(warnings), IsolationSegmentNotFoundError{Name: name}
 	}
 
-	return IsolationSegment(isolationSegments[0]), Warnings(warnings), nil
+	return IsolationSegment(isolationSegments[0]), []string(warnings), nil
 }
 
 // GetIsolationSegmentSummaries returns all isolation segments and their entitled orgs
-func (actor Actor) GetIsolationSegmentSummaries() ([]IsolationSegmentSummary, Warnings, error) {
+func (actor Actor) GetIsolationSegmentSummaries() ([]IsolationSegmentSummary, []string, error) {
 	isolationSegments, warnings, err := actor.CloudControllerClient.GetIsolationSegments(nil)
-	allWarnings := append(Warnings{}, warnings...)
+	allWarnings := append([]string{}, warnings...)
 	if err != nil {
 		return nil, allWarnings, err
 	}
@@ -166,12 +166,12 @@ func (actor Actor) GetIsolationSegmentSummaries() ([]IsolationSegmentSummary, Wa
 	return isolationSegmentSummaries, allWarnings, nil
 }
 
-func (actor Actor) GetIsolationSegmentsByOrganization(orgGUID string) ([]IsolationSegment, Warnings, error) {
+func (actor Actor) GetIsolationSegmentsByOrganization(orgGUID string) ([]IsolationSegment, []string, error) {
 	ccv3IsolationSegments, warnings, err := actor.CloudControllerClient.GetIsolationSegments(url.Values{
 		ccv3.OrganizationGUIDFilter: []string{orgGUID},
 	})
 	if err != nil {
-		return []IsolationSegment{}, Warnings(warnings), err
+		return []IsolationSegment{}, []string(warnings), err
 	}
 
 	isolationSegments := make([]IsolationSegment, len(ccv3IsolationSegments))
@@ -180,12 +180,12 @@ func (actor Actor) GetIsolationSegmentsByOrganization(orgGUID string) ([]Isolati
 		isolationSegments[i] = IsolationSegment(ccv3IsolationSegments[i])
 	}
 
-	return isolationSegments, Warnings(warnings), nil
+	return isolationSegments, []string(warnings), nil
 }
 
-func (actor Actor) RevokeIsolationSegmentFromOrganizationByName(isolationSegmentName string, orgName string) (Warnings, error) {
+func (actor Actor) RevokeIsolationSegmentFromOrganizationByName(isolationSegmentName string, orgName string) ([]string, error) {
 	segment, warnings, err := actor.GetIsolationSegmentByName(isolationSegmentName)
-	allWarnings := append(Warnings{}, warnings...)
+	allWarnings := append([]string{}, warnings...)
 	if err != nil {
 		return allWarnings, err
 	}

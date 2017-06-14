@@ -9,22 +9,22 @@ import (
 )
 
 type FakeV3StageActor struct {
-	StagePackageStub        func(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error)
+	StagePackageStub        func(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error)
 	stagePackageMutex       sync.RWMutex
 	stagePackageArgsForCall []struct {
 		packageGUID string
 	}
 	stagePackageReturns struct {
 		result1 <-chan v3action.Build
-		result2 <-chan v3action.Warnings
+		result2 <-chan []string
 		result3 <-chan error
 	}
 	stagePackageReturnsOnCall map[int]struct {
 		result1 <-chan v3action.Build
-		result2 <-chan v3action.Warnings
+		result2 <-chan []string
 		result3 <-chan error
 	}
-	GetStreamingLogsForApplicationByNameAndSpaceStub        func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error)
+	GetStreamingLogsForApplicationByNameAndSpaceStub        func(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error)
 	getStreamingLogsForApplicationByNameAndSpaceMutex       sync.RWMutex
 	getStreamingLogsForApplicationByNameAndSpaceArgsForCall []struct {
 		appName   string
@@ -34,20 +34,20 @@ type FakeV3StageActor struct {
 	getStreamingLogsForApplicationByNameAndSpaceReturns struct {
 		result1 <-chan *v3action.LogMessage
 		result2 <-chan error
-		result3 v3action.Warnings
+		result3 []string
 		result4 error
 	}
 	getStreamingLogsForApplicationByNameAndSpaceReturnsOnCall map[int]struct {
 		result1 <-chan *v3action.LogMessage
 		result2 <-chan error
-		result3 v3action.Warnings
+		result3 []string
 		result4 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3StageActor) StagePackage(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error) {
+func (fake *FakeV3StageActor) StagePackage(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error) {
 	fake.stagePackageMutex.Lock()
 	ret, specificReturn := fake.stagePackageReturnsOnCall[len(fake.stagePackageArgsForCall)]
 	fake.stagePackageArgsForCall = append(fake.stagePackageArgsForCall, struct {
@@ -76,32 +76,32 @@ func (fake *FakeV3StageActor) StagePackageArgsForCall(i int) string {
 	return fake.stagePackageArgsForCall[i].packageGUID
 }
 
-func (fake *FakeV3StageActor) StagePackageReturns(result1 <-chan v3action.Build, result2 <-chan v3action.Warnings, result3 <-chan error) {
+func (fake *FakeV3StageActor) StagePackageReturns(result1 <-chan v3action.Build, result2 <-chan []string, result3 <-chan error) {
 	fake.StagePackageStub = nil
 	fake.stagePackageReturns = struct {
 		result1 <-chan v3action.Build
-		result2 <-chan v3action.Warnings
+		result2 <-chan []string
 		result3 <-chan error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3StageActor) StagePackageReturnsOnCall(i int, result1 <-chan v3action.Build, result2 <-chan v3action.Warnings, result3 <-chan error) {
+func (fake *FakeV3StageActor) StagePackageReturnsOnCall(i int, result1 <-chan v3action.Build, result2 <-chan []string, result3 <-chan error) {
 	fake.StagePackageStub = nil
 	if fake.stagePackageReturnsOnCall == nil {
 		fake.stagePackageReturnsOnCall = make(map[int]struct {
 			result1 <-chan v3action.Build
-			result2 <-chan v3action.Warnings
+			result2 <-chan []string
 			result3 <-chan error
 		})
 	}
 	fake.stagePackageReturnsOnCall[i] = struct {
 		result1 <-chan v3action.Build
-		result2 <-chan v3action.Warnings
+		result2 <-chan []string
 		result3 <-chan error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error) {
+func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error) {
 	fake.getStreamingLogsForApplicationByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.getStreamingLogsForApplicationByNameAndSpaceReturnsOnCall[len(fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall)]
 	fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall = append(fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall, struct {
@@ -132,30 +132,30 @@ func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpaceArgsFo
 	return fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall[i].appName, fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall[i].spaceGUID, fake.getStreamingLogsForApplicationByNameAndSpaceArgsForCall[i].client
 }
 
-func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpaceReturns(result1 <-chan *v3action.LogMessage, result2 <-chan error, result3 v3action.Warnings, result4 error) {
+func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpaceReturns(result1 <-chan *v3action.LogMessage, result2 <-chan error, result3 []string, result4 error) {
 	fake.GetStreamingLogsForApplicationByNameAndSpaceStub = nil
 	fake.getStreamingLogsForApplicationByNameAndSpaceReturns = struct {
 		result1 <-chan *v3action.LogMessage
 		result2 <-chan error
-		result3 v3action.Warnings
+		result3 []string
 		result4 error
 	}{result1, result2, result3, result4}
 }
 
-func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpaceReturnsOnCall(i int, result1 <-chan *v3action.LogMessage, result2 <-chan error, result3 v3action.Warnings, result4 error) {
+func (fake *FakeV3StageActor) GetStreamingLogsForApplicationByNameAndSpaceReturnsOnCall(i int, result1 <-chan *v3action.LogMessage, result2 <-chan error, result3 []string, result4 error) {
 	fake.GetStreamingLogsForApplicationByNameAndSpaceStub = nil
 	if fake.getStreamingLogsForApplicationByNameAndSpaceReturnsOnCall == nil {
 		fake.getStreamingLogsForApplicationByNameAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 <-chan *v3action.LogMessage
 			result2 <-chan error
-			result3 v3action.Warnings
+			result3 []string
 			result4 error
 		})
 	}
 	fake.getStreamingLogsForApplicationByNameAndSpaceReturnsOnCall[i] = struct {
 		result1 <-chan *v3action.LogMessage
 		result2 <-chan error
-		result3 v3action.Warnings
+		result3 []string
 		result4 error
 	}{result1, result2, result3, result4}
 }

@@ -14,7 +14,7 @@ import (
 
 type SetSpaceIsolationSegmentActor interface {
 	CloudControllerAPIVersion() string
-	AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) (v3action.Warnings, error)
+	AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) ([]string, error)
 }
 
 //go:generate counterfeiter . SetSpaceIsolationSegmentActorV2

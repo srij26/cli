@@ -105,7 +105,7 @@ func (_ Actor) GetStreamingLogs(appGUID string, client NOAAClient) (<-chan *LogM
 	return messages, errs
 }
 
-func (actor Actor) GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client NOAAClient) (<-chan *LogMessage, <-chan error, Warnings, error) {
+func (actor Actor) GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client NOAAClient) (<-chan *LogMessage, <-chan error, []string, error) {
 	app, allWarnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	if err != nil {
 		return nil, nil, allWarnings, err

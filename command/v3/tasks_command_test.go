@@ -120,7 +120,7 @@ var _ = Describe("tasks Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v3action.Application{GUID: "some-app-guid"},
-						v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+						[]string{"get-application-warning-1", "get-application-warning-2"},
 						nil)
 					fakeActor.GetApplicationTasksReturns(
 						[]v3action.Task{
@@ -149,7 +149,7 @@ var _ = Describe("tasks Command", func() {
 								Command:    "some-command",
 							},
 						},
-						v3action.Warnings{"get-tasks-warning-1"},
+						[]string{"get-tasks-warning-1"},
 						nil)
 				})
 
@@ -200,7 +200,7 @@ get-tasks-warning-1`))
 									Command:    "",
 								},
 							},
-							v3action.Warnings{"get-tasks-warning-1"},
+							[]string{"get-tasks-warning-1"},
 							nil)
 					})
 
@@ -282,7 +282,7 @@ id   name   state   start time   command
 							expectedErr = errors.New("bananapants")
 							fakeActor.GetApplicationByNameAndSpaceReturns(
 								v3action.Application{GUID: "some-app-guid"},
-								v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+								[]string{"get-application-warning-1", "get-application-warning-2"},
 								expectedErr)
 						})
 
@@ -301,11 +301,11 @@ id   name   state   start time   command
 							expectedErr = errors.New("bananapants??")
 							fakeActor.GetApplicationByNameAndSpaceReturns(
 								v3action.Application{GUID: "some-app-guid"},
-								v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+								[]string{"get-application-warning-1", "get-application-warning-2"},
 								nil)
 							fakeActor.GetApplicationTasksReturns(
 								nil,
-								v3action.Warnings{"get-tasks-warning-1", "get-tasks-warning-2"},
+								[]string{"get-tasks-warning-1", "get-tasks-warning-2"},
 								expectedErr)
 						})
 

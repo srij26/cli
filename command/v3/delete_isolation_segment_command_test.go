@@ -95,7 +95,7 @@ var _ = Describe("delete-isolation-segment Command", func() {
 			Context("when the iso segment exists", func() {
 				Context("when the delete is successful", func() {
 					BeforeEach(func() {
-						fakeActor.DeleteIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, nil)
+						fakeActor.DeleteIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, nil)
 					})
 
 					It("displays the header and ok", func() {
@@ -117,7 +117,7 @@ var _ = Describe("delete-isolation-segment Command", func() {
 
 					BeforeEach(func() {
 						expectedErr = errors.New("I am an error")
-						fakeActor.DeleteIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, expectedErr)
+						fakeActor.DeleteIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, expectedErr)
 					})
 
 					It("displays the header and error", func() {
@@ -133,7 +133,7 @@ var _ = Describe("delete-isolation-segment Command", func() {
 
 			Context("when the iso segment does not exist", func() {
 				BeforeEach(func() {
-					fakeActor.DeleteIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentNotFoundError{})
+					fakeActor.DeleteIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentNotFoundError{})
 				})
 
 				It("displays does not exist warning", func() {

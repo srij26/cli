@@ -51,7 +51,7 @@ var _ = Describe("Application Actions", func() {
 					Name: "some-app-name",
 					GUID: "some-app-guid",
 				}))
-				Expect(warnings).To(Equal(Warnings{"some-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning"}))
 
 				Expect(fakeCloudControllerClient.GetApplicationsCallCount()).To(Equal(1))
 				expectedQuery := url.Values{
@@ -186,14 +186,14 @@ var _ = Describe("Application Actions", func() {
 	})
 
 	Describe("PollStart", func() {
-		var warningsChannel chan Warnings
-		var allWarnings Warnings
+		var warningsChannel chan []string
+		var allWarnings []string
 		var funcDone chan interface{}
 
 		BeforeEach(func() {
-			warningsChannel = make(chan Warnings)
+			warningsChannel = make(chan []string)
 			funcDone = make(chan interface{})
-			allWarnings = Warnings{}
+			allWarnings = []string{}
 			go func() {
 				for {
 					select {

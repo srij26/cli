@@ -9,7 +9,7 @@ import (
 )
 
 type FakeV3AppActor struct {
-	GetApplicationSummaryByNameAndSpaceStub        func(appName string, spaceGUID string) (v3action.ApplicationSummary, v3action.Warnings, error)
+	GetApplicationSummaryByNameAndSpaceStub        func(appName string, spaceGUID string) (v3action.ApplicationSummary, []string, error)
 	getApplicationSummaryByNameAndSpaceMutex       sync.RWMutex
 	getApplicationSummaryByNameAndSpaceArgsForCall []struct {
 		appName   string
@@ -17,19 +17,19 @@ type FakeV3AppActor struct {
 	}
 	getApplicationSummaryByNameAndSpaceReturns struct {
 		result1 v3action.ApplicationSummary
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	getApplicationSummaryByNameAndSpaceReturnsOnCall map[int]struct {
 		result1 v3action.ApplicationSummary
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpace(appName string, spaceGUID string) (v3action.ApplicationSummary, v3action.Warnings, error) {
+func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpace(appName string, spaceGUID string) (v3action.ApplicationSummary, []string, error) {
 	fake.getApplicationSummaryByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.getApplicationSummaryByNameAndSpaceReturnsOnCall[len(fake.getApplicationSummaryByNameAndSpaceArgsForCall)]
 	fake.getApplicationSummaryByNameAndSpaceArgsForCall = append(fake.getApplicationSummaryByNameAndSpaceArgsForCall, struct {
@@ -59,27 +59,27 @@ func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpaceArgsForCall(i int
 	return fake.getApplicationSummaryByNameAndSpaceArgsForCall[i].appName, fake.getApplicationSummaryByNameAndSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpaceReturns(result1 v3action.ApplicationSummary, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpaceReturns(result1 v3action.ApplicationSummary, result2 []string, result3 error) {
 	fake.GetApplicationSummaryByNameAndSpaceStub = nil
 	fake.getApplicationSummaryByNameAndSpaceReturns = struct {
 		result1 v3action.ApplicationSummary
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpaceReturnsOnCall(i int, result1 v3action.ApplicationSummary, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3AppActor) GetApplicationSummaryByNameAndSpaceReturnsOnCall(i int, result1 v3action.ApplicationSummary, result2 []string, result3 error) {
 	fake.GetApplicationSummaryByNameAndSpaceStub = nil
 	if fake.getApplicationSummaryByNameAndSpaceReturnsOnCall == nil {
 		fake.getApplicationSummaryByNameAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 v3action.ApplicationSummary
-			result2 v3action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getApplicationSummaryByNameAndSpaceReturnsOnCall[i] = struct {
 		result1 v3action.ApplicationSummary
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

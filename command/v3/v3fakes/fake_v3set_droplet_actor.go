@@ -4,12 +4,11 @@ package v3fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command/v3"
 )
 
 type FakeV3SetDropletActor struct {
-	SetApplicationDropletStub        func(appName string, spaceGUID string, dropletGUID string) (v3action.Warnings, error)
+	SetApplicationDropletStub        func(appName string, spaceGUID string, dropletGUID string) ([]string, error)
 	setApplicationDropletMutex       sync.RWMutex
 	setApplicationDropletArgsForCall []struct {
 		appName     string
@@ -17,18 +16,18 @@ type FakeV3SetDropletActor struct {
 		dropletGUID string
 	}
 	setApplicationDropletReturns struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	setApplicationDropletReturnsOnCall map[int]struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3SetDropletActor) SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) (v3action.Warnings, error) {
+func (fake *FakeV3SetDropletActor) SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) ([]string, error) {
 	fake.setApplicationDropletMutex.Lock()
 	ret, specificReturn := fake.setApplicationDropletReturnsOnCall[len(fake.setApplicationDropletArgsForCall)]
 	fake.setApplicationDropletArgsForCall = append(fake.setApplicationDropletArgsForCall, struct {
@@ -59,24 +58,24 @@ func (fake *FakeV3SetDropletActor) SetApplicationDropletArgsForCall(i int) (stri
 	return fake.setApplicationDropletArgsForCall[i].appName, fake.setApplicationDropletArgsForCall[i].spaceGUID, fake.setApplicationDropletArgsForCall[i].dropletGUID
 }
 
-func (fake *FakeV3SetDropletActor) SetApplicationDropletReturns(result1 v3action.Warnings, result2 error) {
+func (fake *FakeV3SetDropletActor) SetApplicationDropletReturns(result1 []string, result2 error) {
 	fake.SetApplicationDropletStub = nil
 	fake.setApplicationDropletReturns = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeV3SetDropletActor) SetApplicationDropletReturnsOnCall(i int, result1 v3action.Warnings, result2 error) {
+func (fake *FakeV3SetDropletActor) SetApplicationDropletReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.SetApplicationDropletStub = nil
 	if fake.setApplicationDropletReturnsOnCall == nil {
 		fake.setApplicationDropletReturnsOnCall = make(map[int]struct {
-			result1 v3action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.setApplicationDropletReturnsOnCall[i] = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type FakeV3StartActor struct {
-	StartApplicationStub        func(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
+	StartApplicationStub        func(appName string, spaceGUID string) (v3action.Application, []string, error)
 	startApplicationMutex       sync.RWMutex
 	startApplicationArgsForCall []struct {
 		appName   string
@@ -17,19 +17,19 @@ type FakeV3StartActor struct {
 	}
 	startApplicationReturns struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	startApplicationReturnsOnCall map[int]struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3StartActor) StartApplication(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error) {
+func (fake *FakeV3StartActor) StartApplication(appName string, spaceGUID string) (v3action.Application, []string, error) {
 	fake.startApplicationMutex.Lock()
 	ret, specificReturn := fake.startApplicationReturnsOnCall[len(fake.startApplicationArgsForCall)]
 	fake.startApplicationArgsForCall = append(fake.startApplicationArgsForCall, struct {
@@ -59,27 +59,27 @@ func (fake *FakeV3StartActor) StartApplicationArgsForCall(i int) (string, string
 	return fake.startApplicationArgsForCall[i].appName, fake.startApplicationArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeV3StartActor) StartApplicationReturns(result1 v3action.Application, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3StartActor) StartApplicationReturns(result1 v3action.Application, result2 []string, result3 error) {
 	fake.StartApplicationStub = nil
 	fake.startApplicationReturns = struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3StartActor) StartApplicationReturnsOnCall(i int, result1 v3action.Application, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3StartActor) StartApplicationReturnsOnCall(i int, result1 v3action.Application, result2 []string, result3 error) {
 	fake.StartApplicationStub = nil
 	if fake.startApplicationReturnsOnCall == nil {
 		fake.startApplicationReturnsOnCall = make(map[int]struct {
 			result1 v3action.Application
-			result2 v3action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.startApplicationReturnsOnCall[i] = struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

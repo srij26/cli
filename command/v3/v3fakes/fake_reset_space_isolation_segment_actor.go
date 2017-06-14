@@ -4,7 +4,6 @@ package v3fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command/v3"
 )
 
@@ -18,7 +17,7 @@ type FakeResetSpaceIsolationSegmentActor struct {
 	cloudControllerAPIVersionReturnsOnCall map[int]struct {
 		result1 string
 	}
-	ResetSpaceIsolationSegmentStub        func(orgGUID string, spaceGUID string) (string, v3action.Warnings, error)
+	ResetSpaceIsolationSegmentStub        func(orgGUID string, spaceGUID string) (string, []string, error)
 	resetSpaceIsolationSegmentMutex       sync.RWMutex
 	resetSpaceIsolationSegmentArgsForCall []struct {
 		orgGUID   string
@@ -26,12 +25,12 @@ type FakeResetSpaceIsolationSegmentActor struct {
 	}
 	resetSpaceIsolationSegmentReturns struct {
 		result1 string
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	resetSpaceIsolationSegmentReturnsOnCall map[int]struct {
 		result1 string
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
@@ -78,7 +77,7 @@ func (fake *FakeResetSpaceIsolationSegmentActor) CloudControllerAPIVersionReturn
 	}{result1}
 }
 
-func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, v3action.Warnings, error) {
+func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, []string, error) {
 	fake.resetSpaceIsolationSegmentMutex.Lock()
 	ret, specificReturn := fake.resetSpaceIsolationSegmentReturnsOnCall[len(fake.resetSpaceIsolationSegmentArgsForCall)]
 	fake.resetSpaceIsolationSegmentArgsForCall = append(fake.resetSpaceIsolationSegmentArgsForCall, struct {
@@ -108,27 +107,27 @@ func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegmentArgsF
 	return fake.resetSpaceIsolationSegmentArgsForCall[i].orgGUID, fake.resetSpaceIsolationSegmentArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegmentReturns(result1 string, result2 v3action.Warnings, result3 error) {
+func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegmentReturns(result1 string, result2 []string, result3 error) {
 	fake.ResetSpaceIsolationSegmentStub = nil
 	fake.resetSpaceIsolationSegmentReturns = struct {
 		result1 string
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegmentReturnsOnCall(i int, result1 string, result2 v3action.Warnings, result3 error) {
+func (fake *FakeResetSpaceIsolationSegmentActor) ResetSpaceIsolationSegmentReturnsOnCall(i int, result1 string, result2 []string, result3 error) {
 	fake.ResetSpaceIsolationSegmentStub = nil
 	if fake.resetSpaceIsolationSegmentReturnsOnCall == nil {
 		fake.resetSpaceIsolationSegmentReturnsOnCall = make(map[int]struct {
 			result1 string
-			result2 v3action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.resetSpaceIsolationSegmentReturnsOnCall[i] = struct {
 		result1 string
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

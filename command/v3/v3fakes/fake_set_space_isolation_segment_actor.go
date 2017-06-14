@@ -4,7 +4,6 @@ package v3fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command/v3"
 )
 
@@ -18,18 +17,18 @@ type FakeSetSpaceIsolationSegmentActor struct {
 	cloudControllerAPIVersionReturnsOnCall map[int]struct {
 		result1 string
 	}
-	AssignIsolationSegmentToSpaceByNameAndSpaceStub        func(isolationSegmentName string, spaceGUID string) (v3action.Warnings, error)
+	AssignIsolationSegmentToSpaceByNameAndSpaceStub        func(isolationSegmentName string, spaceGUID string) ([]string, error)
 	assignIsolationSegmentToSpaceByNameAndSpaceMutex       sync.RWMutex
 	assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall []struct {
 		isolationSegmentName string
 		spaceGUID            string
 	}
 	assignIsolationSegmentToSpaceByNameAndSpaceReturns struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	assignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall map[int]struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
@@ -76,7 +75,7 @@ func (fake *FakeSetSpaceIsolationSegmentActor) CloudControllerAPIVersionReturnsO
 	}{result1}
 }
 
-func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) (v3action.Warnings, error) {
+func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpace(isolationSegmentName string, spaceGUID string) ([]string, error) {
 	fake.assignIsolationSegmentToSpaceByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.assignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall[len(fake.assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall)]
 	fake.assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall = append(fake.assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall, struct {
@@ -106,24 +105,24 @@ func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNa
 	return fake.assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall[i].isolationSegmentName, fake.assignIsolationSegmentToSpaceByNameAndSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpaceReturns(result1 v3action.Warnings, result2 error) {
+func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpaceReturns(result1 []string, result2 error) {
 	fake.AssignIsolationSegmentToSpaceByNameAndSpaceStub = nil
 	fake.assignIsolationSegmentToSpaceByNameAndSpaceReturns = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall(i int, result1 v3action.Warnings, result2 error) {
+func (fake *FakeSetSpaceIsolationSegmentActor) AssignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.AssignIsolationSegmentToSpaceByNameAndSpaceStub = nil
 	if fake.assignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall == nil {
 		fake.assignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall = make(map[int]struct {
-			result1 v3action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.assignIsolationSegmentToSpaceByNameAndSpaceReturnsOnCall[i] = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

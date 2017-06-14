@@ -100,7 +100,7 @@ var _ = Describe("isolation-segments Command", func() {
 								EntitledOrgs: []string{"some-org-1", "some-org-2"},
 							},
 						},
-						v3action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil,
 					)
 				})
@@ -148,7 +148,7 @@ var _ = Describe("isolation-segments Command", func() {
 				expectedError = errors.New("some-error")
 				fakeActor.GetIsolationSegmentSummariesReturns(
 					[]v3action.IsolationSegmentSummary{},
-					v3action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedError,
 				)
 			})

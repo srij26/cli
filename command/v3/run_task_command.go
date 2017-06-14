@@ -13,8 +13,8 @@ import (
 //go:generate counterfeiter . RunTaskActor
 
 type RunTaskActor interface {
-	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	RunTask(appGUID string, task v3action.Task) (v3action.Task, v3action.Warnings, error)
+	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, []string, error)
+	RunTask(appGUID string, task v3action.Task) (v3action.Task, []string, error)
 	CloudControllerAPIVersion() string
 }
 

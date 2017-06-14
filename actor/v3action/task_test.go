@@ -61,7 +61,7 @@ var _ = Describe("Task Actions", func() {
 		})
 
 		Context("when the cloud controller client returns an error", func() {
-			var warnings Warnings
+			var warnings []string
 			var err error
 			var expectedErr error
 

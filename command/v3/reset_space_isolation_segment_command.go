@@ -14,7 +14,7 @@ import (
 
 type ResetSpaceIsolationSegmentActor interface {
 	CloudControllerAPIVersion() string
-	ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, v3action.Warnings, error)
+	ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, []string, error)
 }
 
 //go:generate counterfeiter . ResetSpaceIsolationSegmentActorV2

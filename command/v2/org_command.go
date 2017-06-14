@@ -23,7 +23,7 @@ type OrgActor interface {
 //go:generate counterfeiter . OrgActorV3
 
 type OrgActorV3 interface {
-	GetIsolationSegmentsByOrganization(orgName string) ([]v3action.IsolationSegment, v3action.Warnings, error)
+	GetIsolationSegmentsByOrganization(orgName string) ([]v3action.IsolationSegment, []string, error)
 	CloudControllerAPIVersion() string
 }
 

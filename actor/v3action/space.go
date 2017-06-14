@@ -4,8 +4,8 @@ package v3action
 //
 // If the space's organization has a default isolation segment, return its
 // name. Otherwise return the empty string.
-func (actor Actor) ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) ResetSpaceIsolationSegment(orgGUID string, spaceGUID string) (string, []string, error) {
+	var allWarnings []string
 
 	_, apiWarnings, err := actor.CloudControllerClient.AssignSpaceToIsolationSegment(spaceGUID, "")
 	allWarnings = append(allWarnings, apiWarnings...)

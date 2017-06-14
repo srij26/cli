@@ -115,7 +115,7 @@ var _ = Describe("Application Summary Actions", func() {
 						},
 					},
 				}))
-				Expect(warnings).To(Equal(Warnings{"some-warning", "some-droplet-warning", "some-process-warning", "some-process-stats-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning", "some-droplet-warning", "some-process-warning", "some-process-stats-warning"}))
 
 				Expect(fakeCloudControllerClient.GetApplicationsCallCount()).To(Equal(1))
 				expectedQuery := url.Values{
@@ -147,7 +147,7 @@ var _ = Describe("Application Summary Actions", func() {
 			It("returns the error and warnings", func() {
 				_, warnings, err := actor.GetApplicationSummaryByNameAndSpace("some-app-name", "some-space-guid")
 				Expect(err).To(Equal(ApplicationNotFoundError{Name: "some-app-name"}))
-				Expect(warnings).To(Equal(Warnings{"some-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning"}))
 			})
 		})
 
@@ -178,7 +178,7 @@ var _ = Describe("Application Summary Actions", func() {
 			It("returns the error", func() {
 				_, warnings, err := actor.GetApplicationSummaryByNameAndSpace("some-app-name", "some-space-guid")
 				Expect(err).To(Equal(expectedErr))
-				Expect(warnings).To(Equal(Warnings{"some-warning", "some-droplet-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning", "some-droplet-warning"}))
 			})
 		})
 
@@ -222,7 +222,7 @@ var _ = Describe("Application Summary Actions", func() {
 			It("returns the error", func() {
 				_, warnings, err := actor.GetApplicationSummaryByNameAndSpace("some-app-name", "some-space-guid")
 				Expect(err).To(Equal(expectedErr))
-				Expect(warnings).To(Equal(Warnings{"some-warning", "some-droplet-warning", "some-process-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning", "some-droplet-warning", "some-process-warning"}))
 			})
 		})
 
@@ -277,7 +277,7 @@ var _ = Describe("Application Summary Actions", func() {
 			It("returns the error", func() {
 				_, warnings, err := actor.GetApplicationSummaryByNameAndSpace("some-app-name", "some-space-guid")
 				Expect(err).To(Equal(expectedErr))
-				Expect(warnings).To(Equal(Warnings{"some-warning", "some-droplet-warning", "some-process-warning", "some-process-stats-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning", "some-droplet-warning", "some-process-warning", "some-process-stats-warning"}))
 			})
 		})
 	})

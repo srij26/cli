@@ -91,7 +91,7 @@ var _ = Describe("v3-start Command", func() {
 				GUID: "some-space-guid",
 			})
 			fakeConfig.CurrentUserReturns(configv3.User{Name: "steve"}, nil)
-			fakeActor.StartApplicationReturns(v3action.Application{}, v3action.Warnings{"warning-1", "warning-2"}, nil)
+			fakeActor.StartApplicationReturns(v3action.Application{}, []string{"warning-1", "warning-2"}, nil)
 		})
 
 		It("says that the app was started and outputs warnings", func() {
@@ -122,7 +122,7 @@ var _ = Describe("v3-start Command", func() {
 			})
 			fakeConfig.CurrentUserReturns(configv3.User{Name: "steve"}, nil)
 			expectedErr = v3action.ApplicationNotFoundError{Name: app}
-			fakeActor.StartApplicationReturns(v3action.Application{}, v3action.Warnings{"warning-1", "warning-2"}, expectedErr)
+			fakeActor.StartApplicationReturns(v3action.Application{}, []string{"warning-1", "warning-2"}, expectedErr)
 		})
 
 		It("says that the app failed to start", func() {

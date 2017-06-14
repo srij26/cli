@@ -22,8 +22,8 @@ const (
 //go:generate counterfeiter . TasksActor
 
 type TasksActor interface {
-	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	GetApplicationTasks(appGUID string, sortOrder v3action.SortOrder) ([]v3action.Task, v3action.Warnings, error)
+	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, []string, error)
+	GetApplicationTasks(appGUID string, sortOrder v3action.SortOrder) ([]v3action.Task, []string, error)
 	CloudControllerAPIVersion() string
 }
 

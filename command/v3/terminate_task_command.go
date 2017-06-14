@@ -11,9 +11,9 @@ import (
 //go:generate counterfeiter . TerminateTaskActor
 
 type TerminateTaskActor interface {
-	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	GetTaskBySequenceIDAndApplication(sequenceID int, appGUID string) (v3action.Task, v3action.Warnings, error)
-	TerminateTask(taskGUID string) (v3action.Task, v3action.Warnings, error)
+	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, []string, error)
+	GetTaskBySequenceIDAndApplication(sequenceID int, appGUID string) (v3action.Task, []string, error)
+	TerminateTask(taskGUID string) (v3action.Task, []string, error)
 	CloudControllerAPIVersion() string
 }
 

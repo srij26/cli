@@ -12,15 +12,15 @@ import (
 //go:generate counterfeiter . V3PushActor
 
 type V3PushActor interface {
-	CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, v3action.Warnings, error)
-	StagePackage(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error)
-	GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error)
-	SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) (v3action.Warnings, error)
-	StartApplication(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	GetApplicationSummaryByNameAndSpace(appName string, spaceGUID string) (v3action.ApplicationSummary, v3action.Warnings, error)
-	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
-	PollStart(appGUID string, warnings chan<- v3action.Warnings) error
+	CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, []string, error)
+	CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, []string, error)
+	StagePackage(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error)
+	GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error)
+	SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) ([]string, error)
+	StartApplication(appName string, spaceGUID string) (v3action.Application, []string, error)
+	GetApplicationSummaryByNameAndSpace(appName string, spaceGUID string) (v3action.ApplicationSummary, []string, error)
+	GetApplicationByNameAndSpace(appName string, spaceGUID string) (v3action.Application, []string, error)
+	PollStart(appGUID string, warnings chan<- []string) error
 }
 
 type V3PushCommand struct {
@@ -95,7 +95,7 @@ func (cmd V3PushCommand) Execute(args []string) error {
 
 	cmd.UI.DisplayText("Waiting for app to start...")
 
-	warnings := make(chan v3action.Warnings)
+	warnings := make(chan []string)
 	done := make(chan bool)
 	go func() {
 		for {

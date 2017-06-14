@@ -13,8 +13,8 @@ import (
 //go:generate counterfeiter . V3StageActor
 
 type V3StageActor interface {
-	StagePackage(packageGUID string) (<-chan v3action.Build, <-chan v3action.Warnings, <-chan error)
-	GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, v3action.Warnings, error)
+	StagePackage(packageGUID string) (<-chan v3action.Build, <-chan []string, <-chan error)
+	GetStreamingLogsForApplicationByNameAndSpace(appName string, spaceGUID string, client v3action.NOAAClient) (<-chan *v3action.LogMessage, <-chan error, []string, error)
 }
 
 type V3StageCommand struct {

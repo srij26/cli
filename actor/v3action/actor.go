@@ -9,9 +9,6 @@ const (
 	Descending SortOrder = "Descending"
 )
 
-// Warnings is a list of warnings returned back from the cloud controller
-type Warnings []string
-
 // Actor represents a V3 actor.
 type Actor struct {
 	CloudControllerClient CloudControllerClient

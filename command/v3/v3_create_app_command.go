@@ -10,7 +10,7 @@ import (
 //go:generate counterfeiter . V3CreateAppActor
 
 type V3CreateAppActor interface {
-	CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
+	CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, []string, error)
 }
 
 type V3CreateAppCommand struct {

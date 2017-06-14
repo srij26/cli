@@ -4,7 +4,6 @@ package v3fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command/v3"
 )
 
@@ -18,18 +17,18 @@ type FakeEnableOrgIsolationActor struct {
 	cloudControllerAPIVersionReturnsOnCall map[int]struct {
 		result1 string
 	}
-	EntitleIsolationSegmentToOrganizationByNameStub        func(isolationSegmentName string, orgName string) (v3action.Warnings, error)
+	EntitleIsolationSegmentToOrganizationByNameStub        func(isolationSegmentName string, orgName string) ([]string, error)
 	entitleIsolationSegmentToOrganizationByNameMutex       sync.RWMutex
 	entitleIsolationSegmentToOrganizationByNameArgsForCall []struct {
 		isolationSegmentName string
 		orgName              string
 	}
 	entitleIsolationSegmentToOrganizationByNameReturns struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	entitleIsolationSegmentToOrganizationByNameReturnsOnCall map[int]struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
@@ -76,7 +75,7 @@ func (fake *FakeEnableOrgIsolationActor) CloudControllerAPIVersionReturnsOnCall(
 	}{result1}
 }
 
-func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) (v3action.Warnings, error) {
+func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) ([]string, error) {
 	fake.entitleIsolationSegmentToOrganizationByNameMutex.Lock()
 	ret, specificReturn := fake.entitleIsolationSegmentToOrganizationByNameReturnsOnCall[len(fake.entitleIsolationSegmentToOrganizationByNameArgsForCall)]
 	fake.entitleIsolationSegmentToOrganizationByNameArgsForCall = append(fake.entitleIsolationSegmentToOrganizationByNameArgsForCall, struct {
@@ -106,24 +105,24 @@ func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationBy
 	return fake.entitleIsolationSegmentToOrganizationByNameArgsForCall[i].isolationSegmentName, fake.entitleIsolationSegmentToOrganizationByNameArgsForCall[i].orgName
 }
 
-func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByNameReturns(result1 v3action.Warnings, result2 error) {
+func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByNameReturns(result1 []string, result2 error) {
 	fake.EntitleIsolationSegmentToOrganizationByNameStub = nil
 	fake.entitleIsolationSegmentToOrganizationByNameReturns = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByNameReturnsOnCall(i int, result1 v3action.Warnings, result2 error) {
+func (fake *FakeEnableOrgIsolationActor) EntitleIsolationSegmentToOrganizationByNameReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.EntitleIsolationSegmentToOrganizationByNameStub = nil
 	if fake.entitleIsolationSegmentToOrganizationByNameReturnsOnCall == nil {
 		fake.entitleIsolationSegmentToOrganizationByNameReturnsOnCall = make(map[int]struct {
-			result1 v3action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.entitleIsolationSegmentToOrganizationByNameReturnsOnCall[i] = struct {
-		result1 v3action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

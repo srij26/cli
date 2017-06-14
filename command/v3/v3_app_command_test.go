@@ -278,7 +278,7 @@ var _ = Describe("v3-app Command", func() {
 						},
 					},
 				}
-				fakeActor.GetApplicationSummaryByNameAndSpaceReturns(summary, v3action.Warnings{"warning-1", "warning-2"}, nil)
+				fakeActor.GetApplicationSummaryByNameAndSpaceReturns(summary, []string{"warning-1", "warning-2"}, nil)
 			})
 
 			It("prints the application summary and outputs warnings", func() {
@@ -326,7 +326,7 @@ var _ = Describe("v3-app Command", func() {
 			})
 			fakeConfig.CurrentUserReturns(configv3.User{Name: "steve"}, nil)
 			expectedErr = v3action.ApplicationNotFoundError{Name: app}
-			fakeActor.GetApplicationSummaryByNameAndSpaceReturns(v3action.ApplicationSummary{}, v3action.Warnings{"warning-1", "warning-2"}, expectedErr)
+			fakeActor.GetApplicationSummaryByNameAndSpaceReturns(v3action.ApplicationSummary{}, []string{"warning-1", "warning-2"}, expectedErr)
 		})
 
 		It("returns the error and prints warnings", func() {

@@ -12,7 +12,7 @@ import (
 
 type CreateIsolationSegmentActor interface {
 	CloudControllerAPIVersion() string
-	CreateIsolationSegmentByName(isolationSegment v3action.IsolationSegment) (v3action.Warnings, error)
+	CreateIsolationSegmentByName(isolationSegment v3action.IsolationSegment) ([]string, error)
 }
 
 type CreateIsolationSegmentCommand struct {

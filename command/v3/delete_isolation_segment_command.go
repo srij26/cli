@@ -12,7 +12,7 @@ import (
 
 type DeleteIsolationSegmentActor interface {
 	CloudControllerAPIVersion() string
-	DeleteIsolationSegmentByName(name string) (v3action.Warnings, error)
+	DeleteIsolationSegmentByName(name string) ([]string, error)
 }
 
 type DeleteIsolationSegmentCommand struct {

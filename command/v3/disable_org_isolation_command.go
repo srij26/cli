@@ -12,7 +12,7 @@ import (
 
 type DisableOrgIsolationActor interface {
 	CloudControllerAPIVersion() string
-	RevokeIsolationSegmentFromOrganizationByName(isolationSegmentName string, orgName string) (v3action.Warnings, error)
+	RevokeIsolationSegmentFromOrganizationByName(isolationSegmentName string, orgName string) ([]string, error)
 }
 type DisableOrgIsolationCommand struct {
 	RequiredArgs    flag.OrgIsolationArgs `positional-args:"yes"`

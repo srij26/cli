@@ -12,7 +12,7 @@ import (
 //go:generate counterfeiter . V3CreatePackageActor
 
 type V3CreatePackageActor interface {
-	CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, v3action.Warnings, error)
+	CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, []string, error)
 }
 
 type V3CreatePackageCommand struct {

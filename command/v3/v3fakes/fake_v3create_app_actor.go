@@ -9,7 +9,7 @@ import (
 )
 
 type FakeV3CreateAppActor struct {
-	CreateApplicationByNameAndSpaceStub        func(name string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
+	CreateApplicationByNameAndSpaceStub        func(name string, spaceGUID string) (v3action.Application, []string, error)
 	createApplicationByNameAndSpaceMutex       sync.RWMutex
 	createApplicationByNameAndSpaceArgsForCall []struct {
 		name      string
@@ -17,19 +17,19 @@ type FakeV3CreateAppActor struct {
 	}
 	createApplicationByNameAndSpaceReturns struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	createApplicationByNameAndSpaceReturnsOnCall map[int]struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, v3action.Warnings, error) {
+func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpace(name string, spaceGUID string) (v3action.Application, []string, error) {
 	fake.createApplicationByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.createApplicationByNameAndSpaceReturnsOnCall[len(fake.createApplicationByNameAndSpaceArgsForCall)]
 	fake.createApplicationByNameAndSpaceArgsForCall = append(fake.createApplicationByNameAndSpaceArgsForCall, struct {
@@ -59,27 +59,27 @@ func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpaceArgsForCall(i i
 	return fake.createApplicationByNameAndSpaceArgsForCall[i].name, fake.createApplicationByNameAndSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpaceReturns(result1 v3action.Application, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpaceReturns(result1 v3action.Application, result2 []string, result3 error) {
 	fake.CreateApplicationByNameAndSpaceStub = nil
 	fake.createApplicationByNameAndSpaceReturns = struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpaceReturnsOnCall(i int, result1 v3action.Application, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3CreateAppActor) CreateApplicationByNameAndSpaceReturnsOnCall(i int, result1 v3action.Application, result2 []string, result3 error) {
 	fake.CreateApplicationByNameAndSpaceStub = nil
 	if fake.createApplicationByNameAndSpaceReturnsOnCall == nil {
 		fake.createApplicationByNameAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 v3action.Application
-			result2 v3action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.createApplicationByNameAndSpaceReturnsOnCall[i] = struct {
 		result1 v3action.Application
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

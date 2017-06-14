@@ -45,7 +45,7 @@ var _ = Describe("Organization Actions", func() {
 					Name: "some-org-name",
 					GUID: "some-org-guid",
 				}))
-				Expect(warnings).To(Equal(Warnings{"some-warning"}))
+				Expect(warnings).To(Equal([]string{"some-warning"}))
 
 				Expect(fakeCloudControllerClient.GetOrganizationsCallCount()).To(Equal(1))
 				expectedQuery := url.Values{

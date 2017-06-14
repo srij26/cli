@@ -92,7 +92,7 @@ var _ = Describe("enable-org-isolation Command", func() {
 
 		Context("when the enable is successful", func() {
 			BeforeEach(func() {
-				fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, nil)
+				fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns([]string{"I am a warning", "I am also a warning"}, nil)
 			})
 
 			It("displays the header and ok", func() {
@@ -118,7 +118,7 @@ var _ = Describe("enable-org-isolation Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("I am an error")
-					fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, expectedErr)
+					fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns([]string{"I am a warning", "I am also a warning"}, expectedErr)
 				})
 
 				It("displays the header and error", func() {
@@ -133,7 +133,7 @@ var _ = Describe("enable-org-isolation Command", func() {
 
 			Context("when the isolation segment does not exist", func() {
 				BeforeEach(func() {
-					fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentNotFoundError{Name: "segment1"})
+					fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns([]string{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentNotFoundError{Name: "segment1"})
 				})
 
 				It("displays all warnings and the isolation segment not found error", func() {
@@ -146,7 +146,7 @@ var _ = Describe("enable-org-isolation Command", func() {
 			Context("when the organization does not exist", func() {
 				BeforeEach(func() {
 					fakeActor.EntitleIsolationSegmentToOrganizationByNameReturns(
-						v3action.Warnings{"I am a warning", "I am also a warning"},
+						[]string{"I am a warning", "I am also a warning"},
 						v3action.OrganizationNotFoundError{Name: "some-org"})
 				})
 

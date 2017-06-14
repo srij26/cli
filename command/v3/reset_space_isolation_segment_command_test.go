@@ -5,7 +5,6 @@ import (
 
 	"code.cloudfoundry.org/cli/actor/sharedaction"
 	"code.cloudfoundry.org/cli/actor/v2action"
-	"code.cloudfoundry.org/cli/actor/v3action"
 	"code.cloudfoundry.org/cli/command"
 	"code.cloudfoundry.org/cli/command/commandfakes"
 	sharedV2 "code.cloudfoundry.org/cli/command/v2/shared"
@@ -120,7 +119,7 @@ var _ = Describe("reset-space-isolation-segment Command", func() {
 
 			Context("when the reset changes the isolation segment to platform default", func() {
 				BeforeEach(func() {
-					fakeActor.ResetSpaceIsolationSegmentReturns("", v3action.Warnings{"warning-3", "warning-4"}, nil)
+					fakeActor.ResetSpaceIsolationSegmentReturns("", []string{"warning-3", "warning-4"}, nil)
 				})
 
 				It("Displays the header and okay", func() {
@@ -147,7 +146,7 @@ var _ = Describe("reset-space-isolation-segment Command", func() {
 
 			Context("when the reset changes the isolation segment to the org's default", func() {
 				BeforeEach(func() {
-					fakeActor.ResetSpaceIsolationSegmentReturns("some-org-iso-seg-name", v3action.Warnings{"warning-3", "warning-4"}, nil)
+					fakeActor.ResetSpaceIsolationSegmentReturns("some-org-iso-seg-name", []string{"warning-3", "warning-4"}, nil)
 				})
 
 				It("Displays the header and okay", func() {
@@ -176,7 +175,7 @@ var _ = Describe("reset-space-isolation-segment Command", func() {
 				var expectedErr error
 				BeforeEach(func() {
 					expectedErr = errors.New("some error")
-					fakeActor.ResetSpaceIsolationSegmentReturns("some-org-iso-seg", v3action.Warnings{"warning-3", "warning-4"}, expectedErr)
+					fakeActor.ResetSpaceIsolationSegmentReturns("some-org-iso-seg", []string{"warning-3", "warning-4"}, expectedErr)
 				})
 
 				It("returns the warnings and error", func() {

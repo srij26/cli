@@ -25,7 +25,7 @@ type SpaceActor interface {
 
 type SpaceActorV3 interface {
 	CloudControllerAPIVersion() string
-	GetEffectiveIsolationSegmentBySpace(spaceGUID string, orgDefaultIsolationSegmentGUID string) (v3action.IsolationSegment, v3action.Warnings, error)
+	GetEffectiveIsolationSegmentBySpace(spaceGUID string, orgDefaultIsolationSegmentGUID string) (v3action.IsolationSegment, []string, error)
 }
 
 type SpaceCommand struct {

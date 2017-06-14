@@ -10,7 +10,7 @@ import (
 //go:generate counterfeiter . V3StartActor
 
 type V3StartActor interface {
-	StartApplication(appName string, spaceGUID string) (v3action.Application, v3action.Warnings, error)
+	StartApplication(appName string, spaceGUID string) (v3action.Application, []string, error)
 }
 
 type V3StartCommand struct {

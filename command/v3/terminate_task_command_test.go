@@ -134,15 +134,15 @@ var _ = Describe("terminate-task Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v3action.Application{GUID: "some-app-guid"},
-						v3action.Warnings{"get-application-warning"},
+						[]string{"get-application-warning"},
 						nil)
 					fakeActor.GetTaskBySequenceIDAndApplicationReturns(
 						v3action.Task{GUID: "some-task-guid"},
-						v3action.Warnings{"get-task-warning"},
+						[]string{"get-task-warning"},
 						nil)
 					fakeActor.TerminateTaskReturns(
 						v3action.Task{},
-						v3action.Warnings{"terminate-task-warning"},
+						[]string{"terminate-task-warning"},
 						nil)
 				})
 
@@ -246,7 +246,7 @@ var _ = Describe("terminate-task Command", func() {
 						BeforeEach(func() {
 							fakeActor.GetApplicationByNameAndSpaceReturns(
 								v3action.Application{GUID: "some-app-guid"},
-								v3action.Warnings{"get-application-warning-1", "get-application-warning-2"},
+								[]string{"get-application-warning-1", "get-application-warning-2"},
 								expectedErr)
 						})
 
@@ -266,7 +266,7 @@ var _ = Describe("terminate-task Command", func() {
 								nil)
 							fakeActor.GetTaskBySequenceIDAndApplicationReturns(
 								v3action.Task{},
-								v3action.Warnings{"get-task-warning-1", "get-task-warning-2"},
+								[]string{"get-task-warning-1", "get-task-warning-2"},
 								expectedErr)
 						})
 
@@ -290,7 +290,7 @@ var _ = Describe("terminate-task Command", func() {
 								nil)
 							fakeActor.TerminateTaskReturns(
 								v3action.Task{},
-								v3action.Warnings{"terminate-task-warning-1", "terminate-task-warning-2"},
+								[]string{"terminate-task-warning-1", "terminate-task-warning-2"},
 								expectedErr)
 						})
 

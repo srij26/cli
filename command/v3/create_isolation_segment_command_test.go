@@ -88,7 +88,7 @@ var _ = Describe("create-isolation-segment Command", func() {
 
 		Context("when the create is successful", func() {
 			BeforeEach(func() {
-				fakeActor.CreateIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, nil)
+				fakeActor.CreateIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, nil)
 			})
 
 			It("displays the header and ok", func() {
@@ -111,7 +111,7 @@ var _ = Describe("create-isolation-segment Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("I am an error")
-					fakeActor.CreateIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, expectedErr)
+					fakeActor.CreateIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, expectedErr)
 				})
 
 				It("displays the header and error", func() {
@@ -126,7 +126,7 @@ var _ = Describe("create-isolation-segment Command", func() {
 
 			Context("due to an IsolationSegmentAlreadyExistsError", func() {
 				BeforeEach(func() {
-					fakeActor.CreateIsolationSegmentByNameReturns(v3action.Warnings{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentAlreadyExistsError{})
+					fakeActor.CreateIsolationSegmentByNameReturns([]string{"I am a warning", "I am also a warning"}, v3action.IsolationSegmentAlreadyExistsError{})
 				})
 
 				It("displays the header and ok", func() {

@@ -83,7 +83,7 @@ var _ = Describe("v3-create-package Command", func() {
 		Context("when the create is successful", func() {
 			BeforeEach(func() {
 				myPackage := v3action.Package{GUID: "1234"}
-				fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(myPackage, v3action.Warnings{"I am a warning", "I am also a warning"}, nil)
+				fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(myPackage, []string{"I am a warning", "I am also a warning"}, nil)
 			})
 
 			It("displays the header and ok", func() {
@@ -110,7 +110,7 @@ var _ = Describe("v3-create-package Command", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("I am an error")
-				fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{}, v3action.Warnings{"I am a warning", "I am also a warning"}, expectedErr)
+				fakeActor.CreateAndUploadPackageByApplicationNameAndSpaceReturns(v3action.Package{}, []string{"I am a warning", "I am also a warning"}, expectedErr)
 			})
 
 			It("displays the header and error", func() {

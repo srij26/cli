@@ -34,25 +34,25 @@ func (e ApplicationAlreadyExistsError) Error() string {
 
 // GetApplicationByNameAndSpace returns the application with the given
 // name in the given space.
-func (actor Actor) GetApplicationByNameAndSpace(appName string, spaceGUID string) (Application, Warnings, error) {
+func (actor Actor) GetApplicationByNameAndSpace(appName string, spaceGUID string) (Application, []string, error) {
 	apps, warnings, err := actor.CloudControllerClient.GetApplications(url.Values{
 		"space_guids": []string{spaceGUID},
 		"names":       []string{appName},
 	})
 	if err != nil {
-		return Application{}, Warnings(warnings), err
+		return Application{}, []string(warnings), err
 	}
 
 	if len(apps) == 0 {
-		return Application{}, Warnings(warnings), ApplicationNotFoundError{Name: appName}
+		return Application{}, []string(warnings), ApplicationNotFoundError{Name: appName}
 	}
 
-	return Application(apps[0]), Warnings(warnings), nil
+	return Application(apps[0]), []string(warnings), nil
 }
 
 // CreateApplicationByNameAndSpace creates and returns the application with the given
 // name in the given space.
-func (actor Actor) CreateApplicationByNameAndSpace(appName string, spaceGUID string) (Application, Warnings, error) {
+func (actor Actor) CreateApplicationByNameAndSpace(appName string, spaceGUID string) (Application, []string, error) {
 	app, warnings, err := actor.CloudControllerClient.CreateApplication(
 		ccv3.Application{
 			Name: appName,
@@ -62,30 +62,30 @@ func (actor Actor) CreateApplicationByNameAndSpace(appName string, spaceGUID str
 		})
 
 	if _, ok := err.(ccerror.UnprocessableEntityError); ok {
-		return Application{}, Warnings(warnings), ApplicationAlreadyExistsError{Name: appName}
+		return Application{}, []string(warnings), ApplicationAlreadyExistsError{Name: appName}
 	}
 
-	return Application(app), Warnings(warnings), err
+	return Application(app), []string(warnings), err
 }
 
 // StartApplication starts an application.
-func (actor Actor) StartApplication(appName string, spaceGUID string) (Application, Warnings, error) {
-	allWarnings := Warnings{}
+func (actor Actor) StartApplication(appName string, spaceGUID string) (Application, []string, error) {
+	allWarnings := []string{}
 	application, warnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	allWarnings = append(allWarnings, warnings...)
 	if err != nil {
 		return Application{}, allWarnings, err
 	}
 	updatedApp, apiWarnings, err := actor.CloudControllerClient.StartApplication(application.GUID)
-	actorWarnings := Warnings(apiWarnings)
+	actorWarnings := []string(apiWarnings)
 	allWarnings = append(allWarnings, actorWarnings...)
 
 	return Application(updatedApp), allWarnings, err
 }
 
-func (actor Actor) PollStart(appGUID string, warningsChannel chan<- Warnings) error {
+func (actor Actor) PollStart(appGUID string, warningsChannel chan<- []string) error {
 	processes, warnings, err := actor.CloudControllerClient.GetApplicationProcesses(appGUID)
-	warningsChannel <- Warnings(warnings)
+	warningsChannel <- []string(warnings)
 	if err != nil {
 		return err
 	}
@@ -122,9 +122,9 @@ func (e StartupTimeoutError) Error() string {
 	return fmt.Sprintf("Timed out waiting for application to start")
 }
 
-func (actor Actor) processReady(process ccv3.Process, warningsChannel chan<- Warnings) (bool, error) {
+func (actor Actor) processReady(process ccv3.Process, warningsChannel chan<- []string) (bool, error) {
 	instances, warnings, err := actor.CloudControllerClient.GetProcessInstances(process.GUID)
-	warningsChannel <- Warnings(warnings)
+	warningsChannel <- []string(warnings)
 	if err != nil {
 		return false, err
 	}

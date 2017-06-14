@@ -28,7 +28,7 @@ var _ = Describe("Build Actions", func() {
 			packageGUID string
 
 			buildStream    <-chan Build
-			warningsStream <-chan Warnings
+			warningsStream <-chan []string
 			errorStream    <-chan error
 
 			buildGUID string

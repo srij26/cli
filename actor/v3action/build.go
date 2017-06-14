@@ -8,9 +8,9 @@ import (
 
 type Build ccv3.Build
 
-func (actor Actor) StagePackage(packageGUID string) (<-chan Build, <-chan Warnings, <-chan error) {
+func (actor Actor) StagePackage(packageGUID string) (<-chan Build, <-chan []string, <-chan error) {
 	buildStream := make(chan Build)
-	warningsStream := make(chan Warnings)
+	warningsStream := make(chan []string)
 	errorStream := make(chan error)
 
 	go func() {
@@ -20,7 +20,7 @@ func (actor Actor) StagePackage(packageGUID string) (<-chan Build, <-chan Warnin
 
 		build := ccv3.Build{Package: ccv3.Package{GUID: packageGUID}}
 		build, allWarnings, err := actor.CloudControllerClient.CreateBuild(build)
-		warningsStream <- Warnings(allWarnings)
+		warningsStream <- []string(allWarnings)
 
 		if err != nil {
 			errorStream <- err
@@ -32,7 +32,7 @@ func (actor Actor) StagePackage(packageGUID string) (<-chan Build, <-chan Warnin
 
 			var warnings []string
 			build, warnings, err = actor.CloudControllerClient.GetBuild(build.GUID)
-			warningsStream <- Warnings(warnings)
+			warningsStream <- []string(warnings)
 			if err != nil {
 				errorStream <- err
 				return

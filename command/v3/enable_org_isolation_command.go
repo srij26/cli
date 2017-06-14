@@ -12,7 +12,7 @@ import (
 
 type EnableOrgIsolationActor interface {
 	CloudControllerAPIVersion() string
-	EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) (v3action.Warnings, error)
+	EntitleIsolationSegmentToOrganizationByName(isolationSegmentName string, orgName string) ([]string, error)
 }
 
 type EnableOrgIsolationCommand struct {

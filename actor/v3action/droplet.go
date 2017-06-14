@@ -12,15 +12,15 @@ type Droplet struct {
 type Buildpack ccv3.Buildpack
 
 // SetApplicationDroplet sets the droplet for an application.
-func (actor Actor) SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) (Warnings, error) {
-	allWarnings := Warnings{}
+func (actor Actor) SetApplicationDroplet(appName string, spaceGUID string, dropletGUID string) ([]string, error) {
+	allWarnings := []string{}
 	application, warnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	allWarnings = append(allWarnings, warnings...)
 	if err != nil {
 		return allWarnings, err
 	}
 	_, apiWarnings, err := actor.CloudControllerClient.SetApplicationDroplet(application.GUID, dropletGUID)
-	actorWarnings := Warnings(apiWarnings)
+	actorWarnings := []string(apiWarnings)
 	allWarnings = append(allWarnings, actorWarnings...)
 
 	return allWarnings, err

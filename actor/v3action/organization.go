@@ -21,17 +21,17 @@ func (e OrganizationNotFoundError) Error() string {
 }
 
 // GetOrganizationByName returns the organization with the given name.
-func (actor Actor) GetOrganizationByName(name string) (Organization, Warnings, error) {
+func (actor Actor) GetOrganizationByName(name string) (Organization, []string, error) {
 	orgs, warnings, err := actor.CloudControllerClient.GetOrganizations(url.Values{
 		ccv3.NameFilter: []string{name},
 	})
 	if err != nil {
-		return Organization{}, Warnings(warnings), err
+		return Organization{}, []string(warnings), err
 	}
 
 	if len(orgs) == 0 {
-		return Organization{}, Warnings(warnings), OrganizationNotFoundError{Name: name}
+		return Organization{}, []string(warnings), OrganizationNotFoundError{Name: name}
 	}
 
-	return Organization(orgs[0]), Warnings(warnings), nil
+	return Organization(orgs[0]), []string(warnings), nil
 }

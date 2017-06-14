@@ -9,7 +9,7 @@ import (
 )
 
 type FakeV3CreatePackageActor struct {
-	CreateAndUploadPackageByApplicationNameAndSpaceStub        func(appName string, spaceGUID string, bitsPath string) (v3action.Package, v3action.Warnings, error)
+	CreateAndUploadPackageByApplicationNameAndSpaceStub        func(appName string, spaceGUID string, bitsPath string) (v3action.Package, []string, error)
 	createAndUploadPackageByApplicationNameAndSpaceMutex       sync.RWMutex
 	createAndUploadPackageByApplicationNameAndSpaceArgsForCall []struct {
 		appName   string
@@ -18,19 +18,19 @@ type FakeV3CreatePackageActor struct {
 	}
 	createAndUploadPackageByApplicationNameAndSpaceReturns struct {
 		result1 v3action.Package
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	createAndUploadPackageByApplicationNameAndSpaceReturnsOnCall map[int]struct {
 		result1 v3action.Package
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, v3action.Warnings, error) {
+func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpace(appName string, spaceGUID string, bitsPath string) (v3action.Package, []string, error) {
 	fake.createAndUploadPackageByApplicationNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.createAndUploadPackageByApplicationNameAndSpaceReturnsOnCall[len(fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall)]
 	fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall = append(fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall, struct {
@@ -61,27 +61,27 @@ func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAnd
 	return fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall[i].appName, fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall[i].spaceGUID, fake.createAndUploadPackageByApplicationNameAndSpaceArgsForCall[i].bitsPath
 }
 
-func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpaceReturns(result1 v3action.Package, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpaceReturns(result1 v3action.Package, result2 []string, result3 error) {
 	fake.CreateAndUploadPackageByApplicationNameAndSpaceStub = nil
 	fake.createAndUploadPackageByApplicationNameAndSpaceReturns = struct {
 		result1 v3action.Package
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpaceReturnsOnCall(i int, result1 v3action.Package, result2 v3action.Warnings, result3 error) {
+func (fake *FakeV3CreatePackageActor) CreateAndUploadPackageByApplicationNameAndSpaceReturnsOnCall(i int, result1 v3action.Package, result2 []string, result3 error) {
 	fake.CreateAndUploadPackageByApplicationNameAndSpaceStub = nil
 	if fake.createAndUploadPackageByApplicationNameAndSpaceReturnsOnCall == nil {
 		fake.createAndUploadPackageByApplicationNameAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 v3action.Package
-			result2 v3action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.createAndUploadPackageByApplicationNameAndSpaceReturnsOnCall[i] = struct {
 		result1 v3action.Package
-		result2 v3action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

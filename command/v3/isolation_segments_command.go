@@ -13,7 +13,7 @@ import (
 
 type IsolationSegmentsActor interface {
 	CloudControllerAPIVersion() string
-	GetIsolationSegmentSummaries() ([]v3action.IsolationSegmentSummary, v3action.Warnings, error)
+	GetIsolationSegmentSummaries() ([]v3action.IsolationSegmentSummary, []string, error)
 }
 
 type IsolationSegmentsCommand struct {
