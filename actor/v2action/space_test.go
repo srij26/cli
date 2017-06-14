@@ -66,7 +66,7 @@ var _ = Describe("Space", func() {
 								AllowSSH: false,
 							},
 						},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil)
 				})
 
@@ -109,7 +109,7 @@ var _ = Describe("Space", func() {
 					returnedErr = errors.New("cc-get-spaces-error")
 					fakeCloudControllerClient.GetSpacesReturns(
 						[]ccv2.Space{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						returnedErr,
 					)
 				})
@@ -135,7 +135,7 @@ var _ = Describe("Space", func() {
 								SpaceQuotaDefinitionGUID: "some-space-quota-guid",
 							},
 						},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil)
 				})
 
@@ -175,7 +175,7 @@ var _ = Describe("Space", func() {
 					returnedErr = errors.New("cc-get-spaces-error")
 					fakeCloudControllerClient.GetSpacesReturns(
 						[]ccv2.Space{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						returnedErr,
 					)
 				})

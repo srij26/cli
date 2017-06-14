@@ -86,7 +86,7 @@ var _ = Describe("Application Instance Actions", func() {
 						0: {ID: 0, Details: "hello", Since: 1485985587.12345, State: ccv2.ApplicationInstanceRunning},
 						1: {ID: 1, Details: "hi", Since: 1485985587.567},
 					},
-					ccv2.Warnings{"instance-warning-1", "instance-warning-2"},
+					[]string{"instance-warning-1", "instance-warning-2"},
 					nil)
 			})
 
@@ -120,7 +120,7 @@ var _ = Describe("Application Instance Actions", func() {
 				expectedErr = errors.New("banana")
 				fakeCloudControllerClient.GetApplicationInstancesByApplicationReturns(
 					nil,
-					ccv2.Warnings{"instances-warning"},
+					[]string{"instances-warning"},
 					expectedErr)
 			})
 

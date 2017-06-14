@@ -138,7 +138,7 @@ func (application *Application) UnmarshalJSON(data []byte) error {
 
 // CreateApplication creates a cloud controller application in with the given
 // settings. SpaceGUID and Name are the only required fields.
-func (client *Client) CreateApplication(app Application) (Application, Warnings, error) {
+func (client *Client) CreateApplication(app Application) (Application, []string, error) {
 	body, err := json.Marshal(app)
 	if err != nil {
 		return Application{}, nil, err
@@ -162,7 +162,7 @@ func (client *Client) CreateApplication(app Application) (Application, Warnings,
 }
 
 // GetApplication returns back an Application.
-func (client *Client) GetApplication(guid string) (Application, Warnings, error) {
+func (client *Client) GetApplication(guid string) (Application, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppRequest,
 		URIParams:   Params{"app_guid": guid},
@@ -182,7 +182,7 @@ func (client *Client) GetApplication(guid string) (Application, Warnings, error)
 
 // GetApplications returns back a list of Applications based off of the
 // provided queries.
-func (client *Client) GetApplications(queries []Query) ([]Application, Warnings, error) {
+func (client *Client) GetApplications(queries []Query) ([]Application, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppsRequest,
 		Query:       FormatQueryParameters(queries),
@@ -208,7 +208,7 @@ func (client *Client) GetApplications(queries []Query) ([]Application, Warnings,
 }
 
 // UpdateApplication updates the application with the given GUID.
-func (client *Client) UpdateApplication(app Application) (Application, Warnings, error) {
+func (client *Client) UpdateApplication(app Application) (Application, []string, error) {
 	appGUID := app.GUID
 	app.GUID = ""
 
@@ -237,7 +237,7 @@ func (client *Client) UpdateApplication(app Application) (Application, Warnings,
 
 // GetRouteApplications returns a list of Applications associated with a route
 // GUID, filtered by provided queries.
-func (client *Client) GetRouteApplications(routeGUID string, queryParams []Query) ([]Application, Warnings, error) {
+func (client *Client) GetRouteApplications(routeGUID string, queryParams []Query) ([]Application, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetRouteAppsRequest,
 		URIParams:   map[string]string{"route_guid": routeGUID},

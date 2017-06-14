@@ -82,7 +82,7 @@ func (job Job) Failed() bool {
 }
 
 // GetJob returns a job for the provided GUID.
-func (client *Client) GetJob(jobGUID string) (Job, Warnings, error) {
+func (client *Client) GetJob(jobGUID string) (Job, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetJobRequest,
 		URIParams:   Params{"job_guid": jobGUID},
@@ -103,19 +103,19 @@ func (client *Client) GetJob(jobGUID string) (Job, Warnings, error) {
 // PollJob will keep polling the given job until the job has terminated, an
 // error is encountered, or config.OverallPollingTimeout is reached. In the
 // last case, a JobTimeoutError is returned.
-func (client *Client) PollJob(job Job) (Warnings, error) {
+func (client *Client) PollJob(job Job) ([]string, error) {
 	originalJobGUID := job.GUID
 
 	var (
 		err         error
-		warnings    Warnings
-		allWarnings Warnings
+		warnings    []string
+		allWarnings []string
 	)
 
 	startTime := time.Now()
 	for time.Now().Sub(startTime) < client.jobPollingTimeout {
 		job, warnings, err = client.GetJob(job.GUID)
-		allWarnings = append(allWarnings, Warnings(warnings)...)
+		allWarnings = append(allWarnings, []string(warnings)...)
 		if err != nil {
 			return allWarnings, err
 		}
@@ -143,7 +143,7 @@ func (client *Client) PollJob(job Job) (Warnings, error) {
 // DeleteOrganization deletes the Organization associated with the provided
 // GUID. It will return the Cloud Controller job that is assigned to the
 // organization deletion.
-func (client *Client) DeleteOrganization(orgGUID string) (Job, Warnings, error) {
+func (client *Client) DeleteOrganization(orgGUID string) (Job, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.DeleteOrganizationRequest,
 		URIParams:   Params{"organization_guid": orgGUID},
@@ -169,7 +169,7 @@ func (client *Client) DeleteOrganization(orgGUID string) (Job, Warnings, error) 
 // resources to the cloud controller. A job that combines the requested/newly
 // uploaded bits is returned. If passed an io.Reader, this request will return
 // a PipeSeekError on retry.
-func (client *Client) UploadApplicationPackage(appGUID string, existingResources []Resource, newResources Reader, newResourcesLength int64) (Job, Warnings, error) {
+func (client *Client) UploadApplicationPackage(appGUID string, existingResources []Resource, newResources Reader, newResourcesLength int64) (Job, []string, error) {
 	if existingResources == nil {
 		return Job{}, nil, ccerror.NilObjectError{Object: "existingResources"}
 	}

@@ -37,7 +37,7 @@ var _ = Describe("Space Summary Actions", func() {
 							GUID: "some-org-guid",
 							Name: "some-org",
 						},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil)
 
 					fakeCloudControllerClient.GetSpacesReturns(
@@ -48,7 +48,7 @@ var _ = Describe("Space Summary Actions", func() {
 								SpaceQuotaDefinitionGUID: "some-space-quota-guid",
 							},
 						},
-						ccv2.Warnings{"warning-3", "warning-4"},
+						[]string{"warning-3", "warning-4"},
 						nil)
 
 					fakeCloudControllerClient.GetApplicationsReturns(
@@ -60,7 +60,7 @@ var _ = Describe("Space Summary Actions", func() {
 								Name: "some-app-1",
 							},
 						},
-						ccv2.Warnings{"warning-5", "warning-6"},
+						[]string{"warning-5", "warning-6"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
@@ -74,7 +74,7 @@ var _ = Describe("Space Summary Actions", func() {
 								Name: "some-service-instance-1",
 							},
 						},
-						ccv2.Warnings{"warning-7", "warning-8"},
+						[]string{"warning-7", "warning-8"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceQuotaReturns(
@@ -82,7 +82,7 @@ var _ = Describe("Space Summary Actions", func() {
 							GUID: "some-space-quota-guid",
 							Name: "some-space-quota",
 						},
-						ccv2.Warnings{"warning-9", "warning-10"},
+						[]string{"warning-9", "warning-10"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceRunningSecurityGroupsBySpaceReturns(
@@ -122,7 +122,7 @@ var _ = Describe("Space Summary Actions", func() {
 								},
 							},
 						},
-						ccv2.Warnings{"warning-11", "warning-12"},
+						[]string{"warning-11", "warning-12"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceStagingSecurityGroupsBySpaceReturns(
@@ -162,7 +162,7 @@ var _ = Describe("Space Summary Actions", func() {
 								},
 							},
 						},
-						ccv2.Warnings{"warning-13", "warning-14"},
+						[]string{"warning-13", "warning-14"},
 						nil)
 				})
 
@@ -321,7 +321,7 @@ var _ = Describe("Space Summary Actions", func() {
 									Name: "some-space",
 								},
 							},
-							ccv2.Warnings{"warning-3", "warning-4"},
+							[]string{"warning-3", "warning-4"},
 							nil)
 					})
 
@@ -339,7 +339,7 @@ var _ = Describe("Space Summary Actions", func() {
 					expectedErr = errors.New("get-org-error")
 					fakeCloudControllerClient.GetOrganizationReturns(
 						ccv2.Organization{},
-						ccv2.Warnings{
+						[]string{
 							"warning-1",
 							"warning-2",
 						},
@@ -368,7 +368,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetSpacesReturns(
 						[]ccv2.Space{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -405,7 +405,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetApplicationsReturns(
 						[]ccv2.Application{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -454,7 +454,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
 						[]ccv2.ServiceInstance{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -517,7 +517,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetSpaceQuotaReturns(
 						ccv2.SpaceQuota{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -588,7 +588,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetSpaceRunningSecurityGroupsBySpaceReturns(
 						[]ccv2.SecurityGroup{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -664,7 +664,7 @@ var _ = Describe("Space Summary Actions", func() {
 
 					fakeCloudControllerClient.GetSpaceStagingSecurityGroupsBySpaceReturns(
 						[]ccv2.SecurityGroup{},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -688,7 +688,7 @@ var _ = Describe("Space Summary Actions", func() {
 							Name: "some-org",
 							DefaultIsolationSegmentGUID: "some-org-default-isolation-segment-guid",
 						},
-						ccv2.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil)
 
 					fakeCloudControllerClient.GetSpacesReturns(
@@ -699,7 +699,7 @@ var _ = Describe("Space Summary Actions", func() {
 								SpaceQuotaDefinitionGUID: "some-space-quota-guid",
 							},
 						},
-						ccv2.Warnings{"warning-3", "warning-4"},
+						[]string{"warning-3", "warning-4"},
 						nil)
 
 					fakeCloudControllerClient.GetApplicationsReturns(
@@ -711,7 +711,7 @@ var _ = Describe("Space Summary Actions", func() {
 								Name: "some-app-1",
 							},
 						},
-						ccv2.Warnings{"warning-5", "warning-6"},
+						[]string{"warning-5", "warning-6"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
@@ -725,7 +725,7 @@ var _ = Describe("Space Summary Actions", func() {
 								Name: "some-service-instance-1",
 							},
 						},
-						ccv2.Warnings{"warning-7", "warning-8"},
+						[]string{"warning-7", "warning-8"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceQuotaReturns(
@@ -733,7 +733,7 @@ var _ = Describe("Space Summary Actions", func() {
 							GUID: "some-space-quota-guid",
 							Name: "some-space-quota",
 						},
-						ccv2.Warnings{"warning-9", "warning-10"},
+						[]string{"warning-9", "warning-10"},
 						nil)
 
 					fakeCloudControllerClient.GetSpaceRunningSecurityGroupsBySpaceReturns(
@@ -773,7 +773,7 @@ var _ = Describe("Space Summary Actions", func() {
 								},
 							},
 						},
-						ccv2.Warnings{"warning-11", "warning-12"},
+						[]string{"warning-11", "warning-12"},
 						nil)
 				})
 

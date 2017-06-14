@@ -30,7 +30,7 @@ func (spaceQuota *SpaceQuota) UnmarshalJSON(data []byte) error {
 }
 
 // GetSpaceQuota returns a Space Quota.
-func (client *Client) GetSpaceQuota(guid string) (SpaceQuota, Warnings, error) {
+func (client *Client) GetSpaceQuota(guid string) (SpaceQuota, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSpaceQuotaDefinitionRequest,
 		URIParams:   Params{"space_quota_guid": guid},

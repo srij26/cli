@@ -41,7 +41,7 @@ var _ = Describe("Org Actions", func() {
 						Name:                "some-org",
 						QuotaDefinitionGUID: "some-quota-definition-guid",
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 			})
 
@@ -64,7 +64,7 @@ var _ = Describe("Org Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetOrganizationReturns(
 					ccv2.Organization{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					ccerror.ResourceNotFoundError{},
 				)
 			})
@@ -82,7 +82,7 @@ var _ = Describe("Org Actions", func() {
 				expectedErr = errors.New("some get org error")
 				fakeCloudControllerClient.GetOrganizationReturns(
 					ccv2.Organization{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedErr,
 				)
 			})
@@ -111,7 +111,7 @@ var _ = Describe("Org Actions", func() {
 					[]ccv2.Organization{
 						{GUID: "some-org-guid"},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 			})
 
@@ -169,7 +169,7 @@ var _ = Describe("Org Actions", func() {
 				returnedErr = errors.New("get-orgs-error")
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{},
-					ccv2.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},
@@ -199,7 +199,7 @@ var _ = Describe("Org Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetOrganizationsReturns([]ccv2.Organization{
 					{GUID: "some-org-guid"},
-				}, ccv2.Warnings{"get-org-warning"}, nil)
+				}, []string{"get-org-warning"}, nil)
 
 				job = ccv2.Job{
 					GUID:   "some-job-guid",
@@ -207,9 +207,9 @@ var _ = Describe("Org Actions", func() {
 				}
 
 				fakeCloudControllerClient.DeleteOrganizationReturns(
-					job, ccv2.Warnings{"delete-org-warning"}, nil)
+					job, []string{"delete-org-warning"}, nil)
 
-				fakeCloudControllerClient.PollJobReturns(ccv2.Warnings{"polling-warnings"}, nil)
+				fakeCloudControllerClient.PollJobReturns([]string{"polling-warnings"}, nil)
 			})
 
 			It("returns warnings and deletes the org", func() {
@@ -239,7 +239,7 @@ var _ = Describe("Org Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{},
-					ccv2.Warnings{
+					[]string{
 						"get-org-warning",
 					},
 					nil,
@@ -262,7 +262,7 @@ var _ = Describe("Org Actions", func() {
 
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{{GUID: "org-1-guid"}},
-					ccv2.Warnings{
+					[]string{
 						"get-org-warning",
 					},
 					nil,
@@ -270,7 +270,7 @@ var _ = Describe("Org Actions", func() {
 
 				fakeCloudControllerClient.DeleteOrganizationReturns(
 					ccv2.Job{},
-					ccv2.Warnings{"delete-org-warning"},
+					[]string{"delete-org-warning"},
 					returnedErr)
 			})
 
@@ -285,13 +285,13 @@ var _ = Describe("Org Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetOrganizationsReturns([]ccv2.Organization{
 					{GUID: "some-org-guid"},
-				}, ccv2.Warnings{"get-org-warning"}, nil)
+				}, []string{"get-org-warning"}, nil)
 
 				fakeCloudControllerClient.DeleteOrganizationReturns(
-					ccv2.Job{}, ccv2.Warnings{"delete-org-warning"}, nil)
+					ccv2.Job{}, []string{"delete-org-warning"}, nil)
 
 				expectedErr = errors.New("Never expected, by anyone")
-				fakeCloudControllerClient.PollJobReturns(ccv2.Warnings{"polling-warnings"}, expectedErr)
+				fakeCloudControllerClient.PollJobReturns([]string{"polling-warnings"}, expectedErr)
 			})
 
 			It("returns the error from job polling", func() {

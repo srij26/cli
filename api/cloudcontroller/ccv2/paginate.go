@@ -6,8 +6,8 @@ import (
 	"code.cloudfoundry.org/cli/api/cloudcontroller"
 )
 
-func (client Client) paginate(request *cloudcontroller.Request, obj interface{}, appendToExternalList func(interface{}) error) (Warnings, error) {
-	fullWarningsList := Warnings{}
+func (client Client) paginate(request *cloudcontroller.Request, obj interface{}, appendToExternalList func(interface{}) error) ([]string, error) {
+	fullWarningsList := []string{}
 
 	for {
 		wrapper := NewPaginatedResources(obj)

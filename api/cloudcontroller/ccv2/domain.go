@@ -33,7 +33,7 @@ func (domain *Domain) UnmarshalJSON(data []byte) error {
 
 // GetSharedDomain returns the Shared Domain associated with the provided
 // Domain GUID.
-func (client *Client) GetSharedDomain(domainGUID string) (Domain, Warnings, error) {
+func (client *Client) GetSharedDomain(domainGUID string) (Domain, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSharedDomainRequest,
 		URIParams:   map[string]string{"shared_domain_guid": domainGUID},
@@ -57,7 +57,7 @@ func (client *Client) GetSharedDomain(domainGUID string) (Domain, Warnings, erro
 
 // GetPrivateDomain returns the Private Domain associated with the provided
 // Domain GUID.
-func (client *Client) GetPrivateDomain(domainGUID string) (Domain, Warnings, error) {
+func (client *Client) GetPrivateDomain(domainGUID string) (Domain, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetPrivateDomainRequest,
 		URIParams:   map[string]string{"private_domain_guid": domainGUID},
@@ -80,7 +80,7 @@ func (client *Client) GetPrivateDomain(domainGUID string) (Domain, Warnings, err
 }
 
 // GetSharedDomains returns the global shared domains.
-func (client *Client) GetSharedDomains() ([]Domain, Warnings, error) {
+func (client *Client) GetSharedDomains() ([]Domain, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSharedDomainsRequest,
 	})
@@ -105,7 +105,7 @@ func (client *Client) GetSharedDomains() ([]Domain, Warnings, error) {
 }
 
 // GetOrganizationPrivateDomains returns the private domains associated with an organization.
-func (client *Client) GetOrganizationPrivateDomains(orgGUID string, queries []Query) ([]Domain, Warnings, error) {
+func (client *Client) GetOrganizationPrivateDomains(orgGUID string, queries []Query) ([]Domain, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrganizationPrivateDomainsRequest,
 		Query:       FormatQueryParameters(queries),

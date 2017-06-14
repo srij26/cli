@@ -45,7 +45,7 @@ var _ = Describe("Application Instance", func() {
 			It("returns the app instances and warnings", func() {
 				instances, warnings, err := client.GetApplicationInstancesByApplication("some-app-guid")
 				Expect(err).ToNot(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 				Expect(instances).To(HaveLen(2))
 
 				Expect(instances[0]).To(Equal(ApplicationInstance{
@@ -86,7 +86,7 @@ var _ = Describe("Application Instance", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The app could not be found: some-app-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})

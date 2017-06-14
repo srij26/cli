@@ -223,7 +223,7 @@ var _ = Describe("Logging Actions", func() {
 							GUID: "some-app-guid",
 						},
 					},
-					ccv2.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					nil,
 				)
 			})
@@ -296,7 +296,7 @@ var _ = Describe("Logging Actions", func() {
 				expectedErr = errors.New("ZOMG")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					nil,
-					ccv2.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					expectedErr,
 				)
 			})
@@ -346,7 +346,7 @@ var _ = Describe("Logging Actions", func() {
 							GUID: expectedAppGUID,
 						},
 					},
-					ccv2.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					nil,
 				)
 
@@ -415,7 +415,7 @@ var _ = Describe("Logging Actions", func() {
 				expectedErr = errors.New("ZOMG")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					nil,
-					ccv2.Warnings{"some-app-warnings"},
+					[]string{"some-app-warnings"},
 					expectedErr,
 				)
 			})

@@ -40,7 +40,7 @@ var _ = Describe("Security Group Actions", func() {
 				returnedError = errors.New("get-security-groups-error")
 				fakeCloudControllerClient.GetSecurityGroupsReturns(
 					nil,
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					returnedError,
 				)
 			})
@@ -62,13 +62,13 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "security-group-1",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 				returnedError = errors.New("get-spaces-error")
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturns(
 					nil,
-					ccv2.Warnings{"warning-3", "warning-4"},
+					[]string{"warning-3", "warning-4"},
 					returnedError,
 				)
 			})
@@ -94,7 +94,7 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "security-group-1",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturns(
@@ -105,13 +105,13 @@ var _ = Describe("Security Group Actions", func() {
 							OrganizationGUID: "org-guid-11",
 						},
 					},
-					ccv2.Warnings{"warning-3", "warning-4"},
+					[]string{"warning-3", "warning-4"},
 					nil,
 				)
 				returnedError = errors.New("get-org-error")
 				fakeCloudControllerClient.GetOrganizationReturns(
 					ccv2.Organization{},
-					ccv2.Warnings{"warning-5", "warning-6"},
+					[]string{"warning-5", "warning-6"},
 					returnedError,
 				)
 			})
@@ -149,7 +149,7 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "security-group-4",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturnsOnCall(0,
@@ -170,7 +170,7 @@ var _ = Describe("Security Group Actions", func() {
 							OrganizationGUID: "org-guid-11",
 						},
 					},
-					ccv2.Warnings{"warning-3", "warning-4"},
+					[]string{"warning-3", "warning-4"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturnsOnCall(1,
@@ -191,12 +191,12 @@ var _ = Describe("Security Group Actions", func() {
 							OrganizationGUID: "org-guid-11",
 						},
 					},
-					ccv2.Warnings{"warning-5", "warning-6"},
+					[]string{"warning-5", "warning-6"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturnsOnCall(2,
 					[]ccv2.Space{},
-					ccv2.Warnings{"warning-7", "warning-8"},
+					[]string{"warning-7", "warning-8"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpacesBySecurityGroupReturnsOnCall(3,
@@ -217,7 +217,7 @@ var _ = Describe("Security Group Actions", func() {
 							OrganizationGUID: "org-guid-33",
 						},
 					},
-					ccv2.Warnings{"warning-9", "warning-10"},
+					[]string{"warning-9", "warning-10"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(0,
@@ -225,7 +225,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-13",
 						Name: "org-13",
 					},
-					ccv2.Warnings{"warning-11", "warning-12"},
+					[]string{"warning-11", "warning-12"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(1,
@@ -233,7 +233,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-12",
 						Name: "org-12",
 					},
-					ccv2.Warnings{"warning-13", "warning-14"},
+					[]string{"warning-13", "warning-14"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(2,
@@ -241,7 +241,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-11",
 						Name: "org-11",
 					},
-					ccv2.Warnings{"warning-15", "warning-16"},
+					[]string{"warning-15", "warning-16"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(3,
@@ -249,7 +249,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-21",
 						Name: "org-21",
 					},
-					ccv2.Warnings{"warning-17", "warning-18"},
+					[]string{"warning-17", "warning-18"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(4,
@@ -257,7 +257,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-23",
 						Name: "org-23",
 					},
-					ccv2.Warnings{"warning-19", "warning-20"},
+					[]string{"warning-19", "warning-20"},
 					nil,
 				)
 				fakeCloudControllerClient.GetOrganizationReturnsOnCall(5,
@@ -265,7 +265,7 @@ var _ = Describe("Security Group Actions", func() {
 						GUID: "org-guid-33",
 						Name: "org-33",
 					},
-					ccv2.Warnings{"warning-25", "warning-26"},
+					[]string{"warning-25", "warning-26"},
 					nil,
 				)
 			})
@@ -458,7 +458,7 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "some-security-group",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -482,7 +482,7 @@ var _ = Describe("Security Group Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetSecurityGroupsReturns(
 					[]ccv2.SecurityGroup{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -498,7 +498,7 @@ var _ = Describe("Security Group Actions", func() {
 				returnedError = errors.New("get-security-groups-error")
 				fakeCloudControllerClient.GetSecurityGroupsReturns(
 					[]ccv2.SecurityGroup{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					returnedError,
 				)
 			})
@@ -523,7 +523,7 @@ var _ = Describe("Security Group Actions", func() {
 		Context("when binding the space does not retun an error", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.AssociateSpaceWithSecurityGroupReturns(
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -543,7 +543,7 @@ var _ = Describe("Security Group Actions", func() {
 			BeforeEach(func() {
 				returnedError = errors.New("associate-space-error")
 				fakeCloudControllerClient.AssociateSpaceWithSecurityGroupReturns(
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					returnedError,
 				)
 			})
@@ -567,14 +567,14 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "some-running-security-group",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
 			It("returns the security groups and warnings", func() {
 				securityGroups, warnings, err := actor.GetSpaceRunningSecurityGroupsBySpace("space-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf([]string{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(securityGroups).To(Equal(
 					[]SecurityGroup{
 						{
@@ -611,13 +611,13 @@ var _ = Describe("Security Group Actions", func() {
 				expectedErr = errors.New("banana")
 				fakeCloudControllerClient.GetSpaceRunningSecurityGroupsBySpaceReturns(
 					nil,
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedErr)
 			})
 
 			It("returns the error and warnings", func() {
 				_, warnings, err := actor.GetSpaceRunningSecurityGroupsBySpace("space-guid")
-				Expect(warnings).To(ConsistOf([]string{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(err).To(MatchError(expectedErr))
 			})
 		})
@@ -635,7 +635,7 @@ var _ = Describe("Security Group Actions", func() {
 							Name: "some-staging-security-group",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -643,7 +643,7 @@ var _ = Describe("Security Group Actions", func() {
 			It("returns the security groups and warnings", func() {
 				securityGroups, warnings, err := actor.GetSpaceStagingSecurityGroupsBySpace("space-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf([]string{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(securityGroups).To(Equal(
 					[]SecurityGroup{
 						{
@@ -680,13 +680,13 @@ var _ = Describe("Security Group Actions", func() {
 				expectedErr = errors.New("banana")
 				fakeCloudControllerClient.GetSpaceStagingSecurityGroupsBySpaceReturns(
 					nil,
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedErr)
 			})
 
 			It("returns the error and warnings", func() {
 				_, warnings, err := actor.GetSpaceStagingSecurityGroupsBySpace("space-guid")
-				Expect(warnings).To(ConsistOf([]string{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(err).To(MatchError(expectedErr))
 			})
 		})
@@ -706,12 +706,12 @@ var _ = Describe("Security Group Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetSecurityGroupsReturns(
 					[]ccv2.SecurityGroup{},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 			})
 
 			It("returns the error and all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{"security-group-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning"))
 				Expect(err).To(MatchError(SecurityGroupNotFoundError{"some-security-group"}))
 			})
 		})
@@ -723,10 +723,10 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				fakeCloudControllerClient.RemoveSpaceFromSecurityGroupReturns(
-					ccv2.Warnings{"remove-space-from-sg-warning"},
+					[]string{"remove-space-from-sg-warning"},
 					nil)
 			})
 
@@ -745,11 +745,11 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				returnedError = errors.New("get-security-groups-error")
 				fakeCloudControllerClient.RemoveSpaceFromSecurityGroupReturns(
-					ccv2.Warnings{"remove-space-from-sg-warning"},
+					[]string{"remove-space-from-sg-warning"},
 					returnedError)
 			})
 
@@ -774,12 +774,12 @@ var _ = Describe("Security Group Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetSecurityGroupsReturns(
 					[]ccv2.SecurityGroup{},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 			})
 
 			It("returns the error and all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{"security-group-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning"))
 				Expect(err).To(MatchError(SecurityGroupNotFoundError{"some-security-group"}))
 			})
 		})
@@ -791,16 +791,16 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{},
-					ccv2.Warnings{"org-warning"},
+					[]string{"org-warning"},
 					nil)
 			})
 
 			It("returns the error and all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{"security-group-warning", "org-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning", "org-warning"))
 				Expect(err).To(MatchError(OrganizationNotFoundError{Name: "some-org"}))
 			})
 		})
@@ -812,23 +812,23 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{{
 						Name: "some-org",
 						GUID: "some-org-guid",
 					}},
-					ccv2.Warnings{"org-warning"},
+					[]string{"org-warning"},
 					nil)
 				fakeCloudControllerClient.GetSpacesReturns(
 					[]ccv2.Space{},
-					ccv2.Warnings{"space-warning"},
+					[]string{"space-warning"},
 					nil)
 			})
 
 			It("returns the error and all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{"security-group-warning", "org-warning", "space-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning", "org-warning", "space-warning"))
 				Expect(err).To(MatchError(SpaceNotFoundError{Name: "some-space"}))
 			})
 		})
@@ -842,34 +842,34 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{{
 						Name: "some-org",
 						GUID: "some-org-guid",
 					}},
-					ccv2.Warnings{"org-warning"},
+					[]string{"org-warning"},
 					nil)
 				fakeCloudControllerClient.GetSpacesReturns(
 					[]ccv2.Space{{
 						Name: "some-space",
 						GUID: "some-space-guid",
 					}},
-					ccv2.Warnings{"space-warning"},
+					[]string{"space-warning"},
 					nil)
 				returnedError = errors.New("associate-space-error")
 				fakeCloudControllerClient.RemoveSpaceFromSecurityGroupReturns(
-					ccv2.Warnings{"unbind-warning"},
+					[]string{"unbind-warning"},
 					returnedError)
 			})
 
 			It("returns the error and all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{
+				Expect(warnings).To(ConsistOf(
 					"security-group-warning",
 					"org-warning",
 					"space-warning",
-					"unbind-warning"}))
+					"unbind-warning"))
 				Expect(err).To(MatchError(returnedError))
 			})
 		})
@@ -881,33 +881,33 @@ var _ = Describe("Security Group Actions", func() {
 						Name: "some-security-group",
 						GUID: "some-security-group-guid",
 					}},
-					ccv2.Warnings{"security-group-warning"},
+					[]string{"security-group-warning"},
 					nil)
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{{
 						Name: "some-org",
 						GUID: "some-org-guid",
 					}},
-					ccv2.Warnings{"org-warning"},
+					[]string{"org-warning"},
 					nil)
 				fakeCloudControllerClient.GetSpacesReturns(
 					[]ccv2.Space{{
 						Name: "some-space",
 						GUID: "some-space-guid",
 					}},
-					ccv2.Warnings{"space-warning"},
+					[]string{"space-warning"},
 					nil)
 				fakeCloudControllerClient.RemoveSpaceFromSecurityGroupReturns(
-					ccv2.Warnings{"unbind-warning"},
+					[]string{"unbind-warning"},
 					nil)
 			})
 
 			It("returns all warnings", func() {
-				Expect(warnings).To(ConsistOf([]string{
+				Expect(warnings).To(ConsistOf(
 					"security-group-warning",
 					"org-warning",
 					"space-warning",
-					"unbind-warning"}))
+					"unbind-warning"))
 				Expect(err).ToNot(HaveOccurred())
 			})
 		})

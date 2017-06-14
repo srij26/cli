@@ -56,7 +56,7 @@ var _ = Describe("Application", func() {
 						GUID: "some-app-guid",
 						Name: "some-app-name",
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 		})
@@ -81,7 +81,7 @@ var _ = Describe("Application", func() {
 			It("returns the error and warnings", func() {
 				_, warnings, err := client.CreateApplication(Application{})
 				Expect(err).To(MatchError(ccerror.BadRequestError{Message: "Request invalid due to parse error: Field: name, Error: Missing field name, Field: space_guid, Error: Missing field space_guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -147,7 +147,7 @@ var _ = Describe("Application", func() {
 					StagingFailedReason:      "some-reason",
 					State:                    ApplicationStopped,
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -263,7 +263,7 @@ var _ = Describe("Application", func() {
 					{Name: "app-name-3", GUID: "app-guid-3"},
 					{Name: "app-name-4", GUID: "app-guid-4"},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 	})
@@ -338,7 +338,7 @@ var _ = Describe("Application", func() {
 						StackGUID:               "some-stack-guid",
 						State:                   ApplicationStarted,
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 
@@ -398,7 +398,7 @@ var _ = Describe("Application", func() {
 						StackGUID:               "some-stack-guid",
 						State:                   ApplicationStopped,
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 		})
@@ -427,7 +427,7 @@ var _ = Describe("Application", func() {
 					HealthCheckType: "some-health-check-type",
 				})
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{Message: "The app could not be found: some-app-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -533,7 +533,7 @@ var _ = Describe("Application", func() {
 					{Name: "app-name-3", GUID: "app-guid-3"},
 					{Name: "app-name-4", GUID: "app-guid-4"},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 

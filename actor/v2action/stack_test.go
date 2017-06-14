@@ -30,7 +30,7 @@ var _ = Describe("Stack Actions", func() {
 						Name:        "some-stack",
 						Description: "some stack description",
 					},
-					ccv2.Warnings{"get-stack-warning"},
+					[]string{"get-stack-warning"},
 					nil,
 				)
 			})
@@ -68,7 +68,7 @@ var _ = Describe("Stack Actions", func() {
 				expectedErr = errors.New("get-stack-error")
 				fakeCloudControllerClient.GetStackReturns(
 					ccv2.Stack{},
-					ccv2.Warnings{"stack-warning"},
+					[]string{"stack-warning"},
 					expectedErr,
 				)
 			})

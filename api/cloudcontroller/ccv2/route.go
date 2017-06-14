@@ -48,7 +48,7 @@ func (route *Route) UnmarshalJSON(data []byte) error {
 }
 
 // BindRouteToApplication binds the given route to the given application.
-func (client *Client) BindRouteToApplication(routeGUID string, appGUID string) (Route, Warnings, error) {
+func (client *Client) BindRouteToApplication(routeGUID string, appGUID string) (Route, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.PutBindRouteAppRequest,
 		URIParams: map[string]string{
@@ -74,7 +74,7 @@ func (client *Client) BindRouteToApplication(routeGUID string, appGUID string) (
 // the cloud controller. generatePort takes precedence over manually specified
 // port. Setting the port and generatePort only works with CC API 2.53.0 or
 // higher and when TCP router groups are enabled.
-func (client *Client) CreateRoute(route Route, generatePort bool) (Route, Warnings, error) {
+func (client *Client) CreateRoute(route Route, generatePort bool) (Route, []string, error) {
 	body, err := json.Marshal(route)
 	if err != nil {
 		return Route{}, nil, err
@@ -105,7 +105,7 @@ func (client *Client) CreateRoute(route Route, generatePort bool) (Route, Warnin
 
 // GetApplicationRoutes returns a list of Routes associated with the provided
 // Application GUID, and filtered by the provided queries.
-func (client *Client) GetApplicationRoutes(appGUID string, queryParams []Query) ([]Route, Warnings, error) {
+func (client *Client) GetApplicationRoutes(appGUID string, queryParams []Query) ([]Route, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetAppRoutesRequest,
 		URIParams:   map[string]string{"app_guid": appGUID},
@@ -133,7 +133,7 @@ func (client *Client) GetApplicationRoutes(appGUID string, queryParams []Query) 
 
 // GetSpaceRoutes returns a list of Routes associated with the provided Space
 // GUID, and filtered by the provided queries.
-func (client *Client) GetSpaceRoutes(spaceGUID string, queryParams []Query) ([]Route, Warnings, error) {
+func (client *Client) GetSpaceRoutes(spaceGUID string, queryParams []Query) ([]Route, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSpaceRoutesRequest,
 		URIParams:   map[string]string{"space_guid": spaceGUID},
@@ -160,7 +160,7 @@ func (client *Client) GetSpaceRoutes(spaceGUID string, queryParams []Query) ([]R
 }
 
 // GetRoutes returns a list of Routes based off of the provided queries.
-func (client *Client) GetRoutes(queryParams []Query) ([]Route, Warnings, error) {
+func (client *Client) GetRoutes(queryParams []Query) ([]Route, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetRoutesRequest,
 		Query:       FormatQueryParameters(queryParams),
@@ -186,7 +186,7 @@ func (client *Client) GetRoutes(queryParams []Query) ([]Route, Warnings, error) 
 }
 
 // DeleteRoute deletes the Route associated with the provided Route GUID.
-func (client *Client) DeleteRoute(routeGUID string) (Warnings, error) {
+func (client *Client) DeleteRoute(routeGUID string) ([]string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.DeleteRouteRequest,
 		URIParams:   map[string]string{"route_guid": routeGUID},
@@ -202,7 +202,7 @@ func (client *Client) DeleteRoute(routeGUID string) (Warnings, error) {
 
 // CheckRoute returns true if the route exists in the CF instance. DomainGUID
 // is required for check. This call will only work for CC API 2.55 or higher.
-func (client *Client) CheckRoute(route Route) (bool, Warnings, error) {
+func (client *Client) CheckRoute(route Route) (bool, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetRouteReservedRequest,
 		URIParams:   map[string]string{"domain_guid": route.DomainGUID},

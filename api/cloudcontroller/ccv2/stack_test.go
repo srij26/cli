@@ -46,7 +46,7 @@ var _ = Describe("Stack", func() {
 					GUID:        "some-stack-guid",
 					Name:        "some-stack-name",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -70,7 +70,7 @@ var _ = Describe("Stack", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The stack could not be found: some-stack-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})

@@ -40,7 +40,7 @@ func (space *Space) UnmarshalJSON(data []byte) error {
 }
 
 // GetSpaces returns a list of Spaces based off of the provided queries.
-func (client *Client) GetSpaces(queries []Query) ([]Space, Warnings, error) {
+func (client *Client) GetSpaces(queries []Query) ([]Space, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSpacesRequest,
 		Query:       FormatQueryParameters(queries),
@@ -67,7 +67,7 @@ func (client *Client) GetSpaces(queries []Query) ([]Space, Warnings, error) {
 
 // GetSecurityGroupSpaces returns a list of Spaces based on the provided
 // SecurityGroup GUID.
-func (client *Client) GetSpacesBySecurityGroup(securityGroupGUID string) ([]Space, Warnings, error) {
+func (client *Client) GetSpacesBySecurityGroup(securityGroupGUID string) ([]Space, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetSecurityGroupSpacesRequest,
 		URIParams:   map[string]string{"security_group_guid": securityGroupGUID},

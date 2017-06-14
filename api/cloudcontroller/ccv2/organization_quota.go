@@ -32,7 +32,7 @@ func (application *OrganizationQuota) UnmarshalJSON(data []byte) error {
 }
 
 // GetOrganizaitonQuota gets an organization quota (quota definition) from the API.
-func (client *Client) GetOrganizationQuota(guid string) (OrganizationQuota, Warnings, error) {
+func (client *Client) GetOrganizationQuota(guid string) (OrganizationQuota, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrganizationQuotaDefinitionRequest,
 		URIParams:   Params{"organization_quota_guid": guid},

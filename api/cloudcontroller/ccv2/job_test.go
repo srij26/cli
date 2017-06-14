@@ -323,7 +323,7 @@ var _ = Describe("Job", func() {
 				job, warnings, err := client.GetJob("job-guid")
 
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(job.GUID).To(Equal("job-guid"))
 				Expect(job.Status).To(Equal(JobStatusQueued))
 			})
@@ -361,7 +361,7 @@ var _ = Describe("Job", func() {
 				job, warnings, err := client.GetJob("job-guid")
 
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(job.GUID).To(Equal("job-guid"))
 				Expect(job.Status).To(Equal(JobStatusFailed))
 				Expect(job.Error).To(Equal("Use of entity>error is deprecated in favor of entity>error_details."))
@@ -400,7 +400,7 @@ var _ = Describe("Job", func() {
 				job, warnings, err := client.DeleteOrganization("some-org-guid")
 
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 				Expect(job.GUID).To(Equal("job-guid"))
 				Expect(job.Status).To(Equal(JobStatusQueued))
 			})
@@ -426,7 +426,7 @@ var _ = Describe("Job", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The organization could not be found: some-org-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"warning-1", "warning-2"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2"))
 			})
 		})
 	})

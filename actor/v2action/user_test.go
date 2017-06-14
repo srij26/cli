@@ -50,7 +50,7 @@ var _ = Describe("User Actions", func() {
 				)
 				fakeCloudControllerClient.CreateUserReturns(
 					createdUser,
-					ccv2.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},
@@ -107,7 +107,7 @@ var _ = Describe("User Actions", func() {
 				)
 				fakeCloudControllerClient.CreateUserReturns(
 					ccv2.User{},
-					ccv2.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},

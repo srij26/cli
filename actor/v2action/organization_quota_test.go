@@ -30,7 +30,7 @@ var _ = Describe("OrganizationQuota Actions", func() {
 						GUID: "some-org-quota-guid",
 						Name: "some-org-quota",
 					},
-					ccv2.Warnings{"warning-1"},
+					[]string{"warning-1"},
 					nil,
 				)
 			})

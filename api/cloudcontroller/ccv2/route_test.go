@@ -387,7 +387,7 @@ var _ = Describe("Route", func() {
 						SpaceGUID:  "some-space-guid-2",
 					},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 
@@ -540,7 +540,7 @@ var _ = Describe("Route", func() {
 						SpaceGUID:  "some-space-guid-1",
 					},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 
@@ -710,7 +710,7 @@ var _ = Describe("Route", func() {
 						SpaceGUID:  "some-space-guid-1",
 					},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 
@@ -774,7 +774,7 @@ var _ = Describe("Route", func() {
 			It("deletes the route and returns all warnings", func() {
 				warnings, err := client.DeleteRoute("some-route-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -825,7 +825,7 @@ var _ = Describe("Route", func() {
 				It("does not contain any params", func() {
 					_, warnings, err := client.CheckRoute(Route{DomainGUID: "some-domain-guid"})
 					Expect(err).NotTo(HaveOccurred())
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 
@@ -847,7 +847,7 @@ var _ = Describe("Route", func() {
 						Port:       42,
 					})
 					Expect(err).NotTo(HaveOccurred())
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 					Expect(exists).To(BeTrue())
 				})
 			})
@@ -865,7 +865,7 @@ var _ = Describe("Route", func() {
 				It("returns true", func() {
 					exists, warnings, err := client.CheckRoute(Route{Host: "some-host", DomainGUID: "some-domain-guid"})
 					Expect(err).NotTo(HaveOccurred())
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 					Expect(exists).To(BeTrue())
 				})
 			})
@@ -883,7 +883,7 @@ var _ = Describe("Route", func() {
 				It("returns false", func() {
 					exists, warnings, err := client.CheckRoute(Route{Host: "some-host", DomainGUID: "some-domain-guid"})
 					Expect(err).NotTo(HaveOccurred())
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 					Expect(exists).To(BeFalse())
 				})
 			})
@@ -913,7 +913,7 @@ var _ = Describe("Route", func() {
 						},
 						ResponseCode: http.StatusTeapot,
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 		})

@@ -179,7 +179,7 @@ var _ = Describe("Application Actions", func() {
 					Name:      "some-app-name",
 					SpaceGUID: "some-space-guid",
 				}
-				fakeCloudControllerClient.CreateApplicationReturns(expectedApp, ccv2.Warnings{"some-app-warning-1"}, nil)
+				fakeCloudControllerClient.CreateApplicationReturns(expectedApp, []string{"some-app-warning-1"}, nil)
 			})
 
 			It("creates and returns the application", func() {
@@ -201,7 +201,7 @@ var _ = Describe("Application Actions", func() {
 			var expectedErr error
 			BeforeEach(func() {
 				expectedErr = errors.New("some create app error")
-				fakeCloudControllerClient.CreateApplicationReturns(ccv2.Application{}, ccv2.Warnings{"some-app-warning-1"}, expectedErr)
+				fakeCloudControllerClient.CreateApplicationReturns(ccv2.Application{}, []string{"some-app-warning-1"}, expectedErr)
 			})
 
 			It("returns warnings and an error", func() {
@@ -224,7 +224,7 @@ var _ = Describe("Application Actions", func() {
 						GUID: "some-app-guid",
 						Name: "some-app",
 					},
-					ccv2.Warnings{"foo"},
+					[]string{"foo"},
 					nil,
 				)
 			})
@@ -265,7 +265,7 @@ var _ = Describe("Application Actions", func() {
 							Name: "some-app",
 						},
 					},
-					ccv2.Warnings{"foo"},
+					[]string{"foo"},
 					nil,
 				)
 			})
@@ -335,7 +335,7 @@ var _ = Describe("Application Actions", func() {
 							Name: "some-app-2",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -373,7 +373,7 @@ var _ = Describe("Application Actions", func() {
 				expectedError = errors.New("some cc error")
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv2.Application{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedError)
 			})
 
@@ -394,7 +394,7 @@ var _ = Describe("Application Actions", func() {
 							GUID: "application-guid",
 							Name: "application-name",
 						},
-					}, ccv2.Warnings{"route-applications-warning"}, nil)
+					}, []string{"route-applications-warning"}, nil)
 			})
 			It("returns the applications bound to the route and warnings", func() {
 				applications, warnings, err := actor.GetRouteApplications("route-guid", nil)
@@ -415,7 +415,7 @@ var _ = Describe("Application Actions", func() {
 		Context("when the CC client returns an error", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetRouteApplicationsReturns(
-					[]ccv2.Application{}, ccv2.Warnings{"route-applications-warning"}, errors.New("get-route-applications-error"))
+					[]ccv2.Application{}, []string{"route-applications-warning"}, errors.New("get-route-applications-error"))
 			})
 
 			It("returns the error and warnings", func() {
@@ -462,7 +462,7 @@ var _ = Describe("Application Actions", func() {
 						[]ccv2.Application{
 							{GUID: "some-app-guid"},
 						},
-						ccv2.Warnings{"get application warning"},
+						[]string{"get application warning"},
 						nil,
 					)
 					fakeCloudControllerClient.UpdateApplicationReturns(
@@ -470,7 +470,7 @@ var _ = Describe("Application Actions", func() {
 							GUID:            "some-app-guid",
 							HealthCheckType: "process",
 						},
-						ccv2.Warnings{"update warnings"},
+						[]string{"update warnings"},
 						nil,
 					)
 				})
@@ -502,7 +502,7 @@ var _ = Describe("Application Actions", func() {
 							[]ccv2.Application{
 								{GUID: "some-app-guid", HealthCheckType: "http", HealthCheckHTTPEndpoint: "/"},
 							},
-							ccv2.Warnings{"get application warning"},
+							[]string{"get application warning"},
 							nil,
 						)
 					})
@@ -523,12 +523,12 @@ var _ = Describe("Application Actions", func() {
 							[]ccv2.Application{
 								{GUID: "some-app-guid", HealthCheckType: "http", HealthCheckHTTPEndpoint: "/"},
 							},
-							ccv2.Warnings{"get application warning"},
+							[]string{"get application warning"},
 							nil,
 						)
 						fakeCloudControllerClient.UpdateApplicationReturns(
 							ccv2.Application{},
-							ccv2.Warnings{"update warnings"},
+							[]string{"update warnings"},
 							nil,
 						)
 					})
@@ -560,7 +560,7 @@ var _ = Describe("Application Actions", func() {
 								HealthCheckType: "process",
 							},
 						},
-						ccv2.Warnings{"get application warning"},
+						[]string{"get application warning"},
 						nil,
 					)
 				})
@@ -583,7 +583,7 @@ var _ = Describe("Application Actions", func() {
 		Context("when getting the application returns an error", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
-					[]ccv2.Application{}, ccv2.Warnings{"get application warning"}, errors.New("get application error"))
+					[]ccv2.Application{}, []string{"get application warning"}, errors.New("get application error"))
 			})
 
 			It("returns the error and warnings", func() {
@@ -604,12 +604,12 @@ var _ = Describe("Application Actions", func() {
 					[]ccv2.Application{
 						{GUID: "some-app-guid"},
 					},
-					ccv2.Warnings{"get application warning"},
+					[]string{"get application warning"},
 					nil,
 				)
 				fakeCloudControllerClient.UpdateApplicationReturns(
 					ccv2.Application{},
-					ccv2.Warnings{"update warnings"},
+					[]string{"update warnings"},
 					expectedErr,
 				)
 			})
@@ -671,10 +671,10 @@ var _ = Describe("Application Actions", func() {
 			fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{GUID: "some-app-guid",
 				Instances: 2,
 				Name:      "some-app",
-			}, ccv2.Warnings{"update-warning"}, nil)
+			}, []string{"update-warning"}, nil)
 
 			appCount := 0
-			fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, ccv2.Warnings, error) {
+			fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, []string, error) {
 				if appCount == 0 {
 					appCount += 1
 					return ccv2.Application{
@@ -682,7 +682,7 @@ var _ = Describe("Application Actions", func() {
 						Instances:    2,
 						Name:         "some-app",
 						PackageState: ccv2.ApplicationPackagePending,
-					}, ccv2.Warnings{"app-warnings-1"}, nil
+					}, []string{"app-warnings-1"}, nil
 				}
 
 				return ccv2.Application{
@@ -690,23 +690,23 @@ var _ = Describe("Application Actions", func() {
 					Name:         "some-app",
 					Instances:    2,
 					PackageState: ccv2.ApplicationPackageStaged,
-				}, ccv2.Warnings{"app-warnings-2"}, nil
+				}, []string{"app-warnings-2"}, nil
 			}
 
 			instanceCount := 0
-			fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, ccv2.Warnings, error) {
+			fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, []string, error) {
 				if instanceCount == 0 {
 					instanceCount += 1
 					return map[int]ccv2.ApplicationInstance{
 						0: {State: ccv2.ApplicationInstanceStarting},
 						1: {State: ccv2.ApplicationInstanceStarting},
-					}, ccv2.Warnings{"app-instance-warnings-1"}, nil
+					}, []string{"app-instance-warnings-1"}, nil
 				}
 
 				return map[int]ccv2.ApplicationInstance{
 					0: {State: ccv2.ApplicationInstanceStarting},
 					1: {State: ccv2.ApplicationInstanceRunning},
-				}, ccv2.Warnings{"app-instance-warnings-2"}, nil
+				}, []string{"app-instance-warnings-2"}, nil
 			}
 		})
 
@@ -786,7 +786,7 @@ var _ = Describe("Application Actions", func() {
 				fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{GUID: "some-app-guid",
 					Instances: 0,
 					Name:      "some-app",
-				}, ccv2.Warnings{"update-warning"}, nil)
+				}, []string{"update-warning"}, nil)
 			})
 
 			It("starts and only polls for staging to finish", func() {
@@ -813,7 +813,7 @@ var _ = Describe("Application Actions", func() {
 			var expectedErr error
 			BeforeEach(func() {
 				expectedErr = errors.New("I am a banana!!!!")
-				fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{}, ccv2.Warnings{"update-warning"}, expectedErr)
+				fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{}, []string{"update-warning"}, expectedErr)
 			})
 
 			It("sends the update error and never polls", func() {
@@ -831,8 +831,8 @@ var _ = Describe("Application Actions", func() {
 				var expectedErr error
 				BeforeEach(func() {
 					expectedErr = errors.New("I am a banana!!!!")
-					fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, ccv2.Warnings, error) {
-						return ccv2.Application{}, ccv2.Warnings{"app-warnings-1"}, expectedErr
+					fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, []string, error) {
+						return ccv2.Application{}, []string{"app-warnings-1"}, expectedErr
 					}
 				})
 
@@ -850,14 +850,14 @@ var _ = Describe("Application Actions", func() {
 			Context("when the application fails to stage", func() {
 				Context("due to a NoAppDetectedError", func() {
 					BeforeEach(func() {
-						fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, ccv2.Warnings, error) {
+						fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, []string, error) {
 							return ccv2.Application{
 								GUID:                "some-app-guid",
 								Name:                "some-app",
 								Instances:           2,
 								PackageState:        ccv2.ApplicationPackageFailed,
 								StagingFailedReason: "NoAppDetectedError",
-							}, ccv2.Warnings{"app-warnings-1"}, nil
+							}, []string{"app-warnings-1"}, nil
 						}
 					})
 
@@ -875,14 +875,14 @@ var _ = Describe("Application Actions", func() {
 
 				Context("due to any other error", func() {
 					BeforeEach(func() {
-						fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, ccv2.Warnings, error) {
+						fakeCloudControllerClient.GetApplicationStub = func(appGUID string) (ccv2.Application, []string, error) {
 							return ccv2.Application{
 								GUID:                "some-app-guid",
 								Name:                "some-app",
 								Instances:           2,
 								PackageState:        ccv2.ApplicationPackageFailed,
 								StagingFailedReason: "OhNoes",
-							}, ccv2.Warnings{"app-warnings-1"}, nil
+							}, []string{"app-warnings-1"}, nil
 						}
 					})
 
@@ -922,8 +922,8 @@ var _ = Describe("Application Actions", func() {
 				var expectedErr error
 				BeforeEach(func() {
 					expectedErr = errors.New("I am a banana!!!!")
-					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, ccv2.Warnings, error) {
-						return nil, ccv2.Warnings{"app-instance-warnings-1"}, expectedErr
+					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, []string, error) {
+						return nil, []string{"app-instance-warnings-1"}, expectedErr
 					}
 				})
 
@@ -960,10 +960,10 @@ var _ = Describe("Application Actions", func() {
 
 			Context("when the application crashes", func() {
 				BeforeEach(func() {
-					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, ccv2.Warnings, error) {
+					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, []string, error) {
 						return map[int]ccv2.ApplicationInstance{
 							0: {State: ccv2.ApplicationInstanceCrashed},
-						}, ccv2.Warnings{"app-instance-warnings-1"}, nil
+						}, []string{"app-instance-warnings-1"}, nil
 					}
 				})
 
@@ -983,10 +983,10 @@ var _ = Describe("Application Actions", func() {
 
 			Context("when the application flaps", func() {
 				BeforeEach(func() {
-					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, ccv2.Warnings, error) {
+					fakeCloudControllerClient.GetApplicationInstancesByApplicationStub = func(guid string) (map[int]ccv2.ApplicationInstance, []string, error) {
 						return map[int]ccv2.ApplicationInstance{
 							0: {State: ccv2.ApplicationInstanceFlapping},
-						}, ccv2.Warnings{"app-instance-warnings-1"}, nil
+						}, []string{"app-instance-warnings-1"}, nil
 					}
 				})
 
@@ -1015,7 +1015,7 @@ var _ = Describe("Application Actions", func() {
 					Name:      "some-app-name",
 					SpaceGUID: "some-space-guid",
 				}
-				fakeCloudControllerClient.UpdateApplicationReturns(expectedApp, ccv2.Warnings{"some-app-warning-1"}, nil)
+				fakeCloudControllerClient.UpdateApplicationReturns(expectedApp, []string{"some-app-warning-1"}, nil)
 			})
 
 			It("updates and returns the application", func() {
@@ -1037,7 +1037,7 @@ var _ = Describe("Application Actions", func() {
 			var expectedErr error
 			BeforeEach(func() {
 				expectedErr = errors.New("some update app error")
-				fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{}, ccv2.Warnings{"some-app-warning-1"}, expectedErr)
+				fakeCloudControllerClient.UpdateApplicationReturns(ccv2.Application{}, []string{"some-app-warning-1"}, expectedErr)
 			})
 
 			It("returns warnings and an error", func() {

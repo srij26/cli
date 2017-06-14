@@ -141,7 +141,7 @@ var _ = Describe("Domain Actions", func() {
 					GUID: "shared-domain-guid",
 					Name: "shared-domain",
 				}
-				fakeCloudControllerClient.GetSharedDomainReturns(expectedDomain, ccv2.Warnings{"shared domain warning"}, nil)
+				fakeCloudControllerClient.GetSharedDomainReturns(expectedDomain, []string{"shared domain warning"}, nil)
 			})
 
 			It("returns the shared domain and all warnings", func() {
@@ -175,7 +175,7 @@ var _ = Describe("Domain Actions", func() {
 			var expectedErr DomainNotFoundError
 
 			BeforeEach(func() {
-				fakeCloudControllerClient.GetSharedDomainReturns(ccv2.Domain{}, ccv2.Warnings{"shared domain warning"}, ccerror.ResourceNotFoundError{})
+				fakeCloudControllerClient.GetSharedDomainReturns(ccv2.Domain{}, []string{"shared domain warning"}, ccerror.ResourceNotFoundError{})
 			})
 
 			It("returns a DomainNotFoundError and all warnings", func() {
@@ -191,7 +191,7 @@ var _ = Describe("Domain Actions", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("shared domain error")
-				fakeCloudControllerClient.GetSharedDomainReturns(ccv2.Domain{}, ccv2.Warnings{"shared domain warning"}, expectedErr)
+				fakeCloudControllerClient.GetSharedDomainReturns(ccv2.Domain{}, []string{"shared domain warning"}, expectedErr)
 			})
 
 			It("returns the same error and all warnings", func() {
@@ -212,7 +212,7 @@ var _ = Describe("Domain Actions", func() {
 					GUID: "private-domain-guid",
 					Name: "private-domain",
 				}
-				fakeCloudControllerClient.GetPrivateDomainReturns(expectedDomain, ccv2.Warnings{"private domain warning"}, nil)
+				fakeCloudControllerClient.GetPrivateDomainReturns(expectedDomain, []string{"private domain warning"}, nil)
 			})
 
 			It("returns the private domain and all warnings", func() {
@@ -246,7 +246,7 @@ var _ = Describe("Domain Actions", func() {
 			var expectedErr DomainNotFoundError
 
 			BeforeEach(func() {
-				fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, ccv2.Warnings{"private domain warning"}, ccerror.ResourceNotFoundError{})
+				fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, []string{"private domain warning"}, ccerror.ResourceNotFoundError{})
 			})
 
 			It("returns a DomainNotFoundError and all warnings", func() {
@@ -262,7 +262,7 @@ var _ = Describe("Domain Actions", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("private domain error")
-				fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, ccv2.Warnings{"private domain warning"}, expectedErr)
+				fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, []string{"private domain warning"}, expectedErr)
 			})
 
 			It("returns the same error and all warnings", func() {
@@ -287,8 +287,8 @@ var _ = Describe("Domain Actions", func() {
 					Name: "some-other-private-domain",
 				}
 
-				fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{sharedDomain}, ccv2.Warnings{"shared domains warning"}, nil)
-				fakeCloudControllerClient.GetOrganizationPrivateDomainsReturns([]ccv2.Domain{privateDomain, otherPrivateDomain}, ccv2.Warnings{"private domains warning"}, nil)
+				fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{sharedDomain}, []string{"shared domains warning"}, nil)
+				fakeCloudControllerClient.GetOrganizationPrivateDomainsReturns([]ccv2.Domain{privateDomain, otherPrivateDomain}, []string{"private domains warning"}, nil)
 			})
 
 			It("returns a concatenated slice with private then shared domains", func() {
@@ -315,7 +315,7 @@ var _ = Describe("Domain Actions", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("shared domains error")
-				fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{}, ccv2.Warnings{"shared domains warning"}, expectedErr)
+				fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{}, []string{"shared domains warning"}, expectedErr)
 			})
 
 			It("returns that error", func() {
@@ -331,7 +331,7 @@ var _ = Describe("Domain Actions", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("private domains error")
-				fakeCloudControllerClient.GetOrganizationPrivateDomainsReturns([]ccv2.Domain{}, ccv2.Warnings{"private domains warning"}, expectedErr)
+				fakeCloudControllerClient.GetOrganizationPrivateDomainsReturns([]ccv2.Domain{}, []string{"private domains warning"}, expectedErr)
 			})
 
 			It("returns that error", func() {

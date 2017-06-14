@@ -106,7 +106,7 @@ var _ = Describe("Application Instance Status", func() {
 				},
 				))
 
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -130,7 +130,7 @@ var _ = Describe("Application Instance Status", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The app could not be found: some-app-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})

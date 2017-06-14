@@ -30,7 +30,7 @@ var _ = Describe("SpaceQuota Actions", func() {
 						GUID: "some-space-quota-guid",
 						Name: "some-space-quota",
 					},
-					ccv2.Warnings{"warning-1"},
+					[]string{"warning-1"},
 					nil,
 				)
 			})
@@ -66,7 +66,7 @@ var _ = Describe("SpaceQuota Actions", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("some space quota error")
-				fakeCloudControllerClient.GetSpaceQuotaReturns(ccv2.SpaceQuota{}, ccv2.Warnings{"warning-1", "warning-2"}, expectedErr)
+				fakeCloudControllerClient.GetSpaceQuotaReturns(ccv2.SpaceQuota{}, []string{"warning-1", "warning-2"}, expectedErr)
 			})
 
 			It("returns the error and warnings", func() {

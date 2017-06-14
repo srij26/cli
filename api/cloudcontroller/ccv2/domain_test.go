@@ -41,7 +41,7 @@ var _ = Describe("Domain", func() {
 				domain, warnings, err := client.GetSharedDomain("shared-domain-guid")
 				Expect(err).NotTo(HaveOccurred())
 				Expect(domain).To(Equal(Domain{Name: "shared-domain-1.com", GUID: "shared-domain-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -94,7 +94,7 @@ var _ = Describe("Domain", func() {
 				domain, warnings, err := client.GetPrivateDomain("private-domain-guid")
 				Expect(err).NotTo(HaveOccurred())
 				Expect(domain).To(Equal(Domain{Name: "private-domain-1.com", GUID: "private-domain-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -203,7 +203,7 @@ var _ = Describe("Domain", func() {
 						Name: "domain-name-4",
 					},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 
@@ -233,7 +233,7 @@ var _ = Describe("Domain", func() {
 					ResponseCode: http.StatusInternalServerError,
 				}))
 				Expect(domains).To(Equal([]Domain{}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -318,7 +318,7 @@ var _ = Describe("Domain", func() {
 						GUID: "private-domain-guid-4",
 					},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 
@@ -360,7 +360,7 @@ var _ = Describe("Domain", func() {
 					Message: "The organization could not be found: glah",
 				}))
 				Expect(domains).To(Equal([]Domain{}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 

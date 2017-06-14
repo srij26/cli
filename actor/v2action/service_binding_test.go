@@ -36,7 +36,7 @@ var _ = Describe("Service Binding Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					nil,
-					ccv2.Warnings{"foo-1"},
+					[]string{"foo-1"},
 					errors.New("some-error"),
 				)
 			})
@@ -51,7 +51,7 @@ var _ = Describe("Service Binding Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv2.Application{{GUID: "some-app-guid"}},
-					ccv2.Warnings{"foo-1"},
+					[]string{"foo-1"},
 					nil,
 				)
 			})
@@ -60,7 +60,7 @@ var _ = Describe("Service Binding Actions", func() {
 				BeforeEach(func() {
 					fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
 						[]ccv2.ServiceInstance{},
-						ccv2.Warnings{"foo-2"},
+						[]string{"foo-2"},
 						errors.New("some-error"),
 					)
 				})
@@ -75,7 +75,7 @@ var _ = Describe("Service Binding Actions", func() {
 				BeforeEach(func() {
 					fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
 						[]ccv2.ServiceInstance{{GUID: "some-service-instance-guid"}},
-						ccv2.Warnings{"foo-2"},
+						[]string{"foo-2"},
 						nil,
 					)
 				})
@@ -84,7 +84,7 @@ var _ = Describe("Service Binding Actions", func() {
 					BeforeEach(func() {
 						fakeCloudControllerClient.CreateServiceBindingReturns(
 							ccv2.ServiceBinding{},
-							ccv2.Warnings{"foo-3"},
+							[]string{"foo-3"},
 							errors.New("some-error"),
 						)
 					})
@@ -98,7 +98,7 @@ var _ = Describe("Service Binding Actions", func() {
 					BeforeEach(func() {
 						fakeCloudControllerClient.CreateServiceBindingReturns(
 							ccv2.ServiceBinding{GUID: "some-service-binding-guid"},
-							ccv2.Warnings{"foo-3"},
+							[]string{"foo-3"},
 							nil,
 						)
 					})
@@ -131,7 +131,7 @@ var _ = Describe("Service Binding Actions", func() {
 							GUID: "some-service-binding-guid",
 						},
 					},
-					ccv2.Warnings{"foo"},
+					[]string{"foo"},
 					nil,
 				)
 			})
@@ -199,7 +199,7 @@ var _ = Describe("Service Binding Actions", func() {
 							Name: "some-app",
 						},
 					},
-					ccv2.Warnings{"foo-1"},
+					[]string{"foo-1"},
 					nil,
 				)
 				fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
@@ -209,7 +209,7 @@ var _ = Describe("Service Binding Actions", func() {
 							Name: "some-service-instance",
 						},
 					},
-					ccv2.Warnings{"foo-2"},
+					[]string{"foo-2"},
 					nil,
 				)
 				fakeCloudControllerClient.GetServiceBindingsReturns(
@@ -218,12 +218,12 @@ var _ = Describe("Service Binding Actions", func() {
 							GUID: "some-service-binding-guid",
 						},
 					},
-					ccv2.Warnings{"foo-3"},
+					[]string{"foo-3"},
 					nil,
 				)
 
 				fakeCloudControllerClient.DeleteServiceBindingReturns(
-					ccv2.Warnings{"foo-4", "foo-5"},
+					[]string{"foo-4", "foo-5"},
 					nil,
 				)
 			})
@@ -242,7 +242,7 @@ var _ = Describe("Service Binding Actions", func() {
 
 				BeforeEach(func() {
 					expectedError = errors.New("I am a CC error")
-					fakeCloudControllerClient.DeleteServiceBindingReturns(ccv2.Warnings{"foo-4", "foo-5"}, expectedError)
+					fakeCloudControllerClient.DeleteServiceBindingReturns([]string{"foo-4", "foo-5"}, expectedError)
 				})
 
 				It("returns the warnings and the error", func() {

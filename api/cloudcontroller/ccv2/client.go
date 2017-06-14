@@ -76,10 +76,6 @@ import (
 	"github.com/tedsuo/rata"
 )
 
-// Warnings are a collection of warnings that the Cloud Controller can return
-// back from an API request.
-type Warnings []string
-
 // Client is a client that can be used to talk to a Cloud Controller's V2
 // Endpoints.
 type Client struct {

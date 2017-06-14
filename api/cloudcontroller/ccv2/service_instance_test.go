@@ -55,7 +55,7 @@ var _ = Describe("Service Instance", func() {
 						GUID: "some-app-guid",
 						Name: "some-app-name",
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 		})
@@ -80,7 +80,7 @@ var _ = Describe("Service Instance", func() {
 			It("returns the error and warnings", func() {
 				_, warnings, err := client.CreateApplication(Application{})
 				Expect(err).To(MatchError(ccerror.BadRequestError{Message: "Request invalid due to parse error: Field: name, Error: Missing field name, Field: space_guid, Error: Missing field space_guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -199,7 +199,7 @@ var _ = Describe("Service Instance", func() {
 					{Name: "some-service-name-3", GUID: "some-service-guid-3", Type: ManagedService},
 					{Name: "some-service-name-4", GUID: "some-service-guid-4", Type: ManagedService},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 	})
@@ -285,7 +285,7 @@ var _ = Describe("Service Instance", func() {
 						{Name: "some-service-name-3", GUID: "some-service-guid-3", Type: ManagedService},
 						{Name: "some-service-name-4", GUID: "some-service-guid-4", Type: UserProvidedService},
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 				})
 			})
 		})
@@ -337,7 +337,7 @@ var _ = Describe("Service Instance", func() {
 						{Name: "some-service-name-1", GUID: "some-service-guid-1", Type: ManagedService},
 						{Name: "some-service-name-2", GUID: "some-service-guid-2", Type: ManagedService},
 					}))
-					Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+					Expect(warnings).To(ConsistOf("this is a warning"))
 				})
 			})
 		})

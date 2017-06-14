@@ -354,7 +354,7 @@ var _ = Describe("Security Groups", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The space could not be found: some-space-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 				Expect(securityGroups).To(BeEmpty())
 			})
 		})
@@ -539,7 +539,7 @@ var _ = Describe("Security Groups", func() {
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 					Message: "The space could not be found: some-space-guid",
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 				Expect(securityGroups).To(BeEmpty())
 			})
 		})
@@ -547,7 +547,7 @@ var _ = Describe("Security Groups", func() {
 
 	Describe("RemoveSpaceFromSecurityGroup", func() {
 		var (
-			warnings Warnings
+			warnings []string
 			err      error
 		)
 
@@ -566,7 +566,7 @@ var _ = Describe("Security Groups", func() {
 
 			It("returns all warnings", func() {
 				Expect(err).ToNot(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"warning-1"}))
+				Expect(warnings).To(ConsistOf("warning-1"))
 			})
 		})
 

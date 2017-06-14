@@ -37,7 +37,7 @@ type serviceBindingRequestBody struct {
 }
 
 // CreateServiceBinding creates a service binding
-func (client *Client) CreateServiceBinding(appGUID string, serviceInstanceGUID string, parameters map[string]interface{}) (ServiceBinding, Warnings, error) {
+func (client *Client) CreateServiceBinding(appGUID string, serviceInstanceGUID string, parameters map[string]interface{}) (ServiceBinding, []string, error) {
 	requestBody := serviceBindingRequestBody{
 		ServiceInstanceGUID: serviceInstanceGUID,
 		AppGUID:             appGUID,
@@ -72,7 +72,7 @@ func (client *Client) CreateServiceBinding(appGUID string, serviceInstanceGUID s
 
 // GetServiceBindings returns back a list of Service Bindings based off of the
 // provided queries.
-func (client *Client) GetServiceBindings(queries []Query) ([]ServiceBinding, Warnings, error) {
+func (client *Client) GetServiceBindings(queries []Query) ([]ServiceBinding, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetServiceBindingsRequest,
 		Query:       FormatQueryParameters(queries),
@@ -98,7 +98,7 @@ func (client *Client) GetServiceBindings(queries []Query) ([]ServiceBinding, War
 }
 
 // DeleteServiceBinding will destroy the requested Service Binding.
-func (client *Client) DeleteServiceBinding(serviceBindingGUID string) (Warnings, error) {
+func (client *Client) DeleteServiceBinding(serviceBindingGUID string) ([]string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.DeleteServiceBindingRequest,
 		URIParams:   map[string]string{"service_binding_guid": serviceBindingGUID},

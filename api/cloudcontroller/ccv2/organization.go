@@ -38,7 +38,7 @@ func (org *Organization) UnmarshalJSON(data []byte) error {
 }
 
 // GetOrganization returns an Organization associated with the provided guid.
-func (client *Client) GetOrganization(guid string) (Organization, Warnings, error) {
+func (client *Client) GetOrganization(guid string) (Organization, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrganizationRequest,
 		URIParams:   Params{"organization_guid": guid},
@@ -58,7 +58,7 @@ func (client *Client) GetOrganization(guid string) (Organization, Warnings, erro
 
 // GetOrganizations returns back a list of Organizations based off of the
 // provided queries.
-func (client *Client) GetOrganizations(queries []Query) ([]Organization, Warnings, error) {
+func (client *Client) GetOrganizations(queries []Query) ([]Organization, []string, error) {
 	request, err := client.newHTTPRequest(requestOptions{
 		RequestName: internal.GetOrganizationsRequest,
 		Query:       FormatQueryParameters(queries),

@@ -40,7 +40,7 @@ var _ = Describe("Organization Summary Actions", func() {
 							QuotaDefinitionGUID: "some-quota-definition-guid",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 
 				fakeCloudControllerClient.GetSharedDomainsReturns(
@@ -54,7 +54,7 @@ var _ = Describe("Organization Summary Actions", func() {
 							Name: "shared-domain-1",
 						},
 					},
-					ccv2.Warnings{"warning-3", "warning-4"},
+					[]string{"warning-3", "warning-4"},
 					nil)
 
 				fakeCloudControllerClient.GetOrganizationPrivateDomainsReturns(
@@ -68,7 +68,7 @@ var _ = Describe("Organization Summary Actions", func() {
 							Name: "private-domain-1",
 						},
 					},
-					ccv2.Warnings{"warning-5", "warning-6"},
+					[]string{"warning-5", "warning-6"},
 					nil)
 
 				fakeCloudControllerClient.GetOrganizationQuotaReturns(
@@ -76,7 +76,7 @@ var _ = Describe("Organization Summary Actions", func() {
 						GUID: "some-org-quota-guid",
 						Name: "some-org-quota",
 					},
-					ccv2.Warnings{"warning-7", "warning-8"},
+					[]string{"warning-7", "warning-8"},
 					nil)
 
 				fakeCloudControllerClient.GetSpacesReturns(
@@ -92,7 +92,7 @@ var _ = Describe("Organization Summary Actions", func() {
 							AllowSSH: true,
 						},
 					},
-					ccv2.Warnings{"warning-9", "warning-10"},
+					[]string{"warning-9", "warning-10"},
 					nil)
 			})
 
@@ -117,7 +117,7 @@ var _ = Describe("Organization Summary Actions", func() {
 					DomainNames: []string{"private-domain-1", "private-domain-2", "shared-domain-1", "shared-domain-2"},
 					SpaceNames:  []string{"space-1", "space-2"},
 				}))
-				Expect(warnings).To(ConsistOf([]string{"warning-1", "warning-2", "warning-3", "warning-4", "warning-5", "warning-6", "warning-7", "warning-8", "warning-9", "warning-10"}))
+				Expect(warnings).To(ConsistOf("warning-1", "warning-2", "warning-3", "warning-4", "warning-5", "warning-6", "warning-7", "warning-8", "warning-9", "warning-10"))
 				Expect(err).NotTo(HaveOccurred())
 			})
 		})
@@ -127,7 +127,7 @@ var _ = Describe("Organization Summary Actions", func() {
 				expectedErr = errors.New("get-orgs-error")
 				fakeCloudControllerClient.GetOrganizationsReturns(
 					[]ccv2.Organization{},
-					ccv2.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},
@@ -147,7 +147,7 @@ var _ = Describe("Organization Summary Actions", func() {
 					[]ccv2.Organization{
 						{GUID: "some-org-guid"},
 					},
-					ccv2.Warnings{
+					[]string{
 						"warning-1",
 						"warning-2",
 					},
@@ -158,7 +158,7 @@ var _ = Describe("Organization Summary Actions", func() {
 			Context("when an error is encountered getting the organization domains", func() {
 				BeforeEach(func() {
 					expectedErr = errors.New("shared domains error")
-					fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{}, ccv2.Warnings{"shared domains warning"}, expectedErr)
+					fakeCloudControllerClient.GetSharedDomainsReturns([]ccv2.Domain{}, []string{"shared domains warning"}, expectedErr)
 				})
 
 				It("returns that error and all warnings", func() {
@@ -170,7 +170,7 @@ var _ = Describe("Organization Summary Actions", func() {
 			Context("when an error is encountered getting the organization quota", func() {
 				BeforeEach(func() {
 					expectedErr = errors.New("some org quota error")
-					fakeCloudControllerClient.GetOrganizationQuotaReturns(ccv2.OrganizationQuota{}, ccv2.Warnings{"quota warning"}, expectedErr)
+					fakeCloudControllerClient.GetOrganizationQuotaReturns(ccv2.OrganizationQuota{}, []string{"quota warning"}, expectedErr)
 				})
 
 				It("returns the error and all warnings", func() {
@@ -184,7 +184,7 @@ var _ = Describe("Organization Summary Actions", func() {
 					expectedErr = errors.New("cc-get-spaces-error")
 					fakeCloudControllerClient.GetSpacesReturns(
 						[]ccv2.Space{},
-						ccv2.Warnings{"spaces warning"},
+						[]string{"spaces warning"},
 						expectedErr,
 					)
 				})

@@ -75,7 +75,7 @@ var _ = Describe("Job Actions", func() {
 
 		Context("when the upload is successful", func() {
 			BeforeEach(func() {
-				fakeCloudControllerClient.UploadApplicationPackageReturns(ccv2.Job{GUID: "some-job-guid"}, ccv2.Warnings{"upload-warning-1", "upload-warning-2"}, nil)
+				fakeCloudControllerClient.UploadApplicationPackageReturns(ccv2.Job{GUID: "some-job-guid"}, []string{"upload-warning-1", "upload-warning-2"}, nil)
 			})
 
 			It("returns all warnings", func() {
@@ -97,7 +97,7 @@ var _ = Describe("Job Actions", func() {
 
 			BeforeEach(func() {
 				err = errors.New("some-error")
-				fakeCloudControllerClient.UploadApplicationPackageReturns(ccv2.Job{}, ccv2.Warnings{"upload-warning-1", "upload-warning-2"}, err)
+				fakeCloudControllerClient.UploadApplicationPackageReturns(ccv2.Job{}, []string{"upload-warning-1", "upload-warning-2"}, err)
 			})
 
 			It("returns the error", func() {
@@ -120,7 +120,7 @@ var _ = Describe("Job Actions", func() {
 
 		Context("when the job polling is successful", func() {
 			BeforeEach(func() {
-				fakeCloudControllerClient.PollJobReturns(ccv2.Warnings{"polling-warning"}, nil)
+				fakeCloudControllerClient.PollJobReturns([]string{"polling-warning"}, nil)
 			})
 
 			It("returns the warnings", func() {
@@ -137,7 +137,7 @@ var _ = Describe("Job Actions", func() {
 
 			BeforeEach(func() {
 				err = errors.New("some-error")
-				fakeCloudControllerClient.PollJobReturns(ccv2.Warnings{"polling-warning"}, err)
+				fakeCloudControllerClient.PollJobReturns([]string{"polling-warning"}, err)
 			})
 
 			It("returns the error", func() {

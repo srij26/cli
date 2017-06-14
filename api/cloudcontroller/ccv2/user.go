@@ -33,7 +33,7 @@ func (user *User) UnmarshalJSON(data []byte) error {
 
 // CreateUser creates a new Cloud Controller User from the provided UAA user
 // ID.
-func (client *Client) CreateUser(uaaUserID string) (User, Warnings, error) {
+func (client *Client) CreateUser(uaaUserID string) (User, []string, error) {
 	bodyBytes, err := json.Marshal(userRequestBody{
 		GUID: uaaUserID,
 	})

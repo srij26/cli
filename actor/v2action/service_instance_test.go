@@ -36,7 +36,7 @@ var _ = Describe("Service Instance Actions", func() {
 							Name: "some-service-instance-2",
 						},
 					},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -72,7 +72,7 @@ var _ = Describe("Service Instance Actions", func() {
 				expectedError = errors.New("I am a CloudControllerClient Error")
 				fakeCloudControllerClient.GetSpaceServiceInstancesReturns(
 					[]ccv2.ServiceInstance{},
-					ccv2.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedError)
 			})
 
@@ -94,7 +94,7 @@ var _ = Describe("Service Instance Actions", func() {
 							Name: "some-service-instance",
 						},
 					},
-					ccv2.Warnings{"foo"},
+					[]string{"foo"},
 					nil,
 				)
 			})

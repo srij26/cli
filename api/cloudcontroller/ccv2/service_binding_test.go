@@ -50,7 +50,7 @@ var _ = Describe("Service Binding", func() {
 				Expect(err).NotTo(HaveOccurred())
 
 				Expect(serviceBinding).To(Equal(ServiceBinding{GUID: "some-service-binding-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 
@@ -77,7 +77,7 @@ var _ = Describe("Service Binding", func() {
 				}
 				_, warnings, err := client.CreateServiceBinding("some-app-guid", "some-service-instance-guid", parameters)
 				Expect(err).To(MatchError(ccerror.ServiceBindingTakenError{Message: "The app space binding to service is taken: some-app-guid some-service-instance-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -142,7 +142,7 @@ var _ = Describe("Service Binding", func() {
 					{GUID: "service-binding-guid-3"},
 					{GUID: "service-binding-guid-4"},
 				}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning", "this is another warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning", "this is another warning"))
 			})
 		})
 	})
@@ -161,7 +161,7 @@ var _ = Describe("Service Binding", func() {
 			It("deletes the service binding", func() {
 				warnings, err := client.DeleteServiceBinding("some-service-binding-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
@@ -186,7 +186,7 @@ var _ = Describe("Service Binding", func() {
 			Expect(err).To(MatchError(ccerror.ResourceNotFoundError{
 				Message: "The service binding could not be found: some-service-binding-guid",
 			}))
-			Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+			Expect(warnings).To(ConsistOf("this is a warning"))
 		})
 	})
 })

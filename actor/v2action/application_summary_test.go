@@ -50,7 +50,7 @@ var _ = Describe("Application Summary Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv2.Application{},
-					ccv2.Warnings{"app-warning"},
+					[]string{"app-warning"},
 					nil)
 			})
 
@@ -65,7 +65,7 @@ var _ = Describe("Application Summary Actions", func() {
 			BeforeEach(func() {
 				fakeCloudControllerClient.GetApplicationsReturns(
 					[]ccv2.Application{app},
-					ccv2.Warnings{"app-warning"},
+					[]string{"app-warning"},
 					nil)
 			})
 
@@ -74,7 +74,7 @@ var _ = Describe("Application Summary Actions", func() {
 					app.State = ccv2.ApplicationStarted
 					fakeCloudControllerClient.GetApplicationsReturns(
 						[]ccv2.Application{app},
-						ccv2.Warnings{"app-warning"},
+						[]string{"app-warning"},
 						nil)
 				})
 
@@ -85,14 +85,14 @@ var _ = Describe("Application Summary Actions", func() {
 								0: {ID: 0, IsolationSegment: "isolation-segment-1"},
 								1: {ID: 1, IsolationSegment: "isolation-segment-2"}, // should never happen; iso segs for 2 instances of the same app should match.
 							},
-							ccv2.Warnings{"stats-warning"},
+							[]string{"stats-warning"},
 							nil)
 						fakeCloudControllerClient.GetApplicationInstancesByApplicationReturns(
 							map[int]ccv2.ApplicationInstance{
 								0: {ID: 0},
 								1: {ID: 1},
 							},
-							ccv2.Warnings{"instance-warning"},
+							[]string{"instance-warning"},
 							nil)
 					})
 
@@ -119,7 +119,7 @@ var _ = Describe("Application Summary Actions", func() {
 					BeforeEach(func() {
 						fakeCloudControllerClient.GetApplicationInstanceStatusesByApplicationReturns(
 							nil,
-							ccv2.Warnings{"stats-warning"},
+							[]string{"stats-warning"},
 							ccerror.ApplicationStoppedStatsError{})
 					})
 
@@ -160,7 +160,7 @@ var _ = Describe("Application Summary Actions", func() {
 								Host: "host-2",
 							},
 						},
-						ccv2.Warnings{"get-application-routes-warning"},
+						[]string{"get-application-routes-warning"},
 						nil)
 				})
 
@@ -187,7 +187,7 @@ var _ = Describe("Application Summary Actions", func() {
 						expectedErr = errors.New("get routes error")
 						fakeCloudControllerClient.GetApplicationRoutesReturns(
 							nil,
-							ccv2.Warnings{"get-application-routes-warning"},
+							[]string{"get-application-routes-warning"},
 							expectedErr,
 						)
 					})
@@ -205,7 +205,7 @@ var _ = Describe("Application Summary Actions", func() {
 				BeforeEach(func() {
 					fakeCloudControllerClient.GetStackReturns(
 						ccv2.Stack{Name: "some-stack"},
-						ccv2.Warnings{"get-application-stack-warning"},
+						[]string{"get-application-stack-warning"},
 						nil)
 				})
 
@@ -223,7 +223,7 @@ var _ = Describe("Application Summary Actions", func() {
 						expectedErr = errors.New("get stack error")
 						fakeCloudControllerClient.GetStackReturns(
 							ccv2.Stack{},
-							ccv2.Warnings{"get-application-stack-warning"},
+							[]string{"get-application-stack-warning"},
 							expectedErr,
 						)
 					})

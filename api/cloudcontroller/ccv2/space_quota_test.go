@@ -41,7 +41,7 @@ var _ = Describe("Space Quotas", func() {
 			It("returns the Space Quota", func() {
 				spaceQuota, warnings, err := client.GetSpaceQuota("space-quota-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 				Expect(spaceQuota).To(Equal(SpaceQuota{
 					Name: "space-quota",
 					GUID: "space-quota-guid",
@@ -67,7 +67,7 @@ var _ = Describe("Space Quotas", func() {
 			It("returns the error and warnings", func() {
 				_, warnings, err := client.GetSpaceQuota("some-space-quota-guid")
 				Expect(err).To(MatchError(ccerror.ResourceNotFoundError{Message: "The space quota could not be found: some-space-quota-guid"}))
-				Expect(warnings).To(ConsistOf(Warnings{"this is a warning"}))
+				Expect(warnings).To(ConsistOf("this is a warning"))
 			})
 		})
 	})
