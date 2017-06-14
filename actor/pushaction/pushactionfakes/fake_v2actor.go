@@ -10,36 +10,36 @@ import (
 )
 
 type FakeV2Actor struct {
-	BindRouteToApplicationStub        func(routeGUID string, appGUID string) (v2action.Warnings, error)
+	BindRouteToApplicationStub        func(routeGUID string, appGUID string) ([]string, error)
 	bindRouteToApplicationMutex       sync.RWMutex
 	bindRouteToApplicationArgsForCall []struct {
 		routeGUID string
 		appGUID   string
 	}
 	bindRouteToApplicationReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	bindRouteToApplicationReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
-	CreateApplicationStub        func(application v2action.Application) (v2action.Application, v2action.Warnings, error)
+	CreateApplicationStub        func(application v2action.Application) (v2action.Application, []string, error)
 	createApplicationMutex       sync.RWMutex
 	createApplicationArgsForCall []struct {
 		application v2action.Application
 	}
 	createApplicationReturns struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	createApplicationReturnsOnCall map[int]struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	CreateRouteStub        func(route v2action.Route, generatePort bool) (v2action.Route, v2action.Warnings, error)
+	CreateRouteStub        func(route v2action.Route, generatePort bool) (v2action.Route, []string, error)
 	createRouteMutex       sync.RWMutex
 	createRouteArgsForCall []struct {
 		route        v2action.Route
@@ -47,27 +47,27 @@ type FakeV2Actor struct {
 	}
 	createRouteReturns struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	createRouteReturnsOnCall map[int]struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	FindRouteBoundToSpaceWithSettingsStub        func(route v2action.Route) (v2action.Route, v2action.Warnings, error)
+	FindRouteBoundToSpaceWithSettingsStub        func(route v2action.Route) (v2action.Route, []string, error)
 	findRouteBoundToSpaceWithSettingsMutex       sync.RWMutex
 	findRouteBoundToSpaceWithSettingsArgsForCall []struct {
 		route v2action.Route
 	}
 	findRouteBoundToSpaceWithSettingsReturns struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	findRouteBoundToSpaceWithSettingsReturnsOnCall map[int]struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	GatherDirectoryResourcesStub        func(sourceDir string) ([]v2action.Resource, error)
@@ -83,7 +83,7 @@ type FakeV2Actor struct {
 		result1 []v2action.Resource
 		result2 error
 	}
-	GetApplicationByNameAndSpaceStub        func(name string, spaceGUID string) (v2action.Application, v2action.Warnings, error)
+	GetApplicationByNameAndSpaceStub        func(name string, spaceGUID string) (v2action.Application, []string, error)
 	getApplicationByNameAndSpaceMutex       sync.RWMutex
 	getApplicationByNameAndSpaceArgsForCall []struct {
 		name      string
@@ -91,73 +91,73 @@ type FakeV2Actor struct {
 	}
 	getApplicationByNameAndSpaceReturns struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getApplicationByNameAndSpaceReturnsOnCall map[int]struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	GetApplicationRoutesStub        func(applicationGUID string) ([]v2action.Route, v2action.Warnings, error)
+	GetApplicationRoutesStub        func(applicationGUID string) ([]v2action.Route, []string, error)
 	getApplicationRoutesMutex       sync.RWMutex
 	getApplicationRoutesArgsForCall []struct {
 		applicationGUID string
 	}
 	getApplicationRoutesReturns struct {
 		result1 []v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getApplicationRoutesReturnsOnCall map[int]struct {
 		result1 []v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	GetOrganizationDomainsStub        func(orgGUID string) ([]v2action.Domain, v2action.Warnings, error)
+	GetOrganizationDomainsStub        func(orgGUID string) ([]v2action.Domain, []string, error)
 	getOrganizationDomainsMutex       sync.RWMutex
 	getOrganizationDomainsArgsForCall []struct {
 		orgGUID string
 	}
 	getOrganizationDomainsReturns struct {
 		result1 []v2action.Domain
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getOrganizationDomainsReturnsOnCall map[int]struct {
 		result1 []v2action.Domain
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	PollJobStub        func(job v2action.Job) (v2action.Warnings, error)
+	PollJobStub        func(job v2action.Job) ([]string, error)
 	pollJobMutex       sync.RWMutex
 	pollJobArgsForCall []struct {
 		job v2action.Job
 	}
 	pollJobReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	pollJobReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
-	UpdateApplicationStub        func(application v2action.Application) (v2action.Application, v2action.Warnings, error)
+	UpdateApplicationStub        func(application v2action.Application) (v2action.Application, []string, error)
 	updateApplicationMutex       sync.RWMutex
 	updateApplicationArgsForCall []struct {
 		application v2action.Application
 	}
 	updateApplicationReturns struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	updateApplicationReturnsOnCall map[int]struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	UploadApplicationPackageStub        func(appGUID string, existingResources []v2action.Resource, newResources io.Reader, newResourcesLength int64) (v2action.Job, v2action.Warnings, error)
+	UploadApplicationPackageStub        func(appGUID string, existingResources []v2action.Resource, newResources io.Reader, newResourcesLength int64) (v2action.Job, []string, error)
 	uploadApplicationPackageMutex       sync.RWMutex
 	uploadApplicationPackageArgsForCall []struct {
 		appGUID            string
@@ -167,12 +167,12 @@ type FakeV2Actor struct {
 	}
 	uploadApplicationPackageReturns struct {
 		result1 v2action.Job
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	uploadApplicationPackageReturnsOnCall map[int]struct {
 		result1 v2action.Job
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	ZipResourcesStub        func(sourceDir string, filesToInclude []v2action.Resource) (string, error)
@@ -193,7 +193,7 @@ type FakeV2Actor struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV2Actor) BindRouteToApplication(routeGUID string, appGUID string) (v2action.Warnings, error) {
+func (fake *FakeV2Actor) BindRouteToApplication(routeGUID string, appGUID string) ([]string, error) {
 	fake.bindRouteToApplicationMutex.Lock()
 	ret, specificReturn := fake.bindRouteToApplicationReturnsOnCall[len(fake.bindRouteToApplicationArgsForCall)]
 	fake.bindRouteToApplicationArgsForCall = append(fake.bindRouteToApplicationArgsForCall, struct {
@@ -223,29 +223,29 @@ func (fake *FakeV2Actor) BindRouteToApplicationArgsForCall(i int) (string, strin
 	return fake.bindRouteToApplicationArgsForCall[i].routeGUID, fake.bindRouteToApplicationArgsForCall[i].appGUID
 }
 
-func (fake *FakeV2Actor) BindRouteToApplicationReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeV2Actor) BindRouteToApplicationReturns(result1 []string, result2 error) {
 	fake.BindRouteToApplicationStub = nil
 	fake.bindRouteToApplicationReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeV2Actor) BindRouteToApplicationReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeV2Actor) BindRouteToApplicationReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.BindRouteToApplicationStub = nil
 	if fake.bindRouteToApplicationReturnsOnCall == nil {
 		fake.bindRouteToApplicationReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.bindRouteToApplicationReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeV2Actor) CreateApplication(application v2action.Application) (v2action.Application, v2action.Warnings, error) {
+func (fake *FakeV2Actor) CreateApplication(application v2action.Application) (v2action.Application, []string, error) {
 	fake.createApplicationMutex.Lock()
 	ret, specificReturn := fake.createApplicationReturnsOnCall[len(fake.createApplicationArgsForCall)]
 	fake.createApplicationArgsForCall = append(fake.createApplicationArgsForCall, struct {
@@ -274,32 +274,32 @@ func (fake *FakeV2Actor) CreateApplicationArgsForCall(i int) v2action.Applicatio
 	return fake.createApplicationArgsForCall[i].application
 }
 
-func (fake *FakeV2Actor) CreateApplicationReturns(result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) CreateApplicationReturns(result1 v2action.Application, result2 []string, result3 error) {
 	fake.CreateApplicationStub = nil
 	fake.createApplicationReturns = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) CreateApplicationReturnsOnCall(i int, result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) CreateApplicationReturnsOnCall(i int, result1 v2action.Application, result2 []string, result3 error) {
 	fake.CreateApplicationStub = nil
 	if fake.createApplicationReturnsOnCall == nil {
 		fake.createApplicationReturnsOnCall = make(map[int]struct {
 			result1 v2action.Application
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.createApplicationReturnsOnCall[i] = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) CreateRoute(route v2action.Route, generatePort bool) (v2action.Route, v2action.Warnings, error) {
+func (fake *FakeV2Actor) CreateRoute(route v2action.Route, generatePort bool) (v2action.Route, []string, error) {
 	fake.createRouteMutex.Lock()
 	ret, specificReturn := fake.createRouteReturnsOnCall[len(fake.createRouteArgsForCall)]
 	fake.createRouteArgsForCall = append(fake.createRouteArgsForCall, struct {
@@ -329,32 +329,32 @@ func (fake *FakeV2Actor) CreateRouteArgsForCall(i int) (v2action.Route, bool) {
 	return fake.createRouteArgsForCall[i].route, fake.createRouteArgsForCall[i].generatePort
 }
 
-func (fake *FakeV2Actor) CreateRouteReturns(result1 v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) CreateRouteReturns(result1 v2action.Route, result2 []string, result3 error) {
 	fake.CreateRouteStub = nil
 	fake.createRouteReturns = struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) CreateRouteReturnsOnCall(i int, result1 v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) CreateRouteReturnsOnCall(i int, result1 v2action.Route, result2 []string, result3 error) {
 	fake.CreateRouteStub = nil
 	if fake.createRouteReturnsOnCall == nil {
 		fake.createRouteReturnsOnCall = make(map[int]struct {
 			result1 v2action.Route
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.createRouteReturnsOnCall[i] = struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettings(route v2action.Route) (v2action.Route, v2action.Warnings, error) {
+func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettings(route v2action.Route) (v2action.Route, []string, error) {
 	fake.findRouteBoundToSpaceWithSettingsMutex.Lock()
 	ret, specificReturn := fake.findRouteBoundToSpaceWithSettingsReturnsOnCall[len(fake.findRouteBoundToSpaceWithSettingsArgsForCall)]
 	fake.findRouteBoundToSpaceWithSettingsArgsForCall = append(fake.findRouteBoundToSpaceWithSettingsArgsForCall, struct {
@@ -383,27 +383,27 @@ func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettingsArgsForCall(i int) v2a
 	return fake.findRouteBoundToSpaceWithSettingsArgsForCall[i].route
 }
 
-func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettingsReturns(result1 v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettingsReturns(result1 v2action.Route, result2 []string, result3 error) {
 	fake.FindRouteBoundToSpaceWithSettingsStub = nil
 	fake.findRouteBoundToSpaceWithSettingsReturns = struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettingsReturnsOnCall(i int, result1 v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) FindRouteBoundToSpaceWithSettingsReturnsOnCall(i int, result1 v2action.Route, result2 []string, result3 error) {
 	fake.FindRouteBoundToSpaceWithSettingsStub = nil
 	if fake.findRouteBoundToSpaceWithSettingsReturnsOnCall == nil {
 		fake.findRouteBoundToSpaceWithSettingsReturnsOnCall = make(map[int]struct {
 			result1 v2action.Route
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.findRouteBoundToSpaceWithSettingsReturnsOnCall[i] = struct {
 		result1 v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
@@ -459,7 +459,7 @@ func (fake *FakeV2Actor) GatherDirectoryResourcesReturnsOnCall(i int, result1 []
 	}{result1, result2}
 }
 
-func (fake *FakeV2Actor) GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, v2action.Warnings, error) {
+func (fake *FakeV2Actor) GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, []string, error) {
 	fake.getApplicationByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.getApplicationByNameAndSpaceReturnsOnCall[len(fake.getApplicationByNameAndSpaceArgsForCall)]
 	fake.getApplicationByNameAndSpaceArgsForCall = append(fake.getApplicationByNameAndSpaceArgsForCall, struct {
@@ -489,32 +489,32 @@ func (fake *FakeV2Actor) GetApplicationByNameAndSpaceArgsForCall(i int) (string,
 	return fake.getApplicationByNameAndSpaceArgsForCall[i].name, fake.getApplicationByNameAndSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeV2Actor) GetApplicationByNameAndSpaceReturns(result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetApplicationByNameAndSpaceReturns(result1 v2action.Application, result2 []string, result3 error) {
 	fake.GetApplicationByNameAndSpaceStub = nil
 	fake.getApplicationByNameAndSpaceReturns = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) GetApplicationByNameAndSpaceReturnsOnCall(i int, result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetApplicationByNameAndSpaceReturnsOnCall(i int, result1 v2action.Application, result2 []string, result3 error) {
 	fake.GetApplicationByNameAndSpaceStub = nil
 	if fake.getApplicationByNameAndSpaceReturnsOnCall == nil {
 		fake.getApplicationByNameAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 v2action.Application
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getApplicationByNameAndSpaceReturnsOnCall[i] = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) GetApplicationRoutes(applicationGUID string) ([]v2action.Route, v2action.Warnings, error) {
+func (fake *FakeV2Actor) GetApplicationRoutes(applicationGUID string) ([]v2action.Route, []string, error) {
 	fake.getApplicationRoutesMutex.Lock()
 	ret, specificReturn := fake.getApplicationRoutesReturnsOnCall[len(fake.getApplicationRoutesArgsForCall)]
 	fake.getApplicationRoutesArgsForCall = append(fake.getApplicationRoutesArgsForCall, struct {
@@ -543,32 +543,32 @@ func (fake *FakeV2Actor) GetApplicationRoutesArgsForCall(i int) string {
 	return fake.getApplicationRoutesArgsForCall[i].applicationGUID
 }
 
-func (fake *FakeV2Actor) GetApplicationRoutesReturns(result1 []v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetApplicationRoutesReturns(result1 []v2action.Route, result2 []string, result3 error) {
 	fake.GetApplicationRoutesStub = nil
 	fake.getApplicationRoutesReturns = struct {
 		result1 []v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) GetApplicationRoutesReturnsOnCall(i int, result1 []v2action.Route, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetApplicationRoutesReturnsOnCall(i int, result1 []v2action.Route, result2 []string, result3 error) {
 	fake.GetApplicationRoutesStub = nil
 	if fake.getApplicationRoutesReturnsOnCall == nil {
 		fake.getApplicationRoutesReturnsOnCall = make(map[int]struct {
 			result1 []v2action.Route
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getApplicationRoutesReturnsOnCall[i] = struct {
 		result1 []v2action.Route
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) GetOrganizationDomains(orgGUID string) ([]v2action.Domain, v2action.Warnings, error) {
+func (fake *FakeV2Actor) GetOrganizationDomains(orgGUID string) ([]v2action.Domain, []string, error) {
 	fake.getOrganizationDomainsMutex.Lock()
 	ret, specificReturn := fake.getOrganizationDomainsReturnsOnCall[len(fake.getOrganizationDomainsArgsForCall)]
 	fake.getOrganizationDomainsArgsForCall = append(fake.getOrganizationDomainsArgsForCall, struct {
@@ -597,32 +597,32 @@ func (fake *FakeV2Actor) GetOrganizationDomainsArgsForCall(i int) string {
 	return fake.getOrganizationDomainsArgsForCall[i].orgGUID
 }
 
-func (fake *FakeV2Actor) GetOrganizationDomainsReturns(result1 []v2action.Domain, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetOrganizationDomainsReturns(result1 []v2action.Domain, result2 []string, result3 error) {
 	fake.GetOrganizationDomainsStub = nil
 	fake.getOrganizationDomainsReturns = struct {
 		result1 []v2action.Domain
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) GetOrganizationDomainsReturnsOnCall(i int, result1 []v2action.Domain, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) GetOrganizationDomainsReturnsOnCall(i int, result1 []v2action.Domain, result2 []string, result3 error) {
 	fake.GetOrganizationDomainsStub = nil
 	if fake.getOrganizationDomainsReturnsOnCall == nil {
 		fake.getOrganizationDomainsReturnsOnCall = make(map[int]struct {
 			result1 []v2action.Domain
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getOrganizationDomainsReturnsOnCall[i] = struct {
 		result1 []v2action.Domain
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) PollJob(job v2action.Job) (v2action.Warnings, error) {
+func (fake *FakeV2Actor) PollJob(job v2action.Job) ([]string, error) {
 	fake.pollJobMutex.Lock()
 	ret, specificReturn := fake.pollJobReturnsOnCall[len(fake.pollJobArgsForCall)]
 	fake.pollJobArgsForCall = append(fake.pollJobArgsForCall, struct {
@@ -651,29 +651,29 @@ func (fake *FakeV2Actor) PollJobArgsForCall(i int) v2action.Job {
 	return fake.pollJobArgsForCall[i].job
 }
 
-func (fake *FakeV2Actor) PollJobReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeV2Actor) PollJobReturns(result1 []string, result2 error) {
 	fake.PollJobStub = nil
 	fake.pollJobReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeV2Actor) PollJobReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeV2Actor) PollJobReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.PollJobStub = nil
 	if fake.pollJobReturnsOnCall == nil {
 		fake.pollJobReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.pollJobReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeV2Actor) UpdateApplication(application v2action.Application) (v2action.Application, v2action.Warnings, error) {
+func (fake *FakeV2Actor) UpdateApplication(application v2action.Application) (v2action.Application, []string, error) {
 	fake.updateApplicationMutex.Lock()
 	ret, specificReturn := fake.updateApplicationReturnsOnCall[len(fake.updateApplicationArgsForCall)]
 	fake.updateApplicationArgsForCall = append(fake.updateApplicationArgsForCall, struct {
@@ -702,32 +702,32 @@ func (fake *FakeV2Actor) UpdateApplicationArgsForCall(i int) v2action.Applicatio
 	return fake.updateApplicationArgsForCall[i].application
 }
 
-func (fake *FakeV2Actor) UpdateApplicationReturns(result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) UpdateApplicationReturns(result1 v2action.Application, result2 []string, result3 error) {
 	fake.UpdateApplicationStub = nil
 	fake.updateApplicationReturns = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) UpdateApplicationReturnsOnCall(i int, result1 v2action.Application, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) UpdateApplicationReturnsOnCall(i int, result1 v2action.Application, result2 []string, result3 error) {
 	fake.UpdateApplicationStub = nil
 	if fake.updateApplicationReturnsOnCall == nil {
 		fake.updateApplicationReturnsOnCall = make(map[int]struct {
 			result1 v2action.Application
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.updateApplicationReturnsOnCall[i] = struct {
 		result1 v2action.Application
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) UploadApplicationPackage(appGUID string, existingResources []v2action.Resource, newResources io.Reader, newResourcesLength int64) (v2action.Job, v2action.Warnings, error) {
+func (fake *FakeV2Actor) UploadApplicationPackage(appGUID string, existingResources []v2action.Resource, newResources io.Reader, newResourcesLength int64) (v2action.Job, []string, error) {
 	var existingResourcesCopy []v2action.Resource
 	if existingResources != nil {
 		existingResourcesCopy = make([]v2action.Resource, len(existingResources))
@@ -764,27 +764,27 @@ func (fake *FakeV2Actor) UploadApplicationPackageArgsForCall(i int) (string, []v
 	return fake.uploadApplicationPackageArgsForCall[i].appGUID, fake.uploadApplicationPackageArgsForCall[i].existingResources, fake.uploadApplicationPackageArgsForCall[i].newResources, fake.uploadApplicationPackageArgsForCall[i].newResourcesLength
 }
 
-func (fake *FakeV2Actor) UploadApplicationPackageReturns(result1 v2action.Job, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) UploadApplicationPackageReturns(result1 v2action.Job, result2 []string, result3 error) {
 	fake.UploadApplicationPackageStub = nil
 	fake.uploadApplicationPackageReturns = struct {
 		result1 v2action.Job
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2Actor) UploadApplicationPackageReturnsOnCall(i int, result1 v2action.Job, result2 v2action.Warnings, result3 error) {
+func (fake *FakeV2Actor) UploadApplicationPackageReturnsOnCall(i int, result1 v2action.Job, result2 []string, result3 error) {
 	fake.UploadApplicationPackageStub = nil
 	if fake.uploadApplicationPackageReturnsOnCall == nil {
 		fake.uploadApplicationPackageReturnsOnCall = make(map[int]struct {
 			result1 v2action.Job
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.uploadApplicationPackageReturnsOnCall[i] = struct {
 		result1 v2action.Job
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

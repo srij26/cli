@@ -236,7 +236,7 @@ var _ = Describe("Application Actions", func() {
 					GUID: "some-app-guid",
 					Name: "some-app",
 				}))
-				Expect(warnings).To(Equal(Warnings{"foo"}))
+				Expect(warnings).To(Equal([]string{"foo"}))
 
 				Expect(fakeCloudControllerClient.GetApplicationCallCount()).To(Equal(1))
 				Expect(fakeCloudControllerClient.GetApplicationArgsForCall(0)).To(Equal("some-app-guid"))
@@ -277,7 +277,7 @@ var _ = Describe("Application Actions", func() {
 					GUID: "some-app-guid",
 					Name: "some-app",
 				}))
-				Expect(warnings).To(Equal(Warnings{"foo"}))
+				Expect(warnings).To(Equal([]string{"foo"}))
 
 				Expect(fakeCloudControllerClient.GetApplicationsCallCount()).To(Equal(1))
 				Expect(fakeCloudControllerClient.GetApplicationsArgsForCall(0)).To(ConsistOf([]ccv2.Query{

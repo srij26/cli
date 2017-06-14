@@ -106,7 +106,7 @@ var _ = Describe("Service Instance Actions", func() {
 					GUID: "some-service-instance-guid",
 					Name: "some-service-instance",
 				}))
-				Expect(warnings).To(Equal(Warnings{"foo"}))
+				Expect(warnings).To(Equal([]string{"foo"}))
 
 				Expect(fakeCloudControllerClient.GetSpaceServiceInstancesCallCount()).To(Equal(1))
 

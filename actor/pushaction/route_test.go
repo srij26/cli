@@ -58,7 +58,7 @@ var _ = Describe("Routes", func() {
 
 			Context("when the binding is successful", func() {
 				BeforeEach(func() {
-					fakeV2Actor.BindRouteToApplicationReturns(v2action.Warnings{"bind-route-warning"}, nil)
+					fakeV2Actor.BindRouteToApplicationReturns([]string{"bind-route-warning"}, nil)
 				})
 
 				It("only creates the routes that do not exist", func() {
@@ -83,7 +83,7 @@ var _ = Describe("Routes", func() {
 			Context("when the binding errors", func() {
 				Context("when the route is bound in another space", func() {
 					BeforeEach(func() {
-						fakeV2Actor.BindRouteToApplicationReturns(v2action.Warnings{"bind-route-warning"}, v2action.RouteInDifferentSpaceError{})
+						fakeV2Actor.BindRouteToApplicationReturns([]string{"bind-route-warning"}, v2action.RouteInDifferentSpaceError{})
 					})
 
 					It("sends the RouteInDifferentSpaceError (with a guid set) and warnings and returns true", func() {
@@ -96,7 +96,7 @@ var _ = Describe("Routes", func() {
 					var expectedErr error
 					BeforeEach(func() {
 						expectedErr = errors.New("oh my")
-						fakeV2Actor.BindRouteToApplicationReturns(v2action.Warnings{"bind-route-warning"}, expectedErr)
+						fakeV2Actor.BindRouteToApplicationReturns([]string{"bind-route-warning"}, expectedErr)
 					})
 
 					It("sends the warnings and errors and returns true", func() {
@@ -143,8 +143,8 @@ var _ = Describe("Routes", func() {
 
 			Context("when the creation is successful", func() {
 				BeforeEach(func() {
-					fakeV2Actor.CreateRouteReturnsOnCall(0, v2action.Route{GUID: "some-route-guid-1", Host: "some-route-1"}, v2action.Warnings{"create-route-warning"}, nil)
-					fakeV2Actor.CreateRouteReturnsOnCall(1, v2action.Route{GUID: "some-route-guid-3", Host: "some-route-3"}, v2action.Warnings{"create-route-warning"}, nil)
+					fakeV2Actor.CreateRouteReturnsOnCall(0, v2action.Route{GUID: "some-route-guid-1", Host: "some-route-1"}, []string{"create-route-warning"}, nil)
+					fakeV2Actor.CreateRouteReturnsOnCall(1, v2action.Route{GUID: "some-route-guid-3", Host: "some-route-3"}, []string{"create-route-warning"}, nil)
 				})
 
 				It("only creates the routes that do not exist", func() {
@@ -170,7 +170,7 @@ var _ = Describe("Routes", func() {
 					expectedErr = errors.New("oh my")
 					fakeV2Actor.CreateRouteReturns(
 						v2action.Route{},
-						v2action.Warnings{"create-route-warning"},
+						[]string{"create-route-warning"},
 						expectedErr)
 				})
 
@@ -230,7 +230,7 @@ var _ = Describe("Routes", func() {
 			BeforeEach(func() {
 				fakeV2Actor.GetOrganizationDomainsReturns(
 					[]v2action.Domain{domain},
-					v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"},
+					[]string{"private-domain-warnings", "shared-domain-warnings"},
 					nil,
 				)
 			})
@@ -243,7 +243,7 @@ var _ = Describe("Routes", func() {
 						GUID:      "some-route-guid",
 						Host:      host,
 						SpaceGUID: spaceGUID,
-					}, v2action.Warnings{"get-route-warnings"}, nil)
+					}, []string{"get-route-warnings"}, nil)
 				})
 
 				It("returns the route and warnings", func() {
@@ -292,7 +292,7 @@ var _ = Describe("Routes", func() {
 
 			Context("when the route does not exist", func() {
 				BeforeEach(func() {
-					fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, v2action.Warnings{"get-route-warnings"}, v2action.RouteNotFoundError{})
+					fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, []string{"get-route-warnings"}, v2action.RouteNotFoundError{})
 				})
 
 				It("returns a partial route", func() {
@@ -308,7 +308,7 @@ var _ = Describe("Routes", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("whoops")
-					fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, v2action.Warnings{"get-route-warnings"}, expectedErr)
+					fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, []string{"get-route-warnings"}, expectedErr)
 				})
 
 				It("returns errors and warnings", func() {
@@ -323,7 +323,7 @@ var _ = Describe("Routes", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("whoops")
-				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"}, expectedErr)
+				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, []string{"private-domain-warnings", "shared-domain-warnings"}, expectedErr)
 			})
 
 			It("returns errors and warnings", func() {

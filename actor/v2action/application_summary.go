@@ -21,8 +21,8 @@ func (app ApplicationSummary) StartingOrRunningInstanceCount() int {
 	return count
 }
 
-func (actor Actor) GetApplicationSummaryByNameAndSpace(name string, spaceGUID string) (ApplicationSummary, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetApplicationSummaryByNameAndSpace(name string, spaceGUID string) (ApplicationSummary, []string, error) {
+	var allWarnings []string
 
 	app, warnings, err := actor.GetApplicationByNameAndSpace(name, spaceGUID)
 	allWarnings = append(allWarnings, warnings...)

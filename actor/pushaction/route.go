@@ -88,7 +88,7 @@ func (actor Actor) GetRouteWithDefaultDomain(host string, orgGUID string, spaceG
 	}
 }
 
-func (actor Actor) bindRouteToApp(route v2action.Route, appGUID string) (v2action.Warnings, error) {
+func (actor Actor) bindRouteToApp(route v2action.Route, appGUID string) ([]string, error) {
 	warnings, err := actor.V2Actor.BindRouteToApplication(route.GUID, appGUID)
 	if _, ok := err.(v2action.RouteInDifferentSpaceError); ok {
 		return warnings, v2action.RouteInDifferentSpaceError{Route: route.String()}

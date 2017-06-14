@@ -10,7 +10,7 @@ import (
 
 //go:generate counterfeiter . GetHealthCheckActor
 type GetHealthCheckActor interface {
-	GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, v2action.Warnings, error)
+	GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, []string, error)
 }
 
 type GetHealthCheckCommand struct {

@@ -4,12 +4,11 @@ package v2fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v2action"
 	"code.cloudfoundry.org/cli/command/v2"
 )
 
 type FakeBindServiceActor struct {
-	BindServiceBySpaceStub        func(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) (v2action.Warnings, error)
+	BindServiceBySpaceStub        func(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) ([]string, error)
 	bindServiceBySpaceMutex       sync.RWMutex
 	bindServiceBySpaceArgsForCall []struct {
 		appName             string
@@ -18,18 +17,18 @@ type FakeBindServiceActor struct {
 		parameters          map[string]interface{}
 	}
 	bindServiceBySpaceReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	bindServiceBySpaceReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeBindServiceActor) BindServiceBySpace(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) (v2action.Warnings, error) {
+func (fake *FakeBindServiceActor) BindServiceBySpace(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) ([]string, error) {
 	fake.bindServiceBySpaceMutex.Lock()
 	ret, specificReturn := fake.bindServiceBySpaceReturnsOnCall[len(fake.bindServiceBySpaceArgsForCall)]
 	fake.bindServiceBySpaceArgsForCall = append(fake.bindServiceBySpaceArgsForCall, struct {
@@ -61,24 +60,24 @@ func (fake *FakeBindServiceActor) BindServiceBySpaceArgsForCall(i int) (string, 
 	return fake.bindServiceBySpaceArgsForCall[i].appName, fake.bindServiceBySpaceArgsForCall[i].ServiceInstanceName, fake.bindServiceBySpaceArgsForCall[i].spaceGUID, fake.bindServiceBySpaceArgsForCall[i].parameters
 }
 
-func (fake *FakeBindServiceActor) BindServiceBySpaceReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeBindServiceActor) BindServiceBySpaceReturns(result1 []string, result2 error) {
 	fake.BindServiceBySpaceStub = nil
 	fake.bindServiceBySpaceReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeBindServiceActor) BindServiceBySpaceReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeBindServiceActor) BindServiceBySpaceReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.BindServiceBySpaceStub = nil
 	if fake.bindServiceBySpaceReturnsOnCall == nil {
 		fake.bindServiceBySpaceReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.bindServiceBySpaceReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

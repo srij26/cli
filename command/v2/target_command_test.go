@@ -226,7 +226,7 @@ var _ = Describe("target Command", func() {
 										Name:     "some-space",
 										AllowSSH: true,
 									},
-									v2action.Warnings{},
+									[]string{},
 									nil)
 							})
 
@@ -245,7 +245,7 @@ var _ = Describe("target Command", func() {
 							BeforeEach(func() {
 								fakeActor.GetSpaceByOrganizationAndNameReturns(
 									v2action.Space{},
-									v2action.Warnings{},
+									[]string{},
 									v2action.SpaceNotFoundError{Name: "some-space"})
 							})
 
@@ -301,7 +301,7 @@ var _ = Describe("target Command", func() {
 							})
 							fakeActor.GetOrganizationByNameReturns(
 								v2action.Organization{GUID: "some-org-guid"},
-								v2action.Warnings{"warning-1", "warning-2"},
+								[]string{"warning-1", "warning-2"},
 								nil)
 						})
 
@@ -312,7 +312,7 @@ var _ = Describe("target Command", func() {
 								err = errors.New("get-org-spaces-error")
 								fakeActor.GetOrganizationSpacesReturns(
 									[]v2action.Space{},
-									v2action.Warnings{
+									[]string{
 										"warning-3",
 									},
 									err)
@@ -369,7 +369,7 @@ var _ = Describe("target Command", func() {
 										Name:     "some-space",
 										AllowSSH: true,
 									}},
-									v2action.Warnings{"warning-3"},
+									[]string{"warning-3"},
 									nil,
 								)
 							})
@@ -415,7 +415,7 @@ var _ = Describe("target Command", func() {
 											AllowSSH: true,
 										},
 									},
-									v2action.Warnings{"warning-3"},
+									[]string{"warning-3"},
 									nil,
 								)
 							})
@@ -443,7 +443,7 @@ var _ = Describe("target Command", func() {
 								err = errors.New("get-org-spaces-error")
 								fakeActor.GetOrganizationSpacesReturns(
 									[]v2action.Space{},
-									v2action.Warnings{
+									[]string{
 										"warning-3",
 									},
 									err)
@@ -476,7 +476,7 @@ var _ = Describe("target Command", func() {
 									GUID: "some-org-guid",
 									Name: "some-org",
 								},
-								v2action.Warnings{
+								[]string{
 									"warning-1",
 								},
 								nil)
@@ -489,7 +489,7 @@ var _ = Describe("target Command", func() {
 										GUID: "some-space-guid",
 										Name: "some-space",
 									},
-									v2action.Warnings{
+									[]string{
 										"warning-2",
 									},
 									nil)

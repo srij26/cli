@@ -25,7 +25,7 @@ var _ = Describe("Org Actions", func() {
 	Describe("GetOrganization", func() {
 		var (
 			org      Organization
-			warnings Warnings
+			warnings []string
 			err      error
 		)
 
@@ -97,7 +97,7 @@ var _ = Describe("Org Actions", func() {
 	Describe("GetOrganizationByName", func() {
 		var (
 			org      Organization
-			warnings Warnings
+			warnings []string
 			err      error
 		)
 
@@ -186,7 +186,7 @@ var _ = Describe("Org Actions", func() {
 
 	Describe("DeleteOrganization", func() {
 		var (
-			warnings     Warnings
+			warnings     []string
 			deleteOrgErr error
 			job          ccv2.Job
 		)

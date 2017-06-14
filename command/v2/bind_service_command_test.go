@@ -152,7 +152,7 @@ var _ = Describe("bind-service Command", func() {
 				Context("when the service binding is successful", func() {
 					BeforeEach(func() {
 						fakeActor.BindServiceBySpaceReturns(
-							v2action.Warnings{"some-warning", "another-warning"},
+							[]string{"some-warning", "another-warning"},
 							nil,
 						)
 					})

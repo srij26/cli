@@ -20,7 +20,7 @@ type SetSpaceIsolationSegmentActor interface {
 //go:generate counterfeiter . SetSpaceIsolationSegmentActorV2
 
 type SetSpaceIsolationSegmentActorV2 interface {
-	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error)
+	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, []string, error)
 }
 
 type SetSpaceIsolationSegmentCommand struct {

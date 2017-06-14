@@ -92,7 +92,7 @@ var _ = Describe("unbind-security-group Command", func() {
 				fakeConfig.TargetedOrganizationReturns(configv3.Organization{Name: "some-org"})
 				fakeConfig.TargetedSpaceReturns(configv3.Space{Name: "some-space", GUID: "some-space-guid"})
 				fakeActor.UnbindSecurityGroupByNameAndSpaceReturns(
-					v2action.Warnings{"unbind warning"},
+					[]string{"unbind warning"},
 					nil)
 			})
 
@@ -119,7 +119,7 @@ var _ = Describe("unbind-security-group Command", func() {
 				fakeConfig.TargetedOrganizationReturns(configv3.Organization{Name: "some-org"})
 				fakeConfig.TargetedSpaceReturns(configv3.Space{Name: "some-space", GUID: "some-space-guid"})
 				fakeActor.UnbindSecurityGroupByNameAndSpaceReturns(
-					v2action.Warnings{"unbind warning"},
+					[]string{"unbind warning"},
 					v2action.SecurityGroupNotFoundError{Name: "some-security-group"},
 				)
 			})
@@ -157,7 +157,7 @@ var _ = Describe("unbind-security-group Command", func() {
 		Context("when the user is logged in", func() {
 			BeforeEach(func() {
 				fakeActor.UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns(
-					v2action.Warnings{"unbind warning"},
+					[]string{"unbind warning"},
 					nil)
 			})
 
@@ -181,7 +181,7 @@ var _ = Describe("unbind-security-group Command", func() {
 				cmd.RequiredArgs.OrganizationName = "some-org"
 				cmd.RequiredArgs.SpaceName = "some-space"
 				fakeActor.UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns(
-					v2action.Warnings{"unbind warning"},
+					[]string{"unbind warning"},
 					v2action.SecurityGroupNotFoundError{Name: "some-security-group"},
 				)
 			})

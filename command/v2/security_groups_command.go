@@ -14,7 +14,7 @@ import (
 //go:generate counterfeiter . SecurityGroupsActor
 
 type SecurityGroupsActor interface {
-	GetSecurityGroupsWithOrganizationAndSpace() ([]v2action.SecurityGroupWithOrganizationAndSpace, v2action.Warnings, error)
+	GetSecurityGroupsWithOrganizationAndSpace() ([]v2action.SecurityGroupWithOrganizationAndSpace, []string, error)
 }
 
 type SecurityGroupsCommand struct {

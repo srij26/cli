@@ -22,8 +22,8 @@ type SpaceSummary struct {
 	SecurityGroupRules             []SecurityGroupRule
 }
 
-func (actor Actor) GetSpaceSummaryByOrganizationAndName(orgGUID string, name string, includeStagingSecurityGroupsRules bool) (SpaceSummary, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetSpaceSummaryByOrganizationAndName(orgGUID string, name string, includeStagingSecurityGroupsRules bool) (SpaceSummary, []string, error) {
+	var allWarnings []string
 
 	org, warnings, err := actor.GetOrganization(orgGUID)
 	allWarnings = append(allWarnings, warnings...)

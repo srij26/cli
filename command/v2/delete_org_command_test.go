@@ -99,7 +99,7 @@ var _ = Describe("delete-org Command", func() {
 
 					Context("when no errors are encountered", func() {
 						BeforeEach(func() {
-							fakeActor.DeleteOrganizationReturns(v2action.Warnings{"warning-1", "warning-2"}, nil)
+							fakeActor.DeleteOrganizationReturns([]string{"warning-1", "warning-2"}, nil)
 						})
 
 						It("does not prompt for user confirmation, displays warnings, and deletes the org", func() {
@@ -122,7 +122,7 @@ var _ = Describe("delete-org Command", func() {
 						Context("when the organization does not exist", func() {
 							BeforeEach(func() {
 								fakeActor.DeleteOrganizationReturns(
-									v2action.Warnings{"warning-1", "warning-2"},
+									[]string{"warning-1", "warning-2"},
 									v2action.OrganizationNotFoundError{
 										Name: "some-org",
 									},
@@ -151,7 +151,7 @@ var _ = Describe("delete-org Command", func() {
 
 							BeforeEach(func() {
 								returnedErr = errors.New("some error")
-								fakeActor.DeleteOrganizationReturns(v2action.Warnings{"warning-1", "warning-2"}, returnedErr)
+								fakeActor.DeleteOrganizationReturns([]string{"warning-1", "warning-2"}, returnedErr)
 							})
 
 							It("returns the error, displays all warnings, and does not delete the org", func() {

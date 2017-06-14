@@ -155,7 +155,7 @@ var _ = Describe("set-health-check Command", func() {
 
 			expectedErr = errors.New("set health check error")
 			fakeActor.SetApplicationHealthCheckTypeByNameAndSpaceReturns(
-				v2action.Application{}, v2action.Warnings{"warning-1"}, expectedErr)
+				v2action.Application{}, []string{"warning-1"}, expectedErr)
 		})
 
 		It("displays warnings and returns the error", func() {
@@ -171,7 +171,7 @@ var _ = Describe("set-health-check Command", func() {
 			cmd.HTTPEndpoint = "/"
 
 			fakeActor.SetApplicationHealthCheckTypeByNameAndSpaceReturns(
-				v2action.Application{}, v2action.Warnings{"warning-1"}, nil)
+				v2action.Application{}, []string{"warning-1"}, nil)
 		})
 
 		It("informs the user and displays warnings", func() {
@@ -195,7 +195,7 @@ var _ = Describe("set-health-check Command", func() {
 			cmd.RequiredArgs.HealthCheck.Type = "some-health-check-type"
 
 			fakeActor.SetApplicationHealthCheckTypeByNameAndSpaceReturns(
-				v2action.Application{State: ccv2.ApplicationStarted}, v2action.Warnings{"warning-1"}, nil)
+				v2action.Application{State: ccv2.ApplicationStarted}, []string{"warning-1"}, nil)
 		})
 
 		It("displays a tip to restart the app", func() {

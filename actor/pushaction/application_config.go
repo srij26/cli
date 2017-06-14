@@ -53,7 +53,7 @@ func (actor Actor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string,
 
 			log.Info("looking up application routes")
 			var routes []v2action.Route
-			var routeWarnings v2action.Warnings
+			var routeWarnings []string
 			routes, routeWarnings, err = actor.V2Actor.GetApplicationRoutes(foundApp.GUID)
 			warnings = append(warnings, routeWarnings...)
 			if err != nil {
@@ -95,7 +95,7 @@ func (actor Actor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string,
 	return configs, warnings, nil
 }
 
-func (actor Actor) FindOrReturnPartialApp(appName string, spaceGUID string) (bool, v2action.Application, v2action.Warnings, error) {
+func (actor Actor) FindOrReturnPartialApp(appName string, spaceGUID string) (bool, v2action.Application, []string, error) {
 	foundApp, v2Warnings, err := actor.V2Actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	if _, ok := err.(v2action.ApplicationNotFoundError); ok {
 		log.Warnf("unable to find app %s in current space (GUID: %s)", appName, spaceGUID)

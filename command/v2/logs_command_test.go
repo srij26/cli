@@ -96,7 +96,7 @@ var _ = Describe("logs command", func() {
 					expectedErr = errors.New("some-error")
 					fakeActor.GetRecentLogsForApplicationByNameAndSpaceReturns(
 						nil,
-						v2action.Warnings{"some-warning-1", "some-warning-2"},
+						[]string{"some-warning-1", "some-warning-2"},
 						expectedErr)
 				})
 
@@ -126,7 +126,7 @@ var _ = Describe("logs command", func() {
 								"2",
 							),
 						},
-						v2action.Warnings{"some-warning-1", "some-warning-2"},
+						[]string{"some-warning-1", "some-warning-2"},
 						nil)
 				})
 
@@ -159,7 +159,7 @@ var _ = Describe("logs command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("some-error")
-					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(nil, nil, v2action.Warnings{"some-warning-1", "some-warning-2"}, expectedErr)
+					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceReturns(nil, nil, []string{"some-warning-1", "some-warning-2"}, expectedErr)
 				})
 
 				It("displays the error and all warnings", func() {
@@ -175,7 +175,7 @@ var _ = Describe("logs command", func() {
 				BeforeEach(func() {
 					expectedErr = errors.New("some-error")
 
-					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(_ string, _ string, _ v2action.NOAAClient, _ v2action.Config) (<-chan *v2action.LogMessage, <-chan error, v2action.Warnings, error) {
+					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(_ string, _ string, _ v2action.NOAAClient, _ v2action.Config) (<-chan *v2action.LogMessage, <-chan error, []string, error) {
 						messages := make(chan *v2action.LogMessage)
 						logErrs := make(chan error)
 
@@ -185,7 +185,7 @@ var _ = Describe("logs command", func() {
 							close(logErrs)
 						}()
 
-						return messages, logErrs, v2action.Warnings{"some-warning-1", "some-warning-2"}, nil
+						return messages, logErrs, []string{"some-warning-1", "some-warning-2"}, nil
 					}
 				})
 
@@ -198,7 +198,7 @@ var _ = Describe("logs command", func() {
 
 			Context("when the logs actor returns logs", func() {
 				BeforeEach(func() {
-					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(_ string, _ string, _ v2action.NOAAClient, _ v2action.Config) (<-chan *v2action.LogMessage, <-chan error, v2action.Warnings, error) {
+					fakeActor.GetStreamingLogsForApplicationByNameAndSpaceStub = func(_ string, _ string, _ v2action.NOAAClient, _ v2action.Config) (<-chan *v2action.LogMessage, <-chan error, []string, error) {
 						messages := make(chan *v2action.LogMessage)
 						logErrs := make(chan error)
 						message1 := v2action.NewLogMessage(
@@ -223,7 +223,7 @@ var _ = Describe("logs command", func() {
 							close(logErrs)
 						}()
 
-						return messages, logErrs, v2action.Warnings{"some-warning-1", "some-warning-2"}, nil
+						return messages, logErrs, []string{"some-warning-1", "some-warning-2"}, nil
 					}
 				})
 

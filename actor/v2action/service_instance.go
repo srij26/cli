@@ -17,7 +17,7 @@ func (e ServiceInstanceNotFoundError) Error() string {
 	return fmt.Sprintf("Service instance '%s' not found.", e.Name)
 }
 
-func (actor Actor) GetServiceInstanceByNameAndSpace(name string, spaceGUID string) (ServiceInstance, Warnings, error) {
+func (actor Actor) GetServiceInstanceByNameAndSpace(name string, spaceGUID string) (ServiceInstance, []string, error) {
 	serviceInstances, warnings, err := actor.CloudControllerClient.GetSpaceServiceInstances(
 		spaceGUID,
 		true,
@@ -30,24 +30,24 @@ func (actor Actor) GetServiceInstanceByNameAndSpace(name string, spaceGUID strin
 		})
 
 	if err != nil {
-		return ServiceInstance{}, Warnings(warnings), err
+		return ServiceInstance{}, []string(warnings), err
 	}
 
 	if len(serviceInstances) == 0 {
-		return ServiceInstance{}, Warnings(warnings), ServiceInstanceNotFoundError{
+		return ServiceInstance{}, []string(warnings), ServiceInstanceNotFoundError{
 			Name: name,
 		}
 	}
 
-	return ServiceInstance(serviceInstances[0]), Warnings(warnings), nil
+	return ServiceInstance(serviceInstances[0]), []string(warnings), nil
 }
 
-func (actor Actor) GetServiceInstancesBySpace(spaceGUID string) ([]ServiceInstance, Warnings, error) {
+func (actor Actor) GetServiceInstancesBySpace(spaceGUID string) ([]ServiceInstance, []string, error) {
 	ccv2ServiceInstances, warnings, err := actor.CloudControllerClient.GetSpaceServiceInstances(
 		spaceGUID, true, nil)
 
 	if err != nil {
-		return []ServiceInstance{}, Warnings(warnings), err
+		return []ServiceInstance{}, []string(warnings), err
 	}
 
 	serviceInstances := make([]ServiceInstance, len(ccv2ServiceInstances))
@@ -55,5 +55,5 @@ func (actor Actor) GetServiceInstancesBySpace(spaceGUID string) ([]ServiceInstan
 		serviceInstances[i] = ServiceInstance(ccv2ServiceInstance)
 	}
 
-	return serviceInstances, Warnings(warnings), nil
+	return serviceInstances, []string(warnings), nil
 }

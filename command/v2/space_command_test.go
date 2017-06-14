@@ -86,7 +86,7 @@ var _ = Describe("space Command", func() {
 				)
 				fakeActor.GetSpaceByOrganizationAndNameReturns(
 					v2action.Space{GUID: "some-space-guid"},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 			})
 
@@ -109,7 +109,7 @@ var _ = Describe("space Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetSpaceByOrganizationAndNameReturns(
 						v2action.Space{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						v2action.SpaceNotFoundError{Name: "some-space"})
 				})
 
@@ -128,7 +128,7 @@ var _ = Describe("space Command", func() {
 					expectedErr = errors.New("get space error")
 					fakeActor.GetSpaceByOrganizationAndNameReturns(
 						v2action.Space{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -173,7 +173,7 @@ var _ = Describe("space Command", func() {
 						SpaceQuotaName:                 "some-space-quota",
 						SecurityGroupNames:             []string{"public_networks", "dns", "load_balancer"},
 					},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil,
 				)
 			})
@@ -289,7 +289,7 @@ var _ = Describe("space Command", func() {
 			BeforeEach(func() {
 				fakeActor.GetSpaceSummaryByOrganizationAndNameReturns(
 					v2action.SpaceSummary{},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					v2action.SpaceNotFoundError{Name: "some-space"})
 			})
 
@@ -308,7 +308,7 @@ var _ = Describe("space Command", func() {
 				expectedErr = errors.New("get space summary error")
 				fakeActor.GetSpaceSummaryByOrganizationAndNameReturns(
 					v2action.SpaceSummary{},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					expectedErr)
 			})
 
@@ -419,7 +419,7 @@ var _ = Describe("space Command", func() {
 						},
 					},
 				},
-				v2action.Warnings{"warning-1", "warning-2"},
+				[]string{"warning-1", "warning-2"},
 				nil,
 			)
 		})

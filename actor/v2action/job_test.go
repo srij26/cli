@@ -36,7 +36,7 @@ var _ = Describe("Job Actions", func() {
 			readerLength      int64
 
 			job        Job
-			warnings   Warnings
+			warnings   []string
 			executeErr error
 		)
 
@@ -110,7 +110,7 @@ var _ = Describe("Job Actions", func() {
 	Describe("PollJob", func() {
 		var (
 			job        Job
-			warnings   Warnings
+			warnings   []string
 			executeErr error
 		)
 

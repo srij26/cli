@@ -6,14 +6,14 @@ type TargetSettings ccv2.TargetSettings
 
 // SetTarget targets the Cloud Controller using the client and sets target
 // information in the actor based on the response.
-func (actor Actor) SetTarget(config Config, settings TargetSettings) (Warnings, error) {
+func (actor Actor) SetTarget(config Config, settings TargetSettings) ([]string, error) {
 	if config.Target() == settings.URL && config.SkipSSLValidation() == settings.SkipSSLValidation {
 		return nil, nil
 	}
 
 	warnings, err := actor.CloudControllerClient.TargetCF(ccv2.TargetSettings(settings))
 	if err != nil {
-		return Warnings(warnings), err
+		return []string(warnings), err
 	}
 
 	config.SetTargetInformation(
@@ -28,7 +28,7 @@ func (actor Actor) SetTarget(config Config, settings TargetSettings) (Warnings, 
 	)
 	config.SetTokenInformation("", "", "")
 
-	return Warnings(warnings), nil
+	return []string(warnings), nil
 }
 
 // ClearTarget clears target information from the actor.

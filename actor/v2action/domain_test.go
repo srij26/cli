@@ -88,7 +88,7 @@ var _ = Describe("Domain Actions", func() {
 			stubGetSharedDomain func(),
 			stubGetPrivateDomain func(),
 			expectedDomain Domain,
-			expectedWarnings Warnings,
+			expectedWarnings []string,
 			expectingError bool,
 			expectedErr error,
 		) {
@@ -111,7 +111,7 @@ var _ = Describe("Domain Actions", func() {
 				},
 				func() { fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, nil, nil) },
 				Domain{},
-				Warnings{"shared-domain-warning"},
+				[]string{"shared-domain-warning"},
 				true,
 				errors.New("shared domain error"),
 			),
@@ -125,7 +125,7 @@ var _ = Describe("Domain Actions", func() {
 					fakeCloudControllerClient.GetPrivateDomainReturns(ccv2.Domain{}, []string{"private-domain-warning"}, errors.New("private domain error"))
 				},
 				Domain{},
-				Warnings{"shared-domain-warning", "private-domain-warning"},
+				[]string{"shared-domain-warning", "private-domain-warning"},
 				true,
 				errors.New("private domain error"),
 			),

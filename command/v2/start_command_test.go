@@ -128,7 +128,7 @@ var _ = Describe("Start Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v2action.Application{State: ccv2.ApplicationStarted},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil,
 					)
 				})
@@ -149,7 +149,7 @@ var _ = Describe("Start Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v2action.Application{GUID: "app-guid", State: ccv2.ApplicationStopped},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil,
 					)
 				})
@@ -607,7 +607,7 @@ var _ = Describe("Start Command", func() {
 			BeforeEach(func() {
 				fakeActor.GetApplicationByNameAndSpaceReturns(
 					v2action.Application{},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					v2action.ApplicationNotFoundError{Name: "some-app"},
 				)
 			})

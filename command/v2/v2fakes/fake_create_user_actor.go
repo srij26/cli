@@ -9,7 +9,7 @@ import (
 )
 
 type FakeCreateUserActor struct {
-	CreateUserStub        func(username string, password string, origin string) (v2action.User, v2action.Warnings, error)
+	CreateUserStub        func(username string, password string, origin string) (v2action.User, []string, error)
 	createUserMutex       sync.RWMutex
 	createUserArgsForCall []struct {
 		username string
@@ -18,19 +18,19 @@ type FakeCreateUserActor struct {
 	}
 	createUserReturns struct {
 		result1 v2action.User
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	createUserReturnsOnCall map[int]struct {
 		result1 v2action.User
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeCreateUserActor) CreateUser(username string, password string, origin string) (v2action.User, v2action.Warnings, error) {
+func (fake *FakeCreateUserActor) CreateUser(username string, password string, origin string) (v2action.User, []string, error) {
 	fake.createUserMutex.Lock()
 	ret, specificReturn := fake.createUserReturnsOnCall[len(fake.createUserArgsForCall)]
 	fake.createUserArgsForCall = append(fake.createUserArgsForCall, struct {
@@ -61,27 +61,27 @@ func (fake *FakeCreateUserActor) CreateUserArgsForCall(i int) (string, string, s
 	return fake.createUserArgsForCall[i].username, fake.createUserArgsForCall[i].password, fake.createUserArgsForCall[i].origin
 }
 
-func (fake *FakeCreateUserActor) CreateUserReturns(result1 v2action.User, result2 v2action.Warnings, result3 error) {
+func (fake *FakeCreateUserActor) CreateUserReturns(result1 v2action.User, result2 []string, result3 error) {
 	fake.CreateUserStub = nil
 	fake.createUserReturns = struct {
 		result1 v2action.User
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeCreateUserActor) CreateUserReturnsOnCall(i int, result1 v2action.User, result2 v2action.Warnings, result3 error) {
+func (fake *FakeCreateUserActor) CreateUserReturnsOnCall(i int, result1 v2action.User, result2 []string, result3 error) {
 	fake.CreateUserStub = nil
 	if fake.createUserReturnsOnCall == nil {
 		fake.createUserReturnsOnCall = make(map[int]struct {
 			result1 v2action.User
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.createUserReturnsOnCall[i] = struct {
 		result1 v2action.User
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

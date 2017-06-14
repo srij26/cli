@@ -136,7 +136,7 @@ var _ = Describe("Resources", func() {
 
 				BeforeEach(func() {
 					uploadJob.GUID = "some-job-guid"
-					fakeV2Actor.UploadApplicationPackageReturns(uploadJob, v2action.Warnings{"upload-warning-1", "upload-warning-2"}, nil)
+					fakeV2Actor.UploadApplicationPackageReturns(uploadJob, []string{"upload-warning-1", "upload-warning-2"}, nil)
 
 					progressBarReader = strings.NewReader("123456")
 					fakeProgressBar.NewProgressBarWrapperReturns(progressBarReader)
@@ -151,7 +151,7 @@ var _ = Describe("Resources", func() {
 
 				Context("when the polling is successful", func() {
 					BeforeEach(func() {
-						fakeV2Actor.PollJobReturns(v2action.Warnings{"poll-warning-1", "poll-warning-2"}, nil)
+						fakeV2Actor.PollJobReturns([]string{"poll-warning-1", "poll-warning-2"}, nil)
 					})
 
 					It("returns the warnings", func() {
@@ -182,7 +182,7 @@ var _ = Describe("Resources", func() {
 
 					BeforeEach(func() {
 						expectedErr = errors.New("I can't let you do that starfox")
-						fakeV2Actor.PollJobReturns(v2action.Warnings{"poll-warning-1", "poll-warning-2"}, expectedErr)
+						fakeV2Actor.PollJobReturns([]string{"poll-warning-1", "poll-warning-2"}, expectedErr)
 					})
 
 					It("returns the warnings", func() {
@@ -200,7 +200,7 @@ var _ = Describe("Resources", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("I can't let you do that starfox")
-					fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, v2action.Warnings{"upload-warning-1", "upload-warning-2"}, expectedErr)
+					fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, []string{"upload-warning-1", "upload-warning-2"}, expectedErr)
 
 					done = make(chan bool)
 

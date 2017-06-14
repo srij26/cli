@@ -16,7 +16,7 @@ import (
 //go:generate counterfeiter . BindServiceActor
 
 type BindServiceActor interface {
-	BindServiceBySpace(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) (v2action.Warnings, error)
+	BindServiceBySpace(appName string, ServiceInstanceName string, spaceGUID string, parameters map[string]interface{}) ([]string, error)
 }
 
 type BindServiceCommand struct {

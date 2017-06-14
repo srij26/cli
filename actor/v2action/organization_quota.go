@@ -17,12 +17,12 @@ func (e OrganizationQuotaNotFoundError) Error() string {
 	return fmt.Sprintf("Organization quota with GUID '%s' not found.", e.GUID)
 }
 
-func (actor Actor) GetOrganizationQuota(guid string) (OrganizationQuota, Warnings, error) {
+func (actor Actor) GetOrganizationQuota(guid string) (OrganizationQuota, []string, error) {
 	orgQuota, warnings, err := actor.CloudControllerClient.GetOrganizationQuota(guid)
 
 	if _, ok := err.(ccerror.ResourceNotFoundError); ok {
-		return OrganizationQuota{}, Warnings(warnings), OrganizationQuotaNotFoundError{GUID: guid}
+		return OrganizationQuota{}, []string(warnings), OrganizationQuotaNotFoundError{GUID: guid}
 	}
 
-	return OrganizationQuota(orgQuota), Warnings(warnings), err
+	return OrganizationQuota(orgQuota), []string(warnings), err
 }

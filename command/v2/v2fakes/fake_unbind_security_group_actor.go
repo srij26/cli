@@ -4,26 +4,25 @@ package v2fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/cli/actor/v2action"
 	"code.cloudfoundry.org/cli/command/v2"
 )
 
 type FakeUnbindSecurityGroupActor struct {
-	UnbindSecurityGroupByNameAndSpaceStub        func(securityGroupName string, spaceGUID string) (v2action.Warnings, error)
+	UnbindSecurityGroupByNameAndSpaceStub        func(securityGroupName string, spaceGUID string) ([]string, error)
 	unbindSecurityGroupByNameAndSpaceMutex       sync.RWMutex
 	unbindSecurityGroupByNameAndSpaceArgsForCall []struct {
 		securityGroupName string
 		spaceGUID         string
 	}
 	unbindSecurityGroupByNameAndSpaceReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	unbindSecurityGroupByNameAndSpaceReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
-	UnbindSecurityGroupByNameOrganizationNameAndSpaceNameStub        func(securityGroupName string, orgName string, spaceName string) (v2action.Warnings, error)
+	UnbindSecurityGroupByNameOrganizationNameAndSpaceNameStub        func(securityGroupName string, orgName string, spaceName string) ([]string, error)
 	unbindSecurityGroupByNameOrganizationNameAndSpaceNameMutex       sync.RWMutex
 	unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall []struct {
 		securityGroupName string
@@ -31,18 +30,18 @@ type FakeUnbindSecurityGroupActor struct {
 		spaceName         string
 	}
 	unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) (v2action.Warnings, error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) ([]string, error) {
 	fake.unbindSecurityGroupByNameAndSpaceMutex.Lock()
 	ret, specificReturn := fake.unbindSecurityGroupByNameAndSpaceReturnsOnCall[len(fake.unbindSecurityGroupByNameAndSpaceArgsForCall)]
 	fake.unbindSecurityGroupByNameAndSpaceArgsForCall = append(fake.unbindSecurityGroupByNameAndSpaceArgsForCall, struct {
@@ -72,29 +71,29 @@ func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpaceArgsF
 	return fake.unbindSecurityGroupByNameAndSpaceArgsForCall[i].securityGroupName, fake.unbindSecurityGroupByNameAndSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpaceReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpaceReturns(result1 []string, result2 error) {
 	fake.UnbindSecurityGroupByNameAndSpaceStub = nil
 	fake.unbindSecurityGroupByNameAndSpaceReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpaceReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameAndSpaceReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.UnbindSecurityGroupByNameAndSpaceStub = nil
 	if fake.unbindSecurityGroupByNameAndSpaceReturnsOnCall == nil {
 		fake.unbindSecurityGroupByNameAndSpaceReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.unbindSecurityGroupByNameAndSpaceReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) (v2action.Warnings, error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) ([]string, error) {
 	fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameMutex.Lock()
 	ret, specificReturn := fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall[len(fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall)]
 	fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall = append(fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall, struct {
@@ -125,24 +124,24 @@ func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationN
 	return fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall[i].securityGroupName, fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall[i].orgName, fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameArgsForCall[i].spaceName
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns(result1 []string, result2 error) {
 	fake.UnbindSecurityGroupByNameOrganizationNameAndSpaceNameStub = nil
 	fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeUnbindSecurityGroupActor) UnbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.UnbindSecurityGroupByNameOrganizationNameAndSpaceNameStub = nil
 	if fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall == nil {
 		fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.unbindSecurityGroupByNameOrganizationNameAndSpaceNameReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

@@ -102,7 +102,7 @@ var _ = Describe("set-space-isolation-segment Command", func() {
 
 		Context("when the space lookup is unsuccessful", func() {
 			BeforeEach(func() {
-				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{}, v2action.Warnings{"I am a warning", "I am also a warning"}, v2action.SpaceNotFoundError{Name: space})
+				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{}, []string{"I am a warning", "I am also a warning"}, v2action.SpaceNotFoundError{Name: space})
 			})
 
 			It("returns the warnings and error", func() {
@@ -117,7 +117,7 @@ var _ = Describe("set-space-isolation-segment Command", func() {
 				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{
 					Name: space,
 					GUID: "some-space-guid",
-				}, v2action.Warnings{"I am a warning", "I am also a warning"}, nil)
+				}, []string{"I am a warning", "I am also a warning"}, nil)
 			})
 
 			Context("when the entitlement is successful", func() {

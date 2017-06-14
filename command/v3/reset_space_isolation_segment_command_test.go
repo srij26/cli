@@ -100,7 +100,7 @@ var _ = Describe("reset-space-isolation-segment Command", func() {
 
 		Context("when the space lookup is unsuccessful", func() {
 			BeforeEach(func() {
-				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{}, v2action.Warnings{"warning-1", "warning-2"}, v2action.SpaceNotFoundError{Name: space})
+				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{}, []string{"warning-1", "warning-2"}, v2action.SpaceNotFoundError{Name: space})
 			})
 
 			It("returns the warnings and error", func() {
@@ -115,7 +115,7 @@ var _ = Describe("reset-space-isolation-segment Command", func() {
 				fakeActorV2.GetSpaceByOrganizationAndNameReturns(v2action.Space{
 					Name: space,
 					GUID: "some-space-guid",
-				}, v2action.Warnings{"warning-1", "warning-2"}, nil)
+				}, []string{"warning-1", "warning-2"}, nil)
 			})
 
 			Context("when the reset changes the isolation segment to platform default", func() {

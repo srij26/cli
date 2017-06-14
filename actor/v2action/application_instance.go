@@ -21,12 +21,12 @@ func (instance ApplicationInstance) Running() bool {
 	return instance.State == ccv2.ApplicationInstanceRunning
 }
 
-func (actor Actor) GetApplicationInstancesByApplication(guid string) (map[int]ApplicationInstance, Warnings, error) {
+func (actor Actor) GetApplicationInstancesByApplication(guid string) (map[int]ApplicationInstance, []string, error) {
 	ccAppInstances, warnings, err := actor.CloudControllerClient.GetApplicationInstancesByApplication(guid)
 
 	switch err.(type) {
 	case ccerror.ResourceNotFoundError, ccerror.NotStagedError, ccerror.InstancesError:
-		return nil, Warnings(warnings), ApplicationInstancesNotFoundError{ApplicationGUID: guid}
+		return nil, []string(warnings), ApplicationInstancesNotFoundError{ApplicationGUID: guid}
 	}
 
 	appInstances := map[int]ApplicationInstance{}
@@ -35,5 +35,5 @@ func (actor Actor) GetApplicationInstancesByApplication(guid string) (map[int]Ap
 		appInstances[id] = ApplicationInstance(applicationInstance)
 	}
 
-	return appInstances, Warnings(warnings), err
+	return appInstances, []string(warnings), err
 }

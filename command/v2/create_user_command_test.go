@@ -97,7 +97,7 @@ var _ = Describe("create-user Command", func() {
 				BeforeEach(func() {
 					fakeActor.CreateUserReturns(
 						v2action.User{GUID: "new-user-cc-guid"},
-						v2action.Warnings{"warning"},
+						[]string{"warning"},
 						nil)
 					cmd.Origin = "some-origin"
 				})
@@ -123,7 +123,7 @@ var _ = Describe("create-user Command", func() {
 			BeforeEach(func() {
 				fakeActor.CreateUserReturns(
 					v2action.User{GUID: "new-user-cc-guid"},
-					v2action.Warnings{"warning"},
+					[]string{"warning"},
 					nil)
 				cmd.Origin = "some-origin"
 			})
@@ -152,7 +152,7 @@ var _ = Describe("create-user Command", func() {
 					returnedErr = errors.New("non-translatable error")
 					fakeActor.CreateUserReturns(
 						v2action.User{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						returnedErr)
 				})
 
@@ -170,7 +170,7 @@ var _ = Describe("create-user Command", func() {
 					returnedErr = uaa.ConflictError{}
 					fakeActor.CreateUserReturns(
 						v2action.User{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						returnedErr)
 				})
 

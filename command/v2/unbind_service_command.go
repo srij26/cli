@@ -11,7 +11,7 @@ import (
 //go:generate counterfeiter . UnbindServiceActor
 
 type UnbindServiceActor interface {
-	UnbindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string) (v2action.Warnings, error)
+	UnbindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string) ([]string, error)
 }
 
 type UnbindServiceCommand struct {

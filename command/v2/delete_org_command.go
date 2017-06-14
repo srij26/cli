@@ -11,7 +11,7 @@ import (
 //go:generate counterfeiter . DeleteOrganizationActor
 
 type DeleteOrganizationActor interface {
-	DeleteOrganization(orgName string) (v2action.Warnings, error)
+	DeleteOrganization(orgName string) ([]string, error)
 	ClearOrganizationAndSpace(config v2action.Config)
 }
 

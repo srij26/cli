@@ -54,7 +54,7 @@ var _ = Describe("Domains", func() {
 						GUID: "some-shared-domain-guid",
 					},
 				},
-					v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"},
+					[]string{"private-domain-warnings", "shared-domain-warnings"},
 					nil,
 				)
 			})
@@ -74,7 +74,7 @@ var _ = Describe("Domains", func() {
 
 		Context("no domains exist", func() {
 			BeforeEach(func() {
-				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"}, nil)
+				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, []string{"private-domain-warnings", "shared-domain-warnings"}, nil)
 			})
 
 			It("returns the first shared domain and warnings", func() {
@@ -88,7 +88,7 @@ var _ = Describe("Domains", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("whoops")
-				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"}, expectedErr)
+				fakeV2Actor.GetOrganizationDomainsReturns([]v2action.Domain{}, []string{"private-domain-warnings", "shared-domain-warnings"}, expectedErr)
 			})
 
 			It("returns errors and warnings", func() {

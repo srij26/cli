@@ -27,8 +27,8 @@ func isResourceNotFoundError(err error) bool {
 
 // GetDomain returns the shared or private domain associated with the provided
 // Domain GUID.
-func (actor Actor) GetDomain(domainGUID string) (Domain, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetDomain(domainGUID string) (Domain, []string, error) {
+	var allWarnings []string
 
 	domain, warnings, err := actor.GetSharedDomain(domainGUID)
 	allWarnings = append(allWarnings, warnings...)
@@ -52,7 +52,7 @@ func (actor Actor) GetDomain(domainGUID string) (Domain, Warnings, error) {
 
 // GetSharedDomain returns the shared domain associated with the provided
 // Domain GUID.
-func (actor Actor) GetSharedDomain(domainGUID string) (Domain, Warnings, error) {
+func (actor Actor) GetSharedDomain(domainGUID string) (Domain, []string, error) {
 	if domain, found := actor.loadDomain(domainGUID); found {
 		log.WithFields(log.Fields{
 			"domain": domain.Name,
@@ -63,16 +63,16 @@ func (actor Actor) GetSharedDomain(domainGUID string) (Domain, Warnings, error) 
 
 	domain, warnings, err := actor.CloudControllerClient.GetSharedDomain(domainGUID)
 	if isResourceNotFoundError(err) {
-		return Domain{}, Warnings(warnings), DomainNotFoundError{}
+		return Domain{}, []string(warnings), DomainNotFoundError{}
 	}
 
 	actor.saveDomain(domain)
-	return Domain(domain), Warnings(warnings), err
+	return Domain(domain), []string(warnings), err
 }
 
 // GetPrivateDomain returns the private domain associated with the provided
 // Domain GUID.
-func (actor Actor) GetPrivateDomain(domainGUID string) (Domain, Warnings, error) {
+func (actor Actor) GetPrivateDomain(domainGUID string) (Domain, []string, error) {
 	if domain, found := actor.loadDomain(domainGUID); found {
 		log.WithFields(log.Fields{
 			"domain": domain.Name,
@@ -83,17 +83,17 @@ func (actor Actor) GetPrivateDomain(domainGUID string) (Domain, Warnings, error)
 
 	domain, warnings, err := actor.CloudControllerClient.GetPrivateDomain(domainGUID)
 	if isResourceNotFoundError(err) {
-		return Domain{}, Warnings(warnings), DomainNotFoundError{}
+		return Domain{}, []string(warnings), DomainNotFoundError{}
 	}
 
 	actor.saveDomain(domain)
-	return Domain(domain), Warnings(warnings), err
+	return Domain(domain), []string(warnings), err
 }
 
 // GetOrganizationDomains returns the shared and private domains associated
 // with an organization.
-func (actor Actor) GetOrganizationDomains(orgGUID string) ([]Domain, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetOrganizationDomains(orgGUID string) ([]Domain, []string, error) {
+	var allWarnings []string
 	var allDomains []Domain
 
 	domains, warnings, err := actor.CloudControllerClient.GetSharedDomains()

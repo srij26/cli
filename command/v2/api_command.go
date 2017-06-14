@@ -14,7 +14,7 @@ import (
 
 type APIActor interface {
 	ClearTarget(config v2action.Config)
-	SetTarget(config v2action.Config, settings v2action.TargetSettings) (v2action.Warnings, error)
+	SetTarget(config v2action.Config, settings v2action.TargetSettings) ([]string, error)
 }
 
 type ApiCommand struct {

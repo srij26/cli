@@ -88,7 +88,7 @@ var _ = Describe("Application Config", func() {
 			// Prevents NoDomainsFoundError
 			fakeV2Actor.GetOrganizationDomainsReturns(
 				[]v2action.Domain{domain},
-				v2action.Warnings{"private-domain-warnings", "shared-domain-warnings"},
+				[]string{"private-domain-warnings", "shared-domain-warnings"},
 				nil,
 			)
 		})
@@ -121,12 +121,12 @@ var _ = Describe("Application Config", func() {
 					SpaceGUID: spaceGUID,
 				}
 
-				fakeV2Actor.GetApplicationByNameAndSpaceReturns(app, v2action.Warnings{"some-app-warning-1", "some-app-warning-2"}, nil)
+				fakeV2Actor.GetApplicationByNameAndSpaceReturns(app, []string{"some-app-warning-1", "some-app-warning-2"}, nil)
 			})
 
 			Context("when retrieving the application's routes is successful", func() {
 				BeforeEach(func() {
-					fakeV2Actor.GetApplicationRoutesReturns([]v2action.Route{route}, v2action.Warnings{"app-route-warnings"}, nil)
+					fakeV2Actor.GetApplicationRoutesReturns([]v2action.Route{route}, []string{"app-route-warnings"}, nil)
 				})
 
 				It("sets the current application to the existing application", func() {
@@ -154,7 +154,7 @@ var _ = Describe("Application Config", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("dios mio")
-					fakeV2Actor.GetApplicationRoutesReturns(nil, v2action.Warnings{"app-route-warnings"}, expectedErr)
+					fakeV2Actor.GetApplicationRoutesReturns(nil, []string{"app-route-warnings"}, expectedErr)
 				})
 
 				It("sets the current and desired application to the current", func() {
@@ -169,7 +169,7 @@ var _ = Describe("Application Config", func() {
 
 		Context("when the application does not exist", func() {
 			BeforeEach(func() {
-				fakeV2Actor.GetApplicationByNameAndSpaceReturns(v2action.Application{}, v2action.Warnings{"some-app-warning-1", "some-app-warning-2"}, v2action.ApplicationNotFoundError{})
+				fakeV2Actor.GetApplicationByNameAndSpaceReturns(v2action.Application{}, []string{"some-app-warning-1", "some-app-warning-2"}, v2action.ApplicationNotFoundError{})
 			})
 
 			It("creates a new application and sets it to the desired application", func() {
@@ -190,7 +190,7 @@ var _ = Describe("Application Config", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("dios mio")
-				fakeV2Actor.GetApplicationByNameAndSpaceReturns(v2action.Application{}, v2action.Warnings{"some-app-warning-1", "some-app-warning-2"}, expectedErr)
+				fakeV2Actor.GetApplicationByNameAndSpaceReturns(v2action.Application{}, []string{"some-app-warning-1", "some-app-warning-2"}, expectedErr)
 			})
 
 			It("returns the error and warnings", func() {
@@ -202,7 +202,7 @@ var _ = Describe("Application Config", func() {
 		Context("when retrieving the default route is successful", func() {
 			BeforeEach(func() {
 				// Assumes new route
-				fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, v2action.Warnings{"get-route-warnings"}, v2action.RouteNotFoundError{})
+				fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, []string{"get-route-warnings"}, v2action.RouteNotFoundError{})
 			})
 
 			It("adds the route to desired routes", func() {
@@ -221,7 +221,7 @@ var _ = Describe("Application Config", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("dios mio")
-				fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, v2action.Warnings{"get-route-warnings"}, expectedErr)
+				fakeV2Actor.FindRouteBoundToSpaceWithSettingsReturns(v2action.Route{}, []string{"get-route-warnings"}, expectedErr)
 			})
 
 			It("returns the error and warnings", func() {

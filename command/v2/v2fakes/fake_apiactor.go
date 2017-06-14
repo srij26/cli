@@ -14,18 +14,18 @@ type FakeAPIActor struct {
 	clearTargetArgsForCall []struct {
 		config v2action.Config
 	}
-	SetTargetStub        func(config v2action.Config, settings v2action.TargetSettings) (v2action.Warnings, error)
+	SetTargetStub        func(config v2action.Config, settings v2action.TargetSettings) ([]string, error)
 	setTargetMutex       sync.RWMutex
 	setTargetArgsForCall []struct {
 		config   v2action.Config
 		settings v2action.TargetSettings
 	}
 	setTargetReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	setTargetReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
@@ -56,7 +56,7 @@ func (fake *FakeAPIActor) ClearTargetArgsForCall(i int) v2action.Config {
 	return fake.clearTargetArgsForCall[i].config
 }
 
-func (fake *FakeAPIActor) SetTarget(config v2action.Config, settings v2action.TargetSettings) (v2action.Warnings, error) {
+func (fake *FakeAPIActor) SetTarget(config v2action.Config, settings v2action.TargetSettings) ([]string, error) {
 	fake.setTargetMutex.Lock()
 	ret, specificReturn := fake.setTargetReturnsOnCall[len(fake.setTargetArgsForCall)]
 	fake.setTargetArgsForCall = append(fake.setTargetArgsForCall, struct {
@@ -86,24 +86,24 @@ func (fake *FakeAPIActor) SetTargetArgsForCall(i int) (v2action.Config, v2action
 	return fake.setTargetArgsForCall[i].config, fake.setTargetArgsForCall[i].settings
 }
 
-func (fake *FakeAPIActor) SetTargetReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeAPIActor) SetTargetReturns(result1 []string, result2 error) {
 	fake.SetTargetStub = nil
 	fake.setTargetReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeAPIActor) SetTargetReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeAPIActor) SetTargetReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.SetTargetStub = nil
 	if fake.setTargetReturnsOnCall == nil {
 		fake.setTargetReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.setTargetReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

@@ -29,12 +29,12 @@ func (e SecurityGroupNotFoundError) Error() string {
 	return fmt.Sprintf("Security group '%s' not found.", e.Name)
 }
 
-func (actor Actor) BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) (Warnings, error) {
+func (actor Actor) BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) ([]string, error) {
 	warnings, err := actor.CloudControllerClient.AssociateSpaceWithSecurityGroup(securityGroupGUID, spaceGUID)
-	return Warnings(warnings), err
+	return []string(warnings), err
 }
 
-func (actor Actor) GetSecurityGroupByName(securityGroupName string) (SecurityGroup, Warnings, error) {
+func (actor Actor) GetSecurityGroupByName(securityGroupName string) (SecurityGroup, []string, error) {
 	securityGroups, warnings, err := actor.CloudControllerClient.GetSecurityGroups([]ccv2.Query{
 		{
 			Filter:   ccv2.NameFilter,
@@ -44,28 +44,28 @@ func (actor Actor) GetSecurityGroupByName(securityGroupName string) (SecurityGro
 	})
 
 	if err != nil {
-		return SecurityGroup{}, Warnings(warnings), err
+		return SecurityGroup{}, []string(warnings), err
 	}
 
 	if len(securityGroups) == 0 {
-		return SecurityGroup{}, Warnings(warnings), SecurityGroupNotFoundError{securityGroupName}
+		return SecurityGroup{}, []string(warnings), SecurityGroupNotFoundError{securityGroupName}
 	}
 
 	securityGroup := SecurityGroup{
 		Name: securityGroups[0].Name,
 		GUID: securityGroups[0].GUID,
 	}
-	return securityGroup, Warnings(warnings), nil
+	return securityGroup, []string(warnings), nil
 }
 
 // GetSecurityGroupsWithOrganizationAndSpace returns a list of security groups
 // with org and space information.
-func (actor Actor) GetSecurityGroupsWithOrganizationAndSpace() ([]SecurityGroupWithOrganizationAndSpace, Warnings, error) {
+func (actor Actor) GetSecurityGroupsWithOrganizationAndSpace() ([]SecurityGroupWithOrganizationAndSpace, []string, error) {
 	var err error
 
 	securityGroups, allWarnings, err := actor.CloudControllerClient.GetSecurityGroups(nil)
 	if err != nil {
-		return nil, Warnings(allWarnings), err
+		return nil, []string(allWarnings), err
 	}
 
 	cachedOrgs := make(map[string]Organization)
@@ -81,7 +81,7 @@ func (actor Actor) GetSecurityGroupsWithOrganizationAndSpace() ([]SecurityGroupW
 		spaces, warnings, err := actor.CloudControllerClient.GetSpacesBySecurityGroup(s.GUID)
 		allWarnings = append(allWarnings, warnings...)
 		if err != nil {
-			return nil, Warnings(allWarnings), err
+			return nil, []string(allWarnings), err
 		}
 
 		if len(spaces) == 0 {
@@ -108,7 +108,7 @@ func (actor Actor) GetSecurityGroupsWithOrganizationAndSpace() ([]SecurityGroupW
 				o, warnings, err := actor.CloudControllerClient.GetOrganization(sp.OrganizationGUID)
 				allWarnings = append(allWarnings, warnings...)
 				if err != nil {
-					return nil, Warnings(allWarnings), err
+					return nil, []string(allWarnings), err
 				}
 
 				org = Organization{
@@ -143,23 +143,23 @@ func (actor Actor) GetSecurityGroupsWithOrganizationAndSpace() ([]SecurityGroupW
 
 			return secGroupOrgSpaces[i].Space.Name < secGroupOrgSpaces[j].Space.Name
 		})
-	return secGroupOrgSpaces, Warnings(allWarnings), err
+	return secGroupOrgSpaces, []string(allWarnings), err
 }
 
 // GetDomain returns the shared or private domain associated with the provided
 // Domain GUID.
-func (actor Actor) GetSpaceRunningSecurityGroupsBySpace(spaceGUID string) ([]SecurityGroup, Warnings, error) {
+func (actor Actor) GetSpaceRunningSecurityGroupsBySpace(spaceGUID string) ([]SecurityGroup, []string, error) {
 	ccv2SecurityGroups, warnings, err := actor.CloudControllerClient.GetSpaceRunningSecurityGroupsBySpace(spaceGUID)
-	return processSecurityGroups(spaceGUID, ccv2SecurityGroups, Warnings(warnings), err)
+	return processSecurityGroups(spaceGUID, ccv2SecurityGroups, []string(warnings), err)
 }
 
-func (actor Actor) GetSpaceStagingSecurityGroupsBySpace(spaceGUID string) ([]SecurityGroup, Warnings, error) {
+func (actor Actor) GetSpaceStagingSecurityGroupsBySpace(spaceGUID string) ([]SecurityGroup, []string, error) {
 	ccv2SecurityGroups, warnings, err := actor.CloudControllerClient.GetSpaceStagingSecurityGroupsBySpace(spaceGUID)
-	return processSecurityGroups(spaceGUID, ccv2SecurityGroups, Warnings(warnings), err)
+	return processSecurityGroups(spaceGUID, ccv2SecurityGroups, []string(warnings), err)
 }
 
-func (actor Actor) UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) (Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) ([]string, error) {
+	var allWarnings []string
 
 	securityGroup, warnings, err := actor.GetSecurityGroupByName(securityGroupName)
 	allWarnings = append(allWarnings, warnings...)
@@ -172,8 +172,8 @@ func (actor Actor) UnbindSecurityGroupByNameAndSpace(securityGroupName string, s
 	return allWarnings, err
 }
 
-func (actor Actor) UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) (Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) ([]string, error) {
+	var allWarnings []string
 
 	securityGroup, warnings, err := actor.GetSecurityGroupByName(securityGroupName)
 	allWarnings = append(allWarnings, warnings...)
@@ -198,9 +198,9 @@ func (actor Actor) UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securit
 	return allWarnings, err
 }
 
-func (actor Actor) unbindSecurityGroupAndSpace(securityGroupGUID string, spaceGUID string) (Warnings, error) {
+func (actor Actor) unbindSecurityGroupAndSpace(securityGroupGUID string, spaceGUID string) ([]string, error) {
 	warnings, err := actor.CloudControllerClient.RemoveSpaceFromSecurityGroup(securityGroupGUID, spaceGUID)
-	return Warnings(warnings), err
+	return []string(warnings), err
 }
 
 func extractSecurityGroupRules(securityGroup SecurityGroup, lifecycle string) []SecurityGroupRule {
@@ -220,7 +220,7 @@ func extractSecurityGroupRules(securityGroup SecurityGroup, lifecycle string) []
 	return securityGroupRules
 }
 
-func processSecurityGroups(spaceGUID string, ccv2SecurityGroups []ccv2.SecurityGroup, warnings Warnings, err error) ([]SecurityGroup, Warnings, error) {
+func processSecurityGroups(spaceGUID string, ccv2SecurityGroups []ccv2.SecurityGroup, warnings []string, err error) ([]SecurityGroup, []string, error) {
 	if err != nil {
 		switch err.(type) {
 		case ccerror.ResourceNotFoundError:

@@ -82,8 +82,8 @@ func (e ApplicationInstancesNotFoundError) Error() string {
 	return fmt.Sprintf("Application instances '%s' not found.", e.ApplicationGUID)
 }
 
-func (actor Actor) GetApplicationInstancesWithStatsByApplication(guid string) ([]ApplicationInstanceWithStats, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetApplicationInstancesWithStatsByApplication(guid string) ([]ApplicationInstanceWithStats, []string, error) {
+	var allWarnings []string
 
 	appInstanceStats, apiWarnings, err := actor.CloudControllerClient.GetApplicationInstanceStatusesByApplication(guid)
 	allWarnings = append(allWarnings, apiWarnings...)

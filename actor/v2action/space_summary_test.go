@@ -16,7 +16,7 @@ var _ = Describe("Space Summary Actions", func() {
 			actor                     *Actor
 			fakeCloudControllerClient *v2actionfakes.FakeCloudControllerClient
 			spaceSummary              SpaceSummary
-			warnings                  Warnings
+			warnings                  []string
 			err                       error
 		)
 

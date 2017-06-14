@@ -27,7 +27,7 @@ var _ = Describe("User Actions", func() {
 	Describe("CreateUser", func() {
 		var (
 			actualUser     User
-			actualWarnings Warnings
+			actualWarnings []string
 			actualErr      error
 		)
 

@@ -25,7 +25,7 @@ var _ = Describe("Service Binding Actions", func() {
 	Describe("BindServiceBySpace", func() {
 		var (
 			executeErr error
-			warnings   Warnings
+			warnings   []string
 		)
 
 		JustBeforeEach(func() {
@@ -142,7 +142,7 @@ var _ = Describe("Service Binding Actions", func() {
 				Expect(serviceBinding).To(Equal(ServiceBinding{
 					GUID: "some-service-binding-guid",
 				}))
-				Expect(warnings).To(Equal(Warnings{"foo"}))
+				Expect(warnings).To(Equal([]string{"foo"}))
 
 				Expect(fakeCloudControllerClient.GetServiceBindingsCallCount()).To(Equal(1))
 				Expect(fakeCloudControllerClient.GetServiceBindingsArgsForCall(0)).To(ConsistOf([]ccv2.Query{
@@ -231,7 +231,7 @@ var _ = Describe("Service Binding Actions", func() {
 			It("deletes the service binding", func() {
 				warnings, err := actor.UnbindServiceBySpace("some-app", "some-service-instance", "some-space-guid")
 				Expect(err).NotTo(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"foo-1", "foo-2", "foo-3", "foo-4", "foo-5"}))
+				Expect(warnings).To(ConsistOf("foo-1", "foo-2", "foo-3", "foo-4", "foo-5"))
 
 				Expect(fakeCloudControllerClient.DeleteServiceBindingCallCount()).To(Equal(1))
 				Expect(fakeCloudControllerClient.DeleteServiceBindingArgsForCall(0)).To(Equal("some-service-binding-guid"))
@@ -248,7 +248,7 @@ var _ = Describe("Service Binding Actions", func() {
 				It("returns the warnings and the error", func() {
 					warnings, err := actor.UnbindServiceBySpace("some-app", "some-service-instance", "some-space-guid")
 					Expect(err).To(MatchError(expectedError))
-					Expect(warnings).To(ConsistOf(Warnings{"foo-1", "foo-2", "foo-3", "foo-4", "foo-5"}))
+					Expect(warnings).To(ConsistOf("foo-1", "foo-2", "foo-3", "foo-4", "foo-5"))
 				})
 			})
 		})

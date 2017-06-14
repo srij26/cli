@@ -69,7 +69,7 @@ var _ = Describe("Applications", func() {
 						GUID:      "some-app-guid",
 						SpaceGUID: "some-space-guid",
 						Buildpack: "ruby",
-					}, v2action.Warnings{"update-warning"}, nil)
+					}, []string{"update-warning"}, nil)
 				})
 
 				It("updates the application", func() {
@@ -100,7 +100,7 @@ var _ = Describe("Applications", func() {
 				var expectedErr error
 				BeforeEach(func() {
 					expectedErr = errors.New("oh my")
-					fakeV2Actor.UpdateApplicationReturns(v2action.Application{}, v2action.Warnings{"update-warning"}, expectedErr)
+					fakeV2Actor.UpdateApplicationReturns(v2action.Application{}, []string{"update-warning"}, expectedErr)
 				})
 
 				It("returns warnings and error and stops", func() {
@@ -118,7 +118,7 @@ var _ = Describe("Applications", func() {
 						GUID:      "some-app-guid",
 						SpaceGUID: "some-space-guid",
 						Buildpack: "ruby",
-					}, v2action.Warnings{"create-warning"}, nil)
+					}, []string{"create-warning"}, nil)
 				})
 
 				It("creates the application", func() {
@@ -147,7 +147,7 @@ var _ = Describe("Applications", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("oh my")
-					fakeV2Actor.CreateApplicationReturns(v2action.Application{}, v2action.Warnings{"create-warning"}, expectedErr)
+					fakeV2Actor.CreateApplicationReturns(v2action.Application{}, []string{"create-warning"}, expectedErr)
 				})
 
 				It("sends the warnings and errors and returns true", func() {

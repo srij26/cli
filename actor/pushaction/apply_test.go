@@ -82,11 +82,11 @@ var _ = Describe("Apply", func() {
 		var createdApp v2action.Application
 
 		BeforeEach(func() {
-			fakeV2Actor.CreateApplicationStub = func(application v2action.Application) (v2action.Application, v2action.Warnings, error) {
+			fakeV2Actor.CreateApplicationStub = func(application v2action.Application) (v2action.Application, []string, error) {
 				createdApp = application
 				createdApp.GUID = "some-app-guid"
 
-				return createdApp, v2action.Warnings{"create-application-warnings-1", "create-application-warnings-2"}, nil
+				return createdApp, []string{"create-application-warnings-1", "create-application-warnings-2"}, nil
 			}
 		})
 
@@ -101,7 +101,7 @@ var _ = Describe("Apply", func() {
 
 			BeforeEach(func() {
 				createdRoutes = []v2action.Route{{Host: "banana", GUID: "some-route-guid"}}
-				fakeV2Actor.CreateRouteReturns(createdRoutes[0], v2action.Warnings{"create-route-warnings-1", "create-route-warnings-2"}, nil)
+				fakeV2Actor.CreateRouteReturns(createdRoutes[0], []string{"create-route-warnings-1", "create-route-warnings-2"}, nil)
 			})
 
 			JustBeforeEach(func() {
@@ -112,7 +112,7 @@ var _ = Describe("Apply", func() {
 
 			Context("when binding the routes is successful", func() {
 				BeforeEach(func() {
-					fakeV2Actor.BindRouteToApplicationReturns(v2action.Warnings{"bind-route-warnings-1", "bind-route-warnings-2"}, nil)
+					fakeV2Actor.BindRouteToApplicationReturns([]string{"bind-route-warnings-1", "bind-route-warnings-2"}, nil)
 				})
 
 				JustBeforeEach(func() {
@@ -140,7 +140,7 @@ var _ = Describe("Apply", func() {
 
 					Context("when the upload is successful", func() {
 						BeforeEach(func() {
-							fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, v2action.Warnings{"upload-warnings-1", "upload-warnings-2"}, nil)
+							fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, []string{"upload-warnings-1", "upload-warnings-2"}, nil)
 						})
 
 						JustBeforeEach(func() {
@@ -166,7 +166,7 @@ var _ = Describe("Apply", func() {
 					Context("when the upload errors", func() {
 						Context("with a retryable error", func() {
 							BeforeEach(func() {
-								fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, v2action.Warnings{"upload-warnings-1", "upload-warnings-2"}, ccerror.PipeSeekError{})
+								fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, []string{"upload-warnings-1", "upload-warnings-2"}, ccerror.PipeSeekError{})
 							})
 
 							It("retries the download up to three times", func() {
@@ -194,7 +194,7 @@ var _ = Describe("Apply", func() {
 
 							BeforeEach(func() {
 								expectedErr = errors.New("dios mio")
-								fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, v2action.Warnings{"upload-warnings-1", "upload-warnings-2"}, expectedErr)
+								fakeV2Actor.UploadApplicationPackageReturns(v2action.Job{}, []string{"upload-warnings-1", "upload-warnings-2"}, expectedErr)
 							})
 
 							It("sends warnings and errors, then stops", func() {
@@ -251,7 +251,7 @@ var _ = Describe("Apply", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("dios mio")
-					fakeV2Actor.BindRouteToApplicationReturns(v2action.Warnings{"bind-route-warnings-1", "bind-route-warnings-2"}, expectedErr)
+					fakeV2Actor.BindRouteToApplicationReturns([]string{"bind-route-warnings-1", "bind-route-warnings-2"}, expectedErr)
 				})
 
 				It("sends warnings and errors, then stops", func() {
@@ -279,7 +279,7 @@ var _ = Describe("Apply", func() {
 
 			BeforeEach(func() {
 				expectedErr = errors.New("dios mio")
-				fakeV2Actor.CreateRouteReturns(v2action.Route{}, v2action.Warnings{"create-route-warnings-1", "create-route-warnings-2"}, expectedErr)
+				fakeV2Actor.CreateRouteReturns(v2action.Route{}, []string{"create-route-warnings-1", "create-route-warnings-2"}, expectedErr)
 			})
 
 			It("sends warnings and errors, then stops", func() {
@@ -296,7 +296,7 @@ var _ = Describe("Apply", func() {
 
 		BeforeEach(func() {
 			expectedErr = errors.New("dios mio")
-			fakeV2Actor.CreateApplicationReturns(v2action.Application{}, v2action.Warnings{"create-application-warnings-1", "create-application-warnings-2"}, expectedErr)
+			fakeV2Actor.CreateApplicationReturns(v2action.Application{}, []string{"create-application-warnings-1", "create-application-warnings-2"}, expectedErr)
 		})
 
 		It("sends warnings and errors, then stops", func() {

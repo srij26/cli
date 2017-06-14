@@ -11,11 +11,11 @@ import (
 //go:generate counterfeiter . BindSecurityGroupActor
 
 type BindSecurityGroupActor interface {
-	GetSecurityGroupByName(securityGroupName string) (v2action.SecurityGroup, v2action.Warnings, error)
-	GetOrganizationByName(orgName string) (v2action.Organization, v2action.Warnings, error)
-	GetOrganizationSpaces(orgGUID string) ([]v2action.Space, v2action.Warnings, error)
-	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error)
-	BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) (v2action.Warnings, error)
+	GetSecurityGroupByName(securityGroupName string) (v2action.SecurityGroup, []string, error)
+	GetOrganizationByName(orgName string) (v2action.Organization, []string, error)
+	GetOrganizationSpaces(orgGUID string) ([]v2action.Space, []string, error)
+	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, []string, error)
+	BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) ([]string, error)
 }
 
 type BindSecurityGroupCommand struct {

@@ -9,17 +9,17 @@ import (
 )
 
 type FakeDeleteOrganizationActor struct {
-	DeleteOrganizationStub        func(orgName string) (v2action.Warnings, error)
+	DeleteOrganizationStub        func(orgName string) ([]string, error)
 	deleteOrganizationMutex       sync.RWMutex
 	deleteOrganizationArgsForCall []struct {
 		orgName string
 	}
 	deleteOrganizationReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	deleteOrganizationReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	ClearOrganizationAndSpaceStub        func(config v2action.Config)
@@ -31,7 +31,7 @@ type FakeDeleteOrganizationActor struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeDeleteOrganizationActor) DeleteOrganization(orgName string) (v2action.Warnings, error) {
+func (fake *FakeDeleteOrganizationActor) DeleteOrganization(orgName string) ([]string, error) {
 	fake.deleteOrganizationMutex.Lock()
 	ret, specificReturn := fake.deleteOrganizationReturnsOnCall[len(fake.deleteOrganizationArgsForCall)]
 	fake.deleteOrganizationArgsForCall = append(fake.deleteOrganizationArgsForCall, struct {
@@ -60,24 +60,24 @@ func (fake *FakeDeleteOrganizationActor) DeleteOrganizationArgsForCall(i int) st
 	return fake.deleteOrganizationArgsForCall[i].orgName
 }
 
-func (fake *FakeDeleteOrganizationActor) DeleteOrganizationReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeDeleteOrganizationActor) DeleteOrganizationReturns(result1 []string, result2 error) {
 	fake.DeleteOrganizationStub = nil
 	fake.deleteOrganizationReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeDeleteOrganizationActor) DeleteOrganizationReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeDeleteOrganizationActor) DeleteOrganizationReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.DeleteOrganizationStub = nil
 	if fake.deleteOrganizationReturnsOnCall == nil {
 		fake.deleteOrganizationReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.deleteOrganizationReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

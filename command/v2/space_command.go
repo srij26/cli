@@ -17,8 +17,8 @@ import (
 
 type SpaceActor interface {
 	CloudControllerAPIVersion() string
-	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error)
-	GetSpaceSummaryByOrganizationAndName(orgGUID string, spaceName string, includeStagingSecurityGroupsRules bool) (v2action.SpaceSummary, v2action.Warnings, error)
+	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, []string, error)
+	GetSpaceSummaryByOrganizationAndName(orgGUID string, spaceName string, includeStagingSecurityGroupsRules bool) (v2action.SpaceSummary, []string, error)
 }
 
 //go:generate counterfeiter . SpaceActorV3

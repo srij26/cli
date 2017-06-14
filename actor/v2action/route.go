@@ -67,25 +67,25 @@ func (r Route) String() string {
 	return routeString
 }
 
-func (actor Actor) BindRouteToApplication(routeGUID string, appGUID string) (Warnings, error) {
+func (actor Actor) BindRouteToApplication(routeGUID string, appGUID string) ([]string, error) {
 	_, warnings, err := actor.CloudControllerClient.BindRouteToApplication(routeGUID, appGUID)
 	if _, ok := err.(ccerror.InvalidRelationError); ok {
-		return Warnings(warnings), RouteInDifferentSpaceError{}
+		return []string(warnings), RouteInDifferentSpaceError{}
 	}
-	return Warnings(warnings), err
+	return []string(warnings), err
 }
 
-func (actor Actor) CreateRoute(route Route, generatePort bool) (Route, Warnings, error) {
+func (actor Actor) CreateRoute(route Route, generatePort bool) (Route, []string, error) {
 	returnedRoute, warnings, err := actor.CloudControllerClient.CreateRoute(ActorToCCRoute(route), generatePort)
-	return CCToActorRoute(returnedRoute, route.Domain), Warnings(warnings), err
+	return CCToActorRoute(returnedRoute, route.Domain), []string(warnings), err
 }
 
 // GetOrphanedRoutesBySpace returns a list of orphaned routes associated with
 // the provided Space GUID.
-func (actor Actor) GetOrphanedRoutesBySpace(spaceGUID string) ([]Route, Warnings, error) {
+func (actor Actor) GetOrphanedRoutesBySpace(spaceGUID string) ([]Route, []string, error) {
 	var (
 		orphanedRoutes []Route
-		allWarnings    Warnings
+		allWarnings    []string
 	)
 
 	routes, warnings, err := actor.GetSpaceRoutes(spaceGUID)
@@ -115,8 +115,8 @@ func (actor Actor) GetOrphanedRoutesBySpace(spaceGUID string) ([]Route, Warnings
 
 // GetApplicationRoutes returns a list of routes associated with the provided
 // Application GUID.
-func (actor Actor) GetApplicationRoutes(applicationGUID string) ([]Route, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetApplicationRoutes(applicationGUID string) ([]Route, []string, error) {
+	var allWarnings []string
 	ccv2Routes, warnings, err := actor.CloudControllerClient.GetApplicationRoutes(applicationGUID, nil)
 	allWarnings = append(allWarnings, warnings...)
 	if err != nil {
@@ -130,8 +130,8 @@ func (actor Actor) GetApplicationRoutes(applicationGUID string) ([]Route, Warnin
 
 // GetSpaceRoutes returns a list of routes associated with the provided Space
 // GUID.
-func (actor Actor) GetSpaceRoutes(spaceGUID string) ([]Route, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetSpaceRoutes(spaceGUID string) ([]Route, []string, error) {
+	var allWarnings []string
 	ccv2Routes, warnings, err := actor.CloudControllerClient.GetSpaceRoutes(spaceGUID, nil)
 	allWarnings = append(allWarnings, warnings...)
 	if err != nil {
@@ -144,21 +144,21 @@ func (actor Actor) GetSpaceRoutes(spaceGUID string) ([]Route, Warnings, error) {
 }
 
 // DeleteRoute deletes the Route associated with the provided Route GUID.
-func (actor Actor) DeleteRoute(routeGUID string) (Warnings, error) {
+func (actor Actor) DeleteRoute(routeGUID string) ([]string, error) {
 	warnings, err := actor.CloudControllerClient.DeleteRoute(routeGUID)
-	return Warnings(warnings), err
+	return []string(warnings), err
 }
 
-func (actor Actor) CheckRoute(route Route) (bool, Warnings, error) {
+func (actor Actor) CheckRoute(route Route) (bool, []string, error) {
 	exists, warnings, err := actor.CloudControllerClient.CheckRoute(ActorToCCRoute(route))
-	return exists, Warnings(warnings), err
+	return exists, []string(warnings), err
 }
 
 // FindRouteBoundToSpaceWithSettings finds the route with the given host,
 // domain and space.  If it is unable to find the route, it will check if it
 // exists anywhere in the system. When the route exists in another space,
 // RouteInDifferentSpaceError is returned.
-func (actor Actor) FindRouteBoundToSpaceWithSettings(route Route) (Route, Warnings, error) {
+func (actor Actor) FindRouteBoundToSpaceWithSettings(route Route) (Route, []string, error) {
 	// TODO: Use a more generic search mechanism to support path, port, and no host
 	existingRoute, warnings, err := actor.GetRouteByHostAndDomain(route.Host, route.Domain.GUID)
 	if routeNotFoundErr, ok := err.(RouteNotFoundError); ok {
@@ -168,20 +168,20 @@ func (actor Actor) FindRouteBoundToSpaceWithSettings(route Route) (Route, Warnin
 		exists, checkRouteWarnings, chkErr := actor.CheckRoute(route)
 		if chkErr != nil {
 			log.Errorln("check route:", err)
-			return Route{}, append(Warnings(warnings), checkRouteWarnings...), chkErr
+			return Route{}, append([]string(warnings), checkRouteWarnings...), chkErr
 		}
 
 		if exists {
 			log.Errorf("unable to find route %s in current space", route.String())
-			return Route{}, append(Warnings(warnings), checkRouteWarnings...), RouteInDifferentSpaceError{Route: route.String()}
+			return Route{}, append([]string(warnings), checkRouteWarnings...), RouteInDifferentSpaceError{Route: route.String()}
 		} else {
 			log.Warnf("negative existence check for route %s - returning partial route", route.String())
 			log.Debugf("partialRoute: %#v", route)
-			return Route{}, append(Warnings(warnings), checkRouteWarnings...), routeNotFoundErr
+			return Route{}, append([]string(warnings), checkRouteWarnings...), routeNotFoundErr
 		}
 	} else if err != nil {
 		log.Errorln("finding route:", err)
-		return Route{}, Warnings(warnings), err
+		return Route{}, []string(warnings), err
 	}
 
 	if existingRoute.SpaceGUID != route.SpaceGUID {
@@ -189,34 +189,34 @@ func (actor Actor) FindRouteBoundToSpaceWithSettings(route Route) (Route, Warnin
 			"targeted_space_guid": route.SpaceGUID,
 			"existing_space_guid": existingRoute.SpaceGUID,
 		}).Errorf("route exists in different space the user has access to")
-		return Route{}, Warnings(warnings), RouteInDifferentSpaceError{Route: route.String()}
+		return Route{}, []string(warnings), RouteInDifferentSpaceError{Route: route.String()}
 	}
 
 	log.Debugf("found route: %#v", existingRoute)
-	return existingRoute, Warnings(warnings), err
+	return existingRoute, []string(warnings), err
 }
 
 // GetRouteByHostAndDomain returns the HTTP route with the matching host and
 // the associate domain GUID.
-func (actor Actor) GetRouteByHostAndDomain(host string, domainGUID string) (Route, Warnings, error) {
+func (actor Actor) GetRouteByHostAndDomain(host string, domainGUID string) (Route, []string, error) {
 	ccv2Routes, warnings, err := actor.CloudControllerClient.GetRoutes([]ccv2.Query{
 		{Filter: ccv2.HostFilter, Operator: ccv2.EqualOperator, Value: host},
 		{Filter: ccv2.DomainGUIDFilter, Operator: ccv2.EqualOperator, Value: domainGUID},
 	})
 	if err != nil {
-		return Route{}, Warnings(warnings), err
+		return Route{}, []string(warnings), err
 	}
 
 	if len(ccv2Routes) == 0 {
-		return Route{}, Warnings(warnings), RouteNotFoundError{Host: host, DomainGUID: domainGUID}
+		return Route{}, []string(warnings), RouteNotFoundError{Host: host, DomainGUID: domainGUID}
 	}
 
 	routes, domainWarnings, err := actor.applyDomain(ccv2Routes)
 	if err != nil {
-		return Route{}, append(Warnings(warnings), domainWarnings...), err
+		return Route{}, append([]string(warnings), domainWarnings...), err
 	}
 
-	return routes[0], append(Warnings(warnings), domainWarnings...), err
+	return routes[0], append([]string(warnings), domainWarnings...), err
 }
 
 func ActorToCCRoute(route Route) ccv2.Route {
@@ -241,9 +241,9 @@ func CCToActorRoute(ccv2Route ccv2.Route, domain Domain) Route {
 	}
 }
 
-func (actor Actor) applyDomain(ccv2Routes []ccv2.Route) ([]Route, Warnings, error) {
+func (actor Actor) applyDomain(ccv2Routes []ccv2.Route) ([]Route, []string, error) {
 	var routes []Route
-	var allWarnings Warnings
+	var allWarnings []string
 
 	for _, ccv2Route := range ccv2Routes {
 		domain, warnings, err := actor.GetDomain(ccv2Route.DomainGUID)

@@ -9,24 +9,24 @@ import (
 )
 
 type FakeSecurityGroupsActor struct {
-	GetSecurityGroupsWithOrganizationAndSpaceStub        func() ([]v2action.SecurityGroupWithOrganizationAndSpace, v2action.Warnings, error)
+	GetSecurityGroupsWithOrganizationAndSpaceStub        func() ([]v2action.SecurityGroupWithOrganizationAndSpace, []string, error)
 	getSecurityGroupsWithOrganizationAndSpaceMutex       sync.RWMutex
 	getSecurityGroupsWithOrganizationAndSpaceArgsForCall []struct{}
 	getSecurityGroupsWithOrganizationAndSpaceReturns     struct {
 		result1 []v2action.SecurityGroupWithOrganizationAndSpace
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getSecurityGroupsWithOrganizationAndSpaceReturnsOnCall map[int]struct {
 		result1 []v2action.SecurityGroupWithOrganizationAndSpace
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpace() ([]v2action.SecurityGroupWithOrganizationAndSpace, v2action.Warnings, error) {
+func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpace() ([]v2action.SecurityGroupWithOrganizationAndSpace, []string, error) {
 	fake.getSecurityGroupsWithOrganizationAndSpaceMutex.Lock()
 	ret, specificReturn := fake.getSecurityGroupsWithOrganizationAndSpaceReturnsOnCall[len(fake.getSecurityGroupsWithOrganizationAndSpaceArgsForCall)]
 	fake.getSecurityGroupsWithOrganizationAndSpaceArgsForCall = append(fake.getSecurityGroupsWithOrganizationAndSpaceArgsForCall, struct{}{})
@@ -47,27 +47,27 @@ func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpaceCa
 	return len(fake.getSecurityGroupsWithOrganizationAndSpaceArgsForCall)
 }
 
-func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpaceReturns(result1 []v2action.SecurityGroupWithOrganizationAndSpace, result2 v2action.Warnings, result3 error) {
+func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpaceReturns(result1 []v2action.SecurityGroupWithOrganizationAndSpace, result2 []string, result3 error) {
 	fake.GetSecurityGroupsWithOrganizationAndSpaceStub = nil
 	fake.getSecurityGroupsWithOrganizationAndSpaceReturns = struct {
 		result1 []v2action.SecurityGroupWithOrganizationAndSpace
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpaceReturnsOnCall(i int, result1 []v2action.SecurityGroupWithOrganizationAndSpace, result2 v2action.Warnings, result3 error) {
+func (fake *FakeSecurityGroupsActor) GetSecurityGroupsWithOrganizationAndSpaceReturnsOnCall(i int, result1 []v2action.SecurityGroupWithOrganizationAndSpace, result2 []string, result3 error) {
 	fake.GetSecurityGroupsWithOrganizationAndSpaceStub = nil
 	if fake.getSecurityGroupsWithOrganizationAndSpaceReturnsOnCall == nil {
 		fake.getSecurityGroupsWithOrganizationAndSpaceReturnsOnCall = make(map[int]struct {
 			result1 []v2action.SecurityGroupWithOrganizationAndSpace
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getSecurityGroupsWithOrganizationAndSpaceReturnsOnCall[i] = struct {
 		result1 []v2action.SecurityGroupWithOrganizationAndSpace
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }

@@ -11,8 +11,8 @@ import (
 //go:generate counterfeiter . AppActor
 
 type AppActor interface {
-	GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, v2action.Warnings, error)
-	GetApplicationSummaryByNameAndSpace(name string, spaceGUID string) (v2action.ApplicationSummary, v2action.Warnings, error)
+	GetApplicationByNameAndSpace(name string, spaceGUID string) (v2action.Application, []string, error)
+	GetApplicationSummaryByNameAndSpace(name string, spaceGUID string) (v2action.ApplicationSummary, []string, error)
 }
 
 type AppCommand struct {

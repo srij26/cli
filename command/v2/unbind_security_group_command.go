@@ -14,8 +14,8 @@ import (
 //go:generate counterfeiter . UnbindSecurityGroupActor
 
 type UnbindSecurityGroupActor interface {
-	UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) (v2action.Warnings, error)
-	UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) (v2action.Warnings, error)
+	UnbindSecurityGroupByNameAndSpace(securityGroupName string, spaceGUID string) ([]string, error)
+	UnbindSecurityGroupByNameOrganizationNameAndSpaceName(securityGroupName string, orgName string, spaceName string) ([]string, error)
 }
 
 type UnbindSecurityGroupCommand struct {
@@ -57,7 +57,7 @@ func (cmd UnbindSecurityGroupCommand) Execute(args []string) error {
 	}
 
 	var (
-		warnings v2action.Warnings
+		warnings []string
 	)
 
 	switch {

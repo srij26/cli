@@ -89,7 +89,7 @@ var _ = Describe("get-health-check Command", func() {
 
 			expectedErr = errors.New("get health check error")
 			fakeActor.GetApplicationByNameAndSpaceReturns(
-				v2action.Application{}, v2action.Warnings{"warning-1"}, expectedErr)
+				v2action.Application{}, []string{"warning-1"}, expectedErr)
 		})
 
 		It("displays warnings and returns the error", func() {
@@ -107,7 +107,7 @@ var _ = Describe("get-health-check Command", func() {
 					v2action.Application{
 						HealthCheckType:         "some-health-check-type",
 						HealthCheckHTTPEndpoint: "/some-endpoint",
-					}, v2action.Warnings{"warning-1"}, nil)
+					}, []string{"warning-1"}, nil)
 			})
 
 			It("show a blank endpoint and displays warnings", func() {
@@ -143,7 +143,7 @@ var _ = Describe("get-health-check Command", func() {
 					v2action.Application{
 						HealthCheckType:         "http",
 						HealthCheckHTTPEndpoint: "/some-endpoint",
-					}, v2action.Warnings{"warning-1"}, nil)
+					}, []string{"warning-1"}, nil)
 			})
 
 			It("shows the endpoint", func() {

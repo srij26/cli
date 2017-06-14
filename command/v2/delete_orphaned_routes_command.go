@@ -10,8 +10,8 @@ import (
 //go:generate counterfeiter . DeleteOrphanedRoutesActor
 
 type DeleteOrphanedRoutesActor interface {
-	GetOrphanedRoutesBySpace(spaceGUID string) ([]v2action.Route, v2action.Warnings, error)
-	DeleteRoute(routeGUID string) (v2action.Warnings, error)
+	GetOrphanedRoutesBySpace(spaceGUID string) ([]v2action.Route, []string, error)
+	DeleteRoute(routeGUID string) ([]string, error)
 }
 
 type DeleteOrphanedRoutesCommand struct {

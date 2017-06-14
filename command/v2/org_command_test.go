@@ -89,7 +89,7 @@ var _ = Describe("org Command", func() {
 			BeforeEach(func() {
 				fakeActor.GetOrganizationByNameReturns(
 					v2action.Organization{GUID: "some-org-guid"},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 			})
 
@@ -111,7 +111,7 @@ var _ = Describe("org Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetOrganizationByNameReturns(
 						v2action.Organization{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						v2action.OrganizationNotFoundError{Name: "some-org"})
 				})
 
@@ -130,7 +130,7 @@ var _ = Describe("org Command", func() {
 					expectedErr = errors.New("get org error")
 					fakeActor.GetOrganizationByNameReturns(
 						v2action.Organization{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 
@@ -171,7 +171,7 @@ var _ = Describe("org Command", func() {
 							"space2",
 						},
 					},
-					v2action.Warnings{"warning-1", "warning-2"},
+					[]string{"warning-1", "warning-2"},
 					nil)
 			})
 			Context("when the v3 actor is nil", func() {
@@ -278,7 +278,7 @@ var _ = Describe("org Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetOrganizationSummaryByNameReturns(
 						v2action.OrganizationSummary{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						v2action.OrganizationNotFoundError{Name: "some-org"})
 				})
 
@@ -297,7 +297,7 @@ var _ = Describe("org Command", func() {
 					expectedErr = errors.New("get org error")
 					fakeActor.GetOrganizationSummaryByNameReturns(
 						v2action.OrganizationSummary{},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						expectedErr)
 				})
 

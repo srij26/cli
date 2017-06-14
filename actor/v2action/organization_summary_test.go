@@ -15,7 +15,7 @@ var _ = Describe("Organization Summary Actions", func() {
 		actor                     *Actor
 		fakeCloudControllerClient *v2actionfakes.FakeCloudControllerClient
 		orgSummary                OrganizationSummary
-		warnings                  Warnings
+		warnings                  []string
 		err                       error
 		expectedErr               error
 	)

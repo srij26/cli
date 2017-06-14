@@ -19,12 +19,12 @@ func (e StackNotFoundError) Error() string {
 }
 
 // GetStack returns the stack information associated with the provided stack GUID.
-func (actor Actor) GetStack(guid string) (Stack, Warnings, error) {
+func (actor Actor) GetStack(guid string) (Stack, []string, error) {
 	stack, warnings, err := actor.CloudControllerClient.GetStack(guid)
 
 	if _, ok := err.(ccerror.ResourceNotFoundError); ok {
-		return Stack{}, Warnings(warnings), StackNotFoundError{GUID: guid}
+		return Stack{}, []string(warnings), StackNotFoundError{GUID: guid}
 	}
 
-	return Stack(stack), Warnings(warnings), err
+	return Stack(stack), []string(warnings), err
 }

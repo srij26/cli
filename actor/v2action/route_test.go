@@ -640,7 +640,7 @@ var _ = Describe("Route Actions", func() {
 			domainGUID string
 
 			route      Route
-			warnings   Warnings
+			warnings   []string
 			executeErr error
 		)
 
@@ -799,7 +799,7 @@ var _ = Describe("Route Actions", func() {
 			route Route
 
 			returnedRoute Route
-			warnings      Warnings
+			warnings      []string
 			executeErr    error
 		)
 

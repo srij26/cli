@@ -22,8 +22,8 @@ func (e ServiceBindingNotFoundError) Error() string {
 }
 
 // BindServiceBySpace binds the service instance to an application for a given space.
-func (actor Actor) BindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string, parameters map[string]interface{}) (Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) BindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string, parameters map[string]interface{}) ([]string, error) {
+	var allWarnings []string
 	app, warnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	allWarnings = append(allWarnings, warnings...)
 	if err != nil {
@@ -44,7 +44,7 @@ func (actor Actor) BindServiceBySpace(appName string, serviceInstanceName string
 
 // GetServiceBindingByApplicationAndServiceInstance returns a service binding
 // given an application GUID and and service instance GUID.
-func (actor Actor) GetServiceBindingByApplicationAndServiceInstance(appGUID string, serviceInstanceGUID string) (ServiceBinding, Warnings, error) {
+func (actor Actor) GetServiceBindingByApplicationAndServiceInstance(appGUID string, serviceInstanceGUID string) (ServiceBinding, []string, error) {
 	serviceBindings, warnings, err := actor.CloudControllerClient.GetServiceBindings([]ccv2.Query{
 		ccv2.Query{
 			Filter:   ccv2.AppGUIDFilter,
@@ -59,23 +59,23 @@ func (actor Actor) GetServiceBindingByApplicationAndServiceInstance(appGUID stri
 	})
 
 	if err != nil {
-		return ServiceBinding{}, Warnings(warnings), err
+		return ServiceBinding{}, []string(warnings), err
 	}
 
 	if len(serviceBindings) == 0 {
-		return ServiceBinding{}, Warnings(warnings), ServiceBindingNotFoundError{
+		return ServiceBinding{}, []string(warnings), ServiceBindingNotFoundError{
 			AppGUID:             appGUID,
 			ServiceInstanceGUID: serviceInstanceGUID,
 		}
 	}
 
-	return ServiceBinding(serviceBindings[0]), Warnings(warnings), err
+	return ServiceBinding(serviceBindings[0]), []string(warnings), err
 }
 
 // UnbindServiceBySpace deletes the service binding between an application and
 // service instance for a given space.
-func (actor Actor) UnbindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string) (Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) UnbindServiceBySpace(appName string, serviceInstanceName string, spaceGUID string) ([]string, error) {
+	var allWarnings []string
 
 	app, warnings, err := actor.GetApplicationByNameAndSpace(appName, spaceGUID)
 	allWarnings = append(allWarnings, warnings...)

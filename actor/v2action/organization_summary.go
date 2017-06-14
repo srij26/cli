@@ -9,8 +9,8 @@ type OrganizationSummary struct {
 	SpaceNames  []string
 }
 
-func (actor Actor) GetOrganizationSummaryByName(orgName string) (OrganizationSummary, Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) GetOrganizationSummaryByName(orgName string) (OrganizationSummary, []string, error) {
+	var allWarnings []string
 
 	org, warnings, err := actor.GetOrganizationByName(orgName)
 	allWarnings = append(allWarnings, warnings...)

@@ -25,7 +25,7 @@ var _ = Describe("Security Group Actions", func() {
 	Describe("GetSecurityGroupsWithOrganizationAndSpace", func() {
 		var (
 			secGroupOrgSpaces []SecurityGroupWithOrganizationAndSpace
-			warnings          Warnings
+			warnings          []string
 			err               error
 		)
 
@@ -443,7 +443,7 @@ var _ = Describe("Security Group Actions", func() {
 	Describe("GetSecurityGroupByName", func() {
 		var (
 			securityGroup SecurityGroup
-			warnings      Warnings
+			warnings      []string
 			err           error
 		)
 		JustBeforeEach(func() {
@@ -694,7 +694,7 @@ var _ = Describe("Security Group Actions", func() {
 
 	Describe("UnbindSecurityGroupByNameAndSpace", func() {
 		var (
-			warnings Warnings
+			warnings []string
 			err      error
 		)
 
@@ -732,7 +732,7 @@ var _ = Describe("Security Group Actions", func() {
 
 			It("returns all warnings", func() {
 				Expect(err).ToNot(HaveOccurred())
-				Expect(warnings).To(ConsistOf(Warnings{"security-group-warning", "remove-space-from-sg-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning", "remove-space-from-sg-warning"))
 			})
 		})
 
@@ -755,7 +755,7 @@ var _ = Describe("Security Group Actions", func() {
 
 			It("returns all warnings", func() {
 				Expect(err).To(MatchError(returnedError))
-				Expect(warnings).To(ConsistOf(Warnings{"security-group-warning", "remove-space-from-sg-warning"}))
+				Expect(warnings).To(ConsistOf("security-group-warning", "remove-space-from-sg-warning"))
 			})
 		})
 	})

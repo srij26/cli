@@ -11,7 +11,7 @@ import (
 
 //go:generate counterfeiter . SetHealthCheckActor
 type SetHealthCheckActor interface {
-	SetApplicationHealthCheckTypeByNameAndSpace(name string, spaceGUID string, healthCheckType string, httpEndpoint string) (v2action.Application, v2action.Warnings, error)
+	SetApplicationHealthCheckTypeByNameAndSpace(name string, spaceGUID string, healthCheckType string, httpEndpoint string) (v2action.Application, []string, error)
 	CloudControllerAPIVersion() string
 }
 

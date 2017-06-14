@@ -109,7 +109,7 @@ var _ = Describe("App Command", func() {
 				BeforeEach(func() {
 					fakeActor.GetApplicationByNameAndSpaceReturns(
 						v2action.Application{GUID: "some-guid"},
-						v2action.Warnings{"warning-1", "warning-2"},
+						[]string{"warning-1", "warning-2"},
 						nil)
 				})
 
@@ -127,7 +127,7 @@ var _ = Describe("App Command", func() {
 					BeforeEach(func() {
 						fakeActor.GetApplicationByNameAndSpaceReturns(
 							v2action.Application{},
-							v2action.Warnings{"warning-1", "warning-2"},
+							[]string{"warning-1", "warning-2"},
 							v2action.ApplicationNotFoundError{Name: "some-app"})
 					})
 
@@ -146,7 +146,7 @@ var _ = Describe("App Command", func() {
 						expectedErr = errors.New("get app summary error")
 						fakeActor.GetApplicationByNameAndSpaceReturns(
 							v2action.Application{},
-							v2action.Warnings{"warning-1", "warning-2"},
+							[]string{"warning-1", "warning-2"},
 							expectedErr)
 					})
 

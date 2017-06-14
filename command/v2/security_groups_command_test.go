@@ -110,7 +110,7 @@ var _ = Describe("security-groups Command", func() {
 					Space:         &v2action.Space{Name: "space-311"},
 				},
 			}
-			fakeActor.GetSecurityGroupsWithOrganizationAndSpaceReturns(secGroups, v2action.Warnings{"warning-1", "warning-2"}, nil)
+			fakeActor.GetSecurityGroupsWithOrganizationAndSpaceReturns(secGroups, []string{"warning-1", "warning-2"}, nil)
 		})
 
 		It("displays a table containing the security groups, the spaces to which they are bound, and the spaces' orgs", func() {
@@ -133,7 +133,7 @@ var _ = Describe("security-groups Command", func() {
 
 	Context("when an error is encountered fetching the security groups", func() {
 		BeforeEach(func() {
-			fakeActor.GetSecurityGroupsWithOrganizationAndSpaceReturns(nil, v2action.Warnings{"warning-1", "warning-2"}, errors.New("generic"))
+			fakeActor.GetSecurityGroupsWithOrganizationAndSpaceReturns(nil, []string{"warning-1", "warning-2"}, errors.New("generic"))
 		})
 
 		It("returns the error", func() {

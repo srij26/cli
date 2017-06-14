@@ -53,11 +53,11 @@ var _ = Describe("bind-security-group Command", func() {
 			nil)
 		fakeActor.GetSecurityGroupByNameReturns(
 			v2action.SecurityGroup{Name: "some-security-group", GUID: "some-security-group-guid"},
-			v2action.Warnings{"get security group warning"},
+			[]string{"get security group warning"},
 			nil)
 		fakeActor.GetOrganizationByNameReturns(
 			v2action.Organization{Name: "some-org", GUID: "some-org-guid"},
-			v2action.Warnings{"get org warning"},
+			[]string{"get org warning"},
 			nil)
 	})
 
@@ -99,7 +99,7 @@ var _ = Describe("bind-security-group Command", func() {
 		BeforeEach(func() {
 			fakeActor.GetSecurityGroupByNameReturns(
 				v2action.SecurityGroup{},
-				v2action.Warnings{"get security group warning"},
+				[]string{"get security group warning"},
 				v2action.SecurityGroupNotFoundError{Name: "some-security-group"})
 		})
 
@@ -116,7 +116,7 @@ var _ = Describe("bind-security-group Command", func() {
 			expectedErr = errors.New("get security group error")
 			fakeActor.GetSecurityGroupByNameReturns(
 				v2action.SecurityGroup{},
-				v2action.Warnings{"get security group warning"},
+				[]string{"get security group warning"},
 				expectedErr)
 		})
 
@@ -130,7 +130,7 @@ var _ = Describe("bind-security-group Command", func() {
 		BeforeEach(func() {
 			fakeActor.GetOrganizationByNameReturns(
 				v2action.Organization{},
-				v2action.Warnings{"get organization warning"},
+				[]string{"get organization warning"},
 				v2action.OrganizationNotFoundError{Name: "some-org"})
 		})
 
@@ -148,7 +148,7 @@ var _ = Describe("bind-security-group Command", func() {
 			expectedErr = errors.New("get org error")
 			fakeActor.GetOrganizationByNameReturns(
 				v2action.Organization{},
-				v2action.Warnings{"get org warning"},
+				[]string{"get org warning"},
 				expectedErr)
 		})
 
@@ -168,7 +168,7 @@ var _ = Describe("bind-security-group Command", func() {
 			BeforeEach(func() {
 				fakeActor.GetSpaceByOrganizationAndNameReturns(
 					v2action.Space{},
-					v2action.Warnings{"get space warning"},
+					[]string{"get space warning"},
 					v2action.SpaceNotFoundError{Name: "some-space"})
 			})
 
@@ -187,14 +187,14 @@ var _ = Describe("bind-security-group Command", func() {
 						GUID: "some-space-guid",
 						Name: "some-space",
 					},
-					v2action.Warnings{"get space by org warning"},
+					[]string{"get space by org warning"},
 					nil)
 			})
 
 			Context("when no errors are encountered binding the security group to the space", func() {
 				BeforeEach(func() {
 					fakeActor.BindSecurityGroupToSpaceReturns(
-						v2action.Warnings{"bind security group to space warning"},
+						[]string{"bind security group to space warning"},
 						nil)
 				})
 
@@ -222,7 +222,7 @@ var _ = Describe("bind-security-group Command", func() {
 				BeforeEach(func() {
 					expectedErr = errors.New("bind error")
 					fakeActor.BindSecurityGroupToSpaceReturns(
-						v2action.Warnings{"bind security group to space warning"},
+						[]string{"bind security group to space warning"},
 						expectedErr)
 				})
 
@@ -246,7 +246,7 @@ var _ = Describe("bind-security-group Command", func() {
 				expectedErr = errors.New("get org error")
 				fakeActor.GetSpaceByOrganizationAndNameReturns(
 					v2action.Space{},
-					v2action.Warnings{"get space by org warning"},
+					[]string{"get space by org warning"},
 					expectedErr)
 			})
 
@@ -264,7 +264,7 @@ var _ = Describe("bind-security-group Command", func() {
 			BeforeEach(func() {
 				fakeActor.GetOrganizationSpacesReturns(
 					[]v2action.Space{},
-					v2action.Warnings{"get org spaces warning"},
+					[]string{"get org spaces warning"},
 					nil)
 			})
 
@@ -293,14 +293,14 @@ var _ = Describe("bind-security-group Command", func() {
 							Name: "some-space-2",
 						},
 					},
-					v2action.Warnings{"get org spaces warning"},
+					[]string{"get org spaces warning"},
 					nil)
 			})
 
 			Context("when no errors are encountered binding the security group to the spaces", func() {
 				BeforeEach(func() {
 					fakeActor.BindSecurityGroupToSpaceReturns(
-						v2action.Warnings{"bind security group to space warning"},
+						[]string{"bind security group to space warning"},
 						nil)
 				})
 
@@ -335,7 +335,7 @@ var _ = Describe("bind-security-group Command", func() {
 				BeforeEach(func() {
 					expectedErr = errors.New("bind security group to space error")
 					fakeActor.BindSecurityGroupToSpaceReturns(
-						v2action.Warnings{"bind security group to space warning"},
+						[]string{"bind security group to space warning"},
 						expectedErr)
 				})
 
@@ -359,7 +359,7 @@ var _ = Describe("bind-security-group Command", func() {
 				expectedErr = errors.New("get org spaces error")
 				fakeActor.GetOrganizationSpacesReturns(
 					nil,
-					v2action.Warnings{"get org spaces warning"},
+					[]string{"get org spaces warning"},
 					expectedErr)
 			})
 

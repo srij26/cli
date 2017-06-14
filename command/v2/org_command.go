@@ -16,8 +16,8 @@ import (
 //go:generate counterfeiter . OrgActor
 
 type OrgActor interface {
-	GetOrganizationByName(orgName string) (v2action.Organization, v2action.Warnings, error)
-	GetOrganizationSummaryByName(orgName string) (v2action.OrganizationSummary, v2action.Warnings, error)
+	GetOrganizationByName(orgName string) (v2action.Organization, []string, error)
+	GetOrganizationSummaryByName(orgName string) (v2action.OrganizationSummary, []string, error)
 }
 
 //go:generate counterfeiter . OrgActorV3

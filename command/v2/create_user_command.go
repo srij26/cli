@@ -14,7 +14,7 @@ import (
 //go:generate counterfeiter . CreateUserActor
 
 type CreateUserActor interface {
-	CreateUser(username string, password string, origin string) (v2action.User, v2action.Warnings, error)
+	CreateUser(username string, password string, origin string) (v2action.User, []string, error)
 }
 
 type CreateUserCommand struct {

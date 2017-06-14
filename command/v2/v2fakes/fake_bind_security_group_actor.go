@@ -9,52 +9,52 @@ import (
 )
 
 type FakeBindSecurityGroupActor struct {
-	GetSecurityGroupByNameStub        func(securityGroupName string) (v2action.SecurityGroup, v2action.Warnings, error)
+	GetSecurityGroupByNameStub        func(securityGroupName string) (v2action.SecurityGroup, []string, error)
 	getSecurityGroupByNameMutex       sync.RWMutex
 	getSecurityGroupByNameArgsForCall []struct {
 		securityGroupName string
 	}
 	getSecurityGroupByNameReturns struct {
 		result1 v2action.SecurityGroup
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getSecurityGroupByNameReturnsOnCall map[int]struct {
 		result1 v2action.SecurityGroup
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	GetOrganizationByNameStub        func(orgName string) (v2action.Organization, v2action.Warnings, error)
+	GetOrganizationByNameStub        func(orgName string) (v2action.Organization, []string, error)
 	getOrganizationByNameMutex       sync.RWMutex
 	getOrganizationByNameArgsForCall []struct {
 		orgName string
 	}
 	getOrganizationByNameReturns struct {
 		result1 v2action.Organization
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getOrganizationByNameReturnsOnCall map[int]struct {
 		result1 v2action.Organization
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	GetOrganizationSpacesStub        func(orgGUID string) ([]v2action.Space, v2action.Warnings, error)
+	GetOrganizationSpacesStub        func(orgGUID string) ([]v2action.Space, []string, error)
 	getOrganizationSpacesMutex       sync.RWMutex
 	getOrganizationSpacesArgsForCall []struct {
 		orgGUID string
 	}
 	getOrganizationSpacesReturns struct {
 		result1 []v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getOrganizationSpacesReturnsOnCall map[int]struct {
 		result1 []v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	GetSpaceByOrganizationAndNameStub        func(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error)
+	GetSpaceByOrganizationAndNameStub        func(orgGUID string, spaceName string) (v2action.Space, []string, error)
 	getSpaceByOrganizationAndNameMutex       sync.RWMutex
 	getSpaceByOrganizationAndNameArgsForCall []struct {
 		orgGUID   string
@@ -62,33 +62,33 @@ type FakeBindSecurityGroupActor struct {
 	}
 	getSpaceByOrganizationAndNameReturns struct {
 		result1 v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
 	getSpaceByOrganizationAndNameReturnsOnCall map[int]struct {
 		result1 v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}
-	BindSecurityGroupToSpaceStub        func(securityGroupGUID string, spaceGUID string) (v2action.Warnings, error)
+	BindSecurityGroupToSpaceStub        func(securityGroupGUID string, spaceGUID string) ([]string, error)
 	bindSecurityGroupToSpaceMutex       sync.RWMutex
 	bindSecurityGroupToSpaceArgsForCall []struct {
 		securityGroupGUID string
 		spaceGUID         string
 	}
 	bindSecurityGroupToSpaceReturns struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	bindSecurityGroupToSpaceReturnsOnCall map[int]struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByName(securityGroupName string) (v2action.SecurityGroup, v2action.Warnings, error) {
+func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByName(securityGroupName string) (v2action.SecurityGroup, []string, error) {
 	fake.getSecurityGroupByNameMutex.Lock()
 	ret, specificReturn := fake.getSecurityGroupByNameReturnsOnCall[len(fake.getSecurityGroupByNameArgsForCall)]
 	fake.getSecurityGroupByNameArgsForCall = append(fake.getSecurityGroupByNameArgsForCall, struct {
@@ -117,32 +117,32 @@ func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByNameArgsForCall(i int)
 	return fake.getSecurityGroupByNameArgsForCall[i].securityGroupName
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByNameReturns(result1 v2action.SecurityGroup, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByNameReturns(result1 v2action.SecurityGroup, result2 []string, result3 error) {
 	fake.GetSecurityGroupByNameStub = nil
 	fake.getSecurityGroupByNameReturns = struct {
 		result1 v2action.SecurityGroup
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByNameReturnsOnCall(i int, result1 v2action.SecurityGroup, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetSecurityGroupByNameReturnsOnCall(i int, result1 v2action.SecurityGroup, result2 []string, result3 error) {
 	fake.GetSecurityGroupByNameStub = nil
 	if fake.getSecurityGroupByNameReturnsOnCall == nil {
 		fake.getSecurityGroupByNameReturnsOnCall = make(map[int]struct {
 			result1 v2action.SecurityGroup
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getSecurityGroupByNameReturnsOnCall[i] = struct {
 		result1 v2action.SecurityGroup
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationByName(orgName string) (v2action.Organization, v2action.Warnings, error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationByName(orgName string) (v2action.Organization, []string, error) {
 	fake.getOrganizationByNameMutex.Lock()
 	ret, specificReturn := fake.getOrganizationByNameReturnsOnCall[len(fake.getOrganizationByNameArgsForCall)]
 	fake.getOrganizationByNameArgsForCall = append(fake.getOrganizationByNameArgsForCall, struct {
@@ -171,32 +171,32 @@ func (fake *FakeBindSecurityGroupActor) GetOrganizationByNameArgsForCall(i int) 
 	return fake.getOrganizationByNameArgsForCall[i].orgName
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationByNameReturns(result1 v2action.Organization, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationByNameReturns(result1 v2action.Organization, result2 []string, result3 error) {
 	fake.GetOrganizationByNameStub = nil
 	fake.getOrganizationByNameReturns = struct {
 		result1 v2action.Organization
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationByNameReturnsOnCall(i int, result1 v2action.Organization, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationByNameReturnsOnCall(i int, result1 v2action.Organization, result2 []string, result3 error) {
 	fake.GetOrganizationByNameStub = nil
 	if fake.getOrganizationByNameReturnsOnCall == nil {
 		fake.getOrganizationByNameReturnsOnCall = make(map[int]struct {
 			result1 v2action.Organization
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getOrganizationByNameReturnsOnCall[i] = struct {
 		result1 v2action.Organization
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationSpaces(orgGUID string) ([]v2action.Space, v2action.Warnings, error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationSpaces(orgGUID string) ([]v2action.Space, []string, error) {
 	fake.getOrganizationSpacesMutex.Lock()
 	ret, specificReturn := fake.getOrganizationSpacesReturnsOnCall[len(fake.getOrganizationSpacesArgsForCall)]
 	fake.getOrganizationSpacesArgsForCall = append(fake.getOrganizationSpacesArgsForCall, struct {
@@ -225,32 +225,32 @@ func (fake *FakeBindSecurityGroupActor) GetOrganizationSpacesArgsForCall(i int) 
 	return fake.getOrganizationSpacesArgsForCall[i].orgGUID
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationSpacesReturns(result1 []v2action.Space, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationSpacesReturns(result1 []v2action.Space, result2 []string, result3 error) {
 	fake.GetOrganizationSpacesStub = nil
 	fake.getOrganizationSpacesReturns = struct {
 		result1 []v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetOrganizationSpacesReturnsOnCall(i int, result1 []v2action.Space, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetOrganizationSpacesReturnsOnCall(i int, result1 []v2action.Space, result2 []string, result3 error) {
 	fake.GetOrganizationSpacesStub = nil
 	if fake.getOrganizationSpacesReturnsOnCall == nil {
 		fake.getOrganizationSpacesReturnsOnCall = make(map[int]struct {
 			result1 []v2action.Space
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getOrganizationSpacesReturnsOnCall[i] = struct {
 		result1 []v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error) {
+func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, []string, error) {
 	fake.getSpaceByOrganizationAndNameMutex.Lock()
 	ret, specificReturn := fake.getSpaceByOrganizationAndNameReturnsOnCall[len(fake.getSpaceByOrganizationAndNameArgsForCall)]
 	fake.getSpaceByOrganizationAndNameArgsForCall = append(fake.getSpaceByOrganizationAndNameArgsForCall, struct {
@@ -280,32 +280,32 @@ func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndNameArgsForCall
 	return fake.getSpaceByOrganizationAndNameArgsForCall[i].orgGUID, fake.getSpaceByOrganizationAndNameArgsForCall[i].spaceName
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndNameReturns(result1 v2action.Space, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndNameReturns(result1 v2action.Space, result2 []string, result3 error) {
 	fake.GetSpaceByOrganizationAndNameStub = nil
 	fake.getSpaceByOrganizationAndNameReturns = struct {
 		result1 v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndNameReturnsOnCall(i int, result1 v2action.Space, result2 v2action.Warnings, result3 error) {
+func (fake *FakeBindSecurityGroupActor) GetSpaceByOrganizationAndNameReturnsOnCall(i int, result1 v2action.Space, result2 []string, result3 error) {
 	fake.GetSpaceByOrganizationAndNameStub = nil
 	if fake.getSpaceByOrganizationAndNameReturnsOnCall == nil {
 		fake.getSpaceByOrganizationAndNameReturnsOnCall = make(map[int]struct {
 			result1 v2action.Space
-			result2 v2action.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.getSpaceByOrganizationAndNameReturnsOnCall[i] = struct {
 		result1 v2action.Space
-		result2 v2action.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) (v2action.Warnings, error) {
+func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpace(securityGroupGUID string, spaceGUID string) ([]string, error) {
 	fake.bindSecurityGroupToSpaceMutex.Lock()
 	ret, specificReturn := fake.bindSecurityGroupToSpaceReturnsOnCall[len(fake.bindSecurityGroupToSpaceArgsForCall)]
 	fake.bindSecurityGroupToSpaceArgsForCall = append(fake.bindSecurityGroupToSpaceArgsForCall, struct {
@@ -335,24 +335,24 @@ func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpaceArgsForCall(i in
 	return fake.bindSecurityGroupToSpaceArgsForCall[i].securityGroupGUID, fake.bindSecurityGroupToSpaceArgsForCall[i].spaceGUID
 }
 
-func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpaceReturns(result1 v2action.Warnings, result2 error) {
+func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpaceReturns(result1 []string, result2 error) {
 	fake.BindSecurityGroupToSpaceStub = nil
 	fake.bindSecurityGroupToSpaceReturns = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpaceReturnsOnCall(i int, result1 v2action.Warnings, result2 error) {
+func (fake *FakeBindSecurityGroupActor) BindSecurityGroupToSpaceReturnsOnCall(i int, result1 []string, result2 error) {
 	fake.BindSecurityGroupToSpaceStub = nil
 	if fake.bindSecurityGroupToSpaceReturnsOnCall == nil {
 		fake.bindSecurityGroupToSpaceReturnsOnCall = make(map[int]struct {
-			result1 v2action.Warnings
+			result1 []string
 			result2 error
 		})
 	}
 	fake.bindSecurityGroupToSpaceReturnsOnCall[i] = struct {
-		result1 v2action.Warnings
+		result1 []string
 		result2 error
 	}{result1, result2}
 }

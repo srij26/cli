@@ -36,18 +36,18 @@ func (e MultipleOrganizationsFoundError) Error() string {
 }
 
 // GetOrganization returns an Organization based on the provided guid.
-func (actor Actor) GetOrganization(guid string) (Organization, Warnings, error) {
+func (actor Actor) GetOrganization(guid string) (Organization, []string, error) {
 	org, warnings, err := actor.CloudControllerClient.GetOrganization(guid)
 
 	if _, ok := err.(ccerror.ResourceNotFoundError); ok {
-		return Organization{}, Warnings(warnings), OrganizationNotFoundError{GUID: guid}
+		return Organization{}, []string(warnings), OrganizationNotFoundError{GUID: guid}
 	}
 
-	return Organization(org), Warnings(warnings), err
+	return Organization(org), []string(warnings), err
 }
 
 // GetOrganizationByName returns an Organization based off of the name given.
-func (actor Actor) GetOrganizationByName(orgName string) (Organization, Warnings, error) {
+func (actor Actor) GetOrganizationByName(orgName string) (Organization, []string, error) {
 	orgs, warnings, err := actor.CloudControllerClient.GetOrganizations([]ccv2.Query{
 		{
 			Filter:   ccv2.NameFilter,
@@ -56,11 +56,11 @@ func (actor Actor) GetOrganizationByName(orgName string) (Organization, Warnings
 		},
 	})
 	if err != nil {
-		return Organization{}, Warnings(warnings), err
+		return Organization{}, []string(warnings), err
 	}
 
 	if len(orgs) == 0 {
-		return Organization{}, Warnings(warnings), OrganizationNotFoundError{Name: orgName}
+		return Organization{}, []string(warnings), OrganizationNotFoundError{Name: orgName}
 	}
 
 	if len(orgs) > 1 {
@@ -68,17 +68,17 @@ func (actor Actor) GetOrganizationByName(orgName string) (Organization, Warnings
 		for _, org := range orgs {
 			guids = append(guids, org.GUID)
 		}
-		return Organization{}, Warnings(warnings), MultipleOrganizationsFoundError{Name: orgName, GUIDs: guids}
+		return Organization{}, []string(warnings), MultipleOrganizationsFoundError{Name: orgName, GUIDs: guids}
 	}
 
-	return Organization(orgs[0]), Warnings(warnings), nil
+	return Organization(orgs[0]), []string(warnings), nil
 }
 
 // DeleteOrganization deletes the Organization associated with the provided
 // GUID. Once the deletion request is sent, it polls the deletion job until
 // it's finished.
-func (actor Actor) DeleteOrganization(orgName string) (Warnings, error) {
-	var allWarnings Warnings
+func (actor Actor) DeleteOrganization(orgName string) ([]string, error) {
+	var allWarnings []string
 
 	org, warnings, err := actor.GetOrganizationByName(orgName)
 	allWarnings = append(allWarnings, warnings...)

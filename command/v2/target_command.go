@@ -12,9 +12,9 @@ import (
 
 //go:generate counterfeiter . TargetActor
 type TargetActor interface {
-	GetOrganizationByName(orgName string) (v2action.Organization, v2action.Warnings, error)
-	GetOrganizationSpaces(orgGUID string) ([]v2action.Space, v2action.Warnings, error)
-	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, v2action.Warnings, error)
+	GetOrganizationByName(orgName string) (v2action.Organization, []string, error)
+	GetOrganizationSpaces(orgGUID string) ([]v2action.Space, []string, error)
+	GetSpaceByOrganizationAndName(orgGUID string, spaceName string) (v2action.Space, []string, error)
 }
 
 type TargetCommand struct {
