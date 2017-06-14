@@ -2,9 +2,6 @@
 // push.
 package pushaction
 
-// Warnings is a list of warnings returned back from the cloud controller
-type Warnings []string
-
 // Actor handles all business logic for Cloud Controller v2 operations.
 type Actor struct {
 	V2Actor V2Actor

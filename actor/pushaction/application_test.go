@@ -28,7 +28,7 @@ var _ = Describe("Applications", func() {
 
 			returnedConfig ApplicationConfig
 			event          Event
-			warnings       Warnings
+			warnings       []string
 			executeErr     error
 		)
 

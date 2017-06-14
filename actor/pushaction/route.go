@@ -5,11 +5,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (actor Actor) BindRoutes(config ApplicationConfig) (ApplicationConfig, bool, Warnings, error) {
+func (actor Actor) BindRoutes(config ApplicationConfig) (ApplicationConfig, bool, []string, error) {
 	log.Info("binding routes")
 
 	var boundRoutes bool
-	var allWarnings Warnings
+	var allWarnings []string
 
 	for _, route := range config.DesiredRoutes {
 		if !actor.routeInListByGUID(route, config.CurrentRoutes) {
@@ -31,12 +31,12 @@ func (actor Actor) BindRoutes(config ApplicationConfig) (ApplicationConfig, bool
 	return config, boundRoutes, allWarnings, nil
 }
 
-func (actor Actor) CreateRoutes(config ApplicationConfig) (ApplicationConfig, bool, Warnings, error) {
+func (actor Actor) CreateRoutes(config ApplicationConfig) (ApplicationConfig, bool, []string, error) {
 	log.Info("creating routes")
 
 	var routes []v2action.Route
 	var createdRoutes bool
-	var allWarnings Warnings
+	var allWarnings []string
 
 	for _, route := range config.DesiredRoutes {
 		if route.GUID == "" {
@@ -64,11 +64,11 @@ func (actor Actor) CreateRoutes(config ApplicationConfig) (ApplicationConfig, bo
 // GetRouteWithDefaultDomain returns a route with the host and the default org
 // domain. This may be a partial route (ie no GUID) if the route does not
 // exist.
-func (actor Actor) GetRouteWithDefaultDomain(host string, orgGUID string, spaceGUID string, knownRoutes []v2action.Route) (v2action.Route, Warnings, error) {
+func (actor Actor) GetRouteWithDefaultDomain(host string, orgGUID string, spaceGUID string, knownRoutes []v2action.Route) (v2action.Route, []string, error) {
 	defaultDomain, warnings, err := actor.DefaultDomain(orgGUID)
 	if err != nil {
 		log.Errorln("could not find default domains:", err.Error())
-		return v2action.Route{}, Warnings(warnings), err
+		return v2action.Route{}, []string(warnings), err
 	}
 
 	defaultRoute := v2action.Route{
@@ -80,11 +80,11 @@ func (actor Actor) GetRouteWithDefaultDomain(host string, orgGUID string, spaceG
 	if cachedRoute, found := actor.routeInListBySettings(defaultRoute, knownRoutes); !found {
 		route, routeWarnings, err := actor.V2Actor.FindRouteBoundToSpaceWithSettings(defaultRoute)
 		if _, ok := err.(v2action.RouteNotFoundError); ok {
-			return defaultRoute, append(Warnings(warnings), routeWarnings...), nil
+			return defaultRoute, append([]string(warnings), routeWarnings...), nil
 		}
-		return route, append(Warnings(warnings), routeWarnings...), err
+		return route, append([]string(warnings), routeWarnings...), err
 	} else {
-		return cachedRoute, Warnings(warnings), nil
+		return cachedRoute, []string(warnings), nil
 	}
 }
 

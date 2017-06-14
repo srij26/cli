@@ -26,7 +26,7 @@ var _ = Describe("Domains", func() {
 		var (
 			orgGUID       string
 			defaultDomain v2action.Domain
-			warnings      Warnings
+			warnings      []string
 			executeErr    error
 		)
 

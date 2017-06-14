@@ -18,10 +18,10 @@ func (_ UploadFailedError) Error() string {
 	return "upload failed"
 }
 
-func (actor Actor) Apply(config ApplicationConfig, progressBar ProgressBar) (<-chan ApplicationConfig, <-chan Event, <-chan Warnings, <-chan error) {
+func (actor Actor) Apply(config ApplicationConfig, progressBar ProgressBar) (<-chan ApplicationConfig, <-chan Event, <-chan []string, <-chan error) {
 	configStream := make(chan ApplicationConfig)
 	eventStream := make(chan Event)
-	warningsStream := make(chan Warnings)
+	warningsStream := make(chan []string)
 	errorStream := make(chan error)
 
 	go func() {
@@ -32,7 +32,7 @@ func (actor Actor) Apply(config ApplicationConfig, progressBar ProgressBar) (<-c
 		defer close(errorStream)
 
 		var event Event
-		var warnings Warnings
+		var warnings []string
 		var err error
 
 		eventStream <- SettingUpApplication

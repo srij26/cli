@@ -91,7 +91,7 @@ var _ = Describe("Resources", func() {
 			fakeProgressBar *pushactionfakes.FakeProgressBar
 			eventStream     chan Event
 
-			warnings   Warnings
+			warnings   []string
 			executeErr error
 		)
 

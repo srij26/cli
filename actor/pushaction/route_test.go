@@ -28,7 +28,7 @@ var _ = Describe("Routes", func() {
 
 			returnedConfig ApplicationConfig
 			boundRoutes    bool
-			warnings       Warnings
+			warnings       []string
 			executeErr     error
 		)
 
@@ -120,7 +120,7 @@ var _ = Describe("Routes", func() {
 
 			returnedConfig ApplicationConfig
 			createdRoutes  bool
-			warnings       Warnings
+			warnings       []string
 			executeErr     error
 		)
 
@@ -204,7 +204,7 @@ var _ = Describe("Routes", func() {
 			knownRoutes []v2action.Route
 
 			defaultRoute v2action.Route
-			warnings     Warnings
+			warnings     []string
 			executeErr   error
 
 			domain v2action.Domain

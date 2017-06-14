@@ -148,17 +148,17 @@ var _ = Describe("v2-push Command", func() {
 							Path:              pwd,
 						},
 					}
-					fakeActor.ConvertToApplicationConfigsReturns(appConfigs, pushaction.Warnings{"some-config-warnings"}, nil)
+					fakeActor.ConvertToApplicationConfigsReturns(appConfigs, []string{"some-config-warnings"}, nil)
 				})
 
 				Context("when the apply is successful", func() {
 					var updatedConfig pushaction.ApplicationConfig
 
 					BeforeEach(func() {
-						fakeActor.ApplyStub = func(_ pushaction.ApplicationConfig, _ pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan pushaction.Warnings, <-chan error) {
+						fakeActor.ApplyStub = func(_ pushaction.ApplicationConfig, _ pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan []string, <-chan error) {
 							configStream := make(chan pushaction.ApplicationConfig, 1)
 							eventStream := make(chan pushaction.Event)
-							warningsStream := make(chan pushaction.Warnings)
+							warningsStream := make(chan []string)
 							errorStream := make(chan error)
 
 							updatedConfig = pushaction.ApplicationConfig{
@@ -185,7 +185,7 @@ var _ = Describe("v2-push Command", func() {
 								Eventually(fakeProgressBar.CompleteCallCount).Should(Equal(1))
 								Eventually(configStream).Should(BeSent(updatedConfig))
 								Eventually(eventStream).Should(BeSent(pushaction.Complete))
-								Eventually(warningsStream).Should(BeSent(pushaction.Warnings{"apply-1", "apply-2"}))
+								Eventually(warningsStream).Should(BeSent([]string{"apply-1", "apply-2"}))
 								close(configStream)
 								close(eventStream)
 								close(warningsStream)
@@ -376,16 +376,16 @@ var _ = Describe("v2-push Command", func() {
 
 					BeforeEach(func() {
 						expectedErr = errors.New("no wayz dude")
-						fakeActor.ApplyStub = func(_ pushaction.ApplicationConfig, _ pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan pushaction.Warnings, <-chan error) {
+						fakeActor.ApplyStub = func(_ pushaction.ApplicationConfig, _ pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan []string, <-chan error) {
 							configStream := make(chan pushaction.ApplicationConfig)
 							eventStream := make(chan pushaction.Event)
-							warningsStream := make(chan pushaction.Warnings)
+							warningsStream := make(chan []string)
 							errorStream := make(chan error)
 
 							go func() {
 								defer GinkgoRecover()
 
-								Eventually(warningsStream).Should(BeSent(pushaction.Warnings{"apply-1", "apply-2"}))
+								Eventually(warningsStream).Should(BeSent([]string{"apply-1", "apply-2"}))
 								Eventually(errorStream).Should(BeSent(expectedErr))
 								close(configStream)
 								close(eventStream)
@@ -412,7 +412,7 @@ var _ = Describe("v2-push Command", func() {
 
 				BeforeEach(func() {
 					expectedErr = errors.New("no wayz dude")
-					fakeActor.ConvertToApplicationConfigsReturns(nil, pushaction.Warnings{"some-config-warnings"}, expectedErr)
+					fakeActor.ConvertToApplicationConfigsReturns(nil, []string{"some-config-warnings"}, expectedErr)
 				})
 
 				It("outputs the warnings and returns the error", func() {

@@ -27,9 +27,9 @@ func (config ApplicationConfig) UpdatingApplication() bool {
 	return !config.CreatingApplication()
 }
 
-func (actor Actor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]ApplicationConfig, Warnings, error) {
+func (actor Actor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]ApplicationConfig, []string, error) {
 	var configs []ApplicationConfig
-	var warnings Warnings
+	var warnings []string
 
 	log.Infof("iterating through %d app configuration(s)", len(apps))
 	for _, app := range apps {

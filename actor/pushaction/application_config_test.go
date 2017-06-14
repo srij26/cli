@@ -66,7 +66,7 @@ var _ = Describe("Application Config", func() {
 			manifestApps []manifest.Application
 
 			configs    []ApplicationConfig
-			warnings   Warnings
+			warnings   []string
 			executeErr error
 
 			firstConfig ApplicationConfig

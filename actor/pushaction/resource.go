@@ -19,7 +19,7 @@ func (actor Actor) CreateArchive(config ApplicationConfig) (string, error) {
 	return archivePath, nil
 }
 
-func (actor Actor) UploadPackage(config ApplicationConfig, archivePath string, progressbar ProgressBar, eventStream chan<- Event) (Warnings, error) {
+func (actor Actor) UploadPackage(config ApplicationConfig, archivePath string, progressbar ProgressBar, eventStream chan<- Event) ([]string, error) {
 	log.Info("uploading archive")
 	archive, err := os.Open(archivePath)
 	if err != nil {
@@ -42,9 +42,9 @@ func (actor Actor) UploadPackage(config ApplicationConfig, archivePath string, p
 	eventStream <- UploadingApplication
 	reader := progressbar.NewProgressBarWrapper(archive, archiveInfo.Size())
 
-	var allWarnings Warnings
+	var allWarnings []string
 	job, warnings, err := actor.V2Actor.UploadApplicationPackage(config.DesiredApplication.GUID, []v2action.Resource{}, reader, archiveInfo.Size())
-	allWarnings = append(allWarnings, Warnings(warnings)...)
+	allWarnings = append(allWarnings, []string(warnings)...)
 
 	if err != nil {
 		log.WithField("archivePath", archivePath).Errorln("streaming archive:", err)
@@ -52,7 +52,7 @@ func (actor Actor) UploadPackage(config ApplicationConfig, archivePath string, p
 	}
 	eventStream <- UploadComplete
 	warnings, err = actor.V2Actor.PollJob(job)
-	allWarnings = append(allWarnings, Warnings(warnings)...)
+	allWarnings = append(allWarnings, []string(warnings)...)
 
 	return allWarnings, err
 }

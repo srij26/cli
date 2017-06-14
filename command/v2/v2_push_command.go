@@ -28,8 +28,8 @@ type ProgressBar interface {
 //go:generate counterfeiter . V2PushActor
 
 type V2PushActor interface {
-	Apply(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan pushaction.Warnings, <-chan error)
-	ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, pushaction.Warnings, error)
+	Apply(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan []string, <-chan error)
+	ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, []string, error)
 	MergeAndValidateSettingsAndManifests(cmdSettings pushaction.CommandLineSettings, apps []manifest.Application) ([]manifest.Application, error)
 }
 
@@ -257,7 +257,7 @@ func (cmd V2PushCommand) processApplyStreams(
 	appConfig pushaction.ApplicationConfig,
 	configStream <-chan pushaction.ApplicationConfig,
 	eventStream <-chan pushaction.Event,
-	warningsStream <-chan pushaction.Warnings,
+	warningsStream <-chan []string,
 	errorStream <-chan error,
 ) (pushaction.ApplicationConfig, error) {
 	var configClosed, eventClosed, warningsClosed, complete bool

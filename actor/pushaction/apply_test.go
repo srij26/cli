@@ -13,7 +13,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func streamsDrainedAndClosed(configStream <-chan ApplicationConfig, eventStream <-chan Event, warningsStream <-chan Warnings, errorStream <-chan error) bool {
+func streamsDrainedAndClosed(configStream <-chan ApplicationConfig, eventStream <-chan Event, warningsStream <-chan []string, errorStream <-chan error) bool {
 	var configStreamClosed, eventStreamClosed, warningsStreamClosed, errorStreamClosed bool
 	for {
 		select {
@@ -50,7 +50,7 @@ var _ = Describe("Apply", func() {
 		fakeProgressBar *pushactionfakes.FakeProgressBar
 
 		eventStream    <-chan Event
-		warningsStream <-chan Warnings
+		warningsStream <-chan []string
 		errorStream    <-chan error
 		configStream   <-chan ApplicationConfig
 	)

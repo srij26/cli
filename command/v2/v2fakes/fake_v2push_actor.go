@@ -10,7 +10,7 @@ import (
 )
 
 type FakeV2PushActor struct {
-	ApplyStub        func(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan pushaction.Warnings, <-chan error)
+	ApplyStub        func(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan []string, <-chan error)
 	applyMutex       sync.RWMutex
 	applyArgsForCall []struct {
 		config      pushaction.ApplicationConfig
@@ -19,16 +19,16 @@ type FakeV2PushActor struct {
 	applyReturns struct {
 		result1 <-chan pushaction.ApplicationConfig
 		result2 <-chan pushaction.Event
-		result3 <-chan pushaction.Warnings
+		result3 <-chan []string
 		result4 <-chan error
 	}
 	applyReturnsOnCall map[int]struct {
 		result1 <-chan pushaction.ApplicationConfig
 		result2 <-chan pushaction.Event
-		result3 <-chan pushaction.Warnings
+		result3 <-chan []string
 		result4 <-chan error
 	}
-	ConvertToApplicationConfigsStub        func(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, pushaction.Warnings, error)
+	ConvertToApplicationConfigsStub        func(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, []string, error)
 	convertToApplicationConfigsMutex       sync.RWMutex
 	convertToApplicationConfigsArgsForCall []struct {
 		orgGUID   string
@@ -37,12 +37,12 @@ type FakeV2PushActor struct {
 	}
 	convertToApplicationConfigsReturns struct {
 		result1 []pushaction.ApplicationConfig
-		result2 pushaction.Warnings
+		result2 []string
 		result3 error
 	}
 	convertToApplicationConfigsReturnsOnCall map[int]struct {
 		result1 []pushaction.ApplicationConfig
-		result2 pushaction.Warnings
+		result2 []string
 		result3 error
 	}
 	MergeAndValidateSettingsAndManifestsStub        func(cmdSettings pushaction.CommandLineSettings, apps []manifest.Application) ([]manifest.Application, error)
@@ -63,7 +63,7 @@ type FakeV2PushActor struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeV2PushActor) Apply(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan pushaction.Warnings, <-chan error) {
+func (fake *FakeV2PushActor) Apply(config pushaction.ApplicationConfig, progressBar pushaction.ProgressBar) (<-chan pushaction.ApplicationConfig, <-chan pushaction.Event, <-chan []string, <-chan error) {
 	fake.applyMutex.Lock()
 	ret, specificReturn := fake.applyReturnsOnCall[len(fake.applyArgsForCall)]
 	fake.applyArgsForCall = append(fake.applyArgsForCall, struct {
@@ -93,35 +93,35 @@ func (fake *FakeV2PushActor) ApplyArgsForCall(i int) (pushaction.ApplicationConf
 	return fake.applyArgsForCall[i].config, fake.applyArgsForCall[i].progressBar
 }
 
-func (fake *FakeV2PushActor) ApplyReturns(result1 <-chan pushaction.ApplicationConfig, result2 <-chan pushaction.Event, result3 <-chan pushaction.Warnings, result4 <-chan error) {
+func (fake *FakeV2PushActor) ApplyReturns(result1 <-chan pushaction.ApplicationConfig, result2 <-chan pushaction.Event, result3 <-chan []string, result4 <-chan error) {
 	fake.ApplyStub = nil
 	fake.applyReturns = struct {
 		result1 <-chan pushaction.ApplicationConfig
 		result2 <-chan pushaction.Event
-		result3 <-chan pushaction.Warnings
+		result3 <-chan []string
 		result4 <-chan error
 	}{result1, result2, result3, result4}
 }
 
-func (fake *FakeV2PushActor) ApplyReturnsOnCall(i int, result1 <-chan pushaction.ApplicationConfig, result2 <-chan pushaction.Event, result3 <-chan pushaction.Warnings, result4 <-chan error) {
+func (fake *FakeV2PushActor) ApplyReturnsOnCall(i int, result1 <-chan pushaction.ApplicationConfig, result2 <-chan pushaction.Event, result3 <-chan []string, result4 <-chan error) {
 	fake.ApplyStub = nil
 	if fake.applyReturnsOnCall == nil {
 		fake.applyReturnsOnCall = make(map[int]struct {
 			result1 <-chan pushaction.ApplicationConfig
 			result2 <-chan pushaction.Event
-			result3 <-chan pushaction.Warnings
+			result3 <-chan []string
 			result4 <-chan error
 		})
 	}
 	fake.applyReturnsOnCall[i] = struct {
 		result1 <-chan pushaction.ApplicationConfig
 		result2 <-chan pushaction.Event
-		result3 <-chan pushaction.Warnings
+		result3 <-chan []string
 		result4 <-chan error
 	}{result1, result2, result3, result4}
 }
 
-func (fake *FakeV2PushActor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, pushaction.Warnings, error) {
+func (fake *FakeV2PushActor) ConvertToApplicationConfigs(orgGUID string, spaceGUID string, apps []manifest.Application) ([]pushaction.ApplicationConfig, []string, error) {
 	var appsCopy []manifest.Application
 	if apps != nil {
 		appsCopy = make([]manifest.Application, len(apps))
@@ -157,27 +157,27 @@ func (fake *FakeV2PushActor) ConvertToApplicationConfigsArgsForCall(i int) (stri
 	return fake.convertToApplicationConfigsArgsForCall[i].orgGUID, fake.convertToApplicationConfigsArgsForCall[i].spaceGUID, fake.convertToApplicationConfigsArgsForCall[i].apps
 }
 
-func (fake *FakeV2PushActor) ConvertToApplicationConfigsReturns(result1 []pushaction.ApplicationConfig, result2 pushaction.Warnings, result3 error) {
+func (fake *FakeV2PushActor) ConvertToApplicationConfigsReturns(result1 []pushaction.ApplicationConfig, result2 []string, result3 error) {
 	fake.ConvertToApplicationConfigsStub = nil
 	fake.convertToApplicationConfigsReturns = struct {
 		result1 []pushaction.ApplicationConfig
-		result2 pushaction.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
 
-func (fake *FakeV2PushActor) ConvertToApplicationConfigsReturnsOnCall(i int, result1 []pushaction.ApplicationConfig, result2 pushaction.Warnings, result3 error) {
+func (fake *FakeV2PushActor) ConvertToApplicationConfigsReturnsOnCall(i int, result1 []pushaction.ApplicationConfig, result2 []string, result3 error) {
 	fake.ConvertToApplicationConfigsStub = nil
 	if fake.convertToApplicationConfigsReturnsOnCall == nil {
 		fake.convertToApplicationConfigsReturnsOnCall = make(map[int]struct {
 			result1 []pushaction.ApplicationConfig
-			result2 pushaction.Warnings
+			result2 []string
 			result3 error
 		})
 	}
 	fake.convertToApplicationConfigsReturnsOnCall[i] = struct {
 		result1 []pushaction.ApplicationConfig
-		result2 pushaction.Warnings
+		result2 []string
 		result3 error
 	}{result1, result2, result3}
 }
