@@ -3,6 +3,7 @@ package common
 import (
 	"reflect"
 
+	"code.cloudfoundry.org/cli/command/networkpolicy"
 	"code.cloudfoundry.org/cli/command/plugin"
 	"code.cloudfoundry.org/cli/command/v2"
 	"code.cloudfoundry.org/cli/command/v3"
@@ -189,6 +190,7 @@ type commandList struct {
 	UpdateSpaceQuota                   v2.UpdateSpaceQuotaCommand                   `command:"update-space-quota" description:"Update an existing space quota"`
 	UpdateUserProvidedService          v2.UpdateUserProvidedServiceCommand          `command:"update-user-provided-service" alias:"uups" description:"Update user-provided service instance"`
 	Version                            VersionCommand                               `command:"version" description:"Print the version"`
+	AllowAccess                        networkpolicy.AllowAccessCommand             `command:"allow-access" description:"Allow direct network traffic from one app to another"`
 }
 
 // HasCommand returns true if the command name is in the command list.

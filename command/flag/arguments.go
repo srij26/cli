@@ -309,3 +309,8 @@ type SpaceIsolationArgs struct {
 type ResetSpaceIsolationArgs struct {
 	SpaceName string `positional-arg-name:"SPACE_NAME" required:"true" description:"The space name"`
 }
+
+type AllowAccessArgs struct {
+	SourceApp      string `positional-arg-name:"SOURCE_APP" description:"The source app"`
+	DestinationApp string `positional-arg-name:"DESTINATION_APP" description:"The destination app"`
+}
