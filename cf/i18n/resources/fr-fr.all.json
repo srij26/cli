@@ -1728,6 +1728,10 @@
     "translation": ""
   },
   {
+    "id": "CF_NAME v3-scale APP_NAME [-i INSTANCES] [-k DISK] [-m MEMORY]",
+    "translation": ""
+  },
+  {
     "id": "CF_NAME v3-set-droplet APP_NAME -d DROPLET_GUID",
     "translation": ""
   },
@@ -5468,6 +5472,10 @@
     "translation": "Affichage de l'échelle en cours de l'application {{.AppName}} dans l'organisation {{.OrgName}} / l'espace {{.SpaceName}} en tant que {{.CurrentUser}}..."
   },
   {
+    "id": "Showing current scale of app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...",
+    "translation": ""
+  },
+  {
     "id": "Showing health and status for app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...",
     "translation": "Affichage de la santé et du statut de l'application {{.AppName}} dans l'organisation {{.OrgName}} / l'espace {{.SpaceName}} en tant que {{.Username}}..."
   },
@@ -7018,6 +7026,10 @@
   {
     "id": "memory:",
     "translation": "mémoire :"
+  },
+  {
+    "id": "memory: {{.MemoryInMB}}",
+    "translation": ""
   },
   {
     "id": "name",
